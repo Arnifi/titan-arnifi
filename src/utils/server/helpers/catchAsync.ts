@@ -1,5 +1,5 @@
 import dbConnection from "../../../lib/dbConnection";
-import { NextResponse } from "next/server";
+import globalErrorHandler from "../ErrorHandelars/GlobalErrorHandelar";
 
 const catchAsync =
   (handler: (req: Request, res: Response) => void) =>
@@ -8,12 +8,7 @@ const catchAsync =
     try {
       return await handler(req, res);
     } catch (error) {
-      return NextResponse.json({
-        statusCode: 500,
-        success: false,
-        message: "Something went wrong",
-        error: error,
-      });
+      return globalErrorHandler(error as Error);
     }
   };
 

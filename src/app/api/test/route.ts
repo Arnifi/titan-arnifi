@@ -10,7 +10,6 @@ import { paginationFields } from "@/utils/server/helpers/paginationHelper";
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const paginationOptions = pick(req.url, paginationFields);
-
     const response = await TestService.find(paginationOptions);
 
     return sendResponse<IApiTest[]>({
