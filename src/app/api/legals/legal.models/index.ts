@@ -14,6 +14,7 @@ export interface ILegal extends Document {
   status: boolean;
   downloadCount: number;
   metaData: string;
+  steps: Schema.Types.ObjectId[];
 }
 
 const legalSchema: Schema<ILegal> = new Schema<ILegal>(
@@ -49,6 +50,11 @@ const legalSchema: Schema<ILegal> = new Schema<ILegal>(
     metaData: {
       type: String,
       trim: true,
+    },
+    steps: {
+      type: [Schema.Types.ObjectId],
+      ref: "Step",
+      default: [],
     },
   },
   {

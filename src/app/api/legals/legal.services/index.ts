@@ -10,6 +10,7 @@ const findAll = async (paginationOptions: IPaginationOptions) => {
     paginationHelpers.calculatePagination(paginationOptions);
 
   const response = await Legal.find()
+    .select(["-__v", "-steps"])
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder as "asc" | "desc" });
@@ -27,7 +28,7 @@ const findAll = async (paginationOptions: IPaginationOptions) => {
 };
 
 const findOne = async (_id: ObjectId) => {
-  const response = await Legal.findById(_id);
+  const response = await Legal.findById(_id).select(["-__v"]).populate("steps");
   return response;
 };
 
@@ -49,8 +50,6 @@ const updateOne = async (
 
 const deleteOne = async (id: ObjectId): Promise<ILegal | null> => {
   const result = await Legal.findByIdAndDelete(id);
-
-  console.log(result);
   return result;
 };
 

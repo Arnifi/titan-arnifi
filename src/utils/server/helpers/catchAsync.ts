@@ -4,8 +4,8 @@ import errorHandler from "../ErrorHandelars";
 const catchAsync =
   (handler: (req: Request, res: Response) => void) =>
   async (req: Request, res: Response) => {
-    await dbConnection();
     try {
+      await dbConnection();
       return await handler(req, res);
     } catch (error) {
       return errorHandler(error as Error);
