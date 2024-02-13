@@ -1,5 +1,5 @@
 import dbConnection from "../../../lib/dbConnection";
-import globalErrorHandler from "../ErrorHandelars/GlobalErrorHandelar";
+import errorHandler from "../ErrorHandelars";
 
 const catchAsync =
   (handler: (req: Request, res: Response) => void) =>
@@ -8,7 +8,7 @@ const catchAsync =
     try {
       return await handler(req, res);
     } catch (error) {
-      return globalErrorHandler(error as Error);
+      return errorHandler(error as Error);
     }
   };
 

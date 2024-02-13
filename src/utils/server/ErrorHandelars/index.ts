@@ -14,9 +14,9 @@ export interface IGenericErrorResponse {
   errorMessages: IGenericErrorMessage[];
 }
 
-const globalErrorHandler = (error: Error) => {
+const errorHandler = (error: Error) => {
   envConfig.environment === "development" &&
-    console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
+    console.log(`🐱‍🏍 errorHandler ~~`, error);
 
   let statusCode = 5000;
   let message = "Something went wrong!";
@@ -75,4 +75,4 @@ const globalErrorHandler = (error: Error) => {
   });
 };
 
-export default globalErrorHandler;
+export default errorHandler;
