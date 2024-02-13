@@ -12,7 +12,7 @@ export interface ILegal extends Document {
   country: string;
   type: LegalType;
   status: boolean;
-  downloaded: number;
+  downloadCount: number;
   metaData: string;
 }
 
@@ -42,7 +42,7 @@ const legalSchema: Schema<ILegal> = new Schema<ILegal>(
       type: Boolean,
       default: false,
     },
-    downloaded: {
+    downloadCount: {
       type: Number,
       default: 0,
     },

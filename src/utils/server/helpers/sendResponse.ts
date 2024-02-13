@@ -1,3 +1,4 @@
+import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 
 export interface IMeta {
@@ -18,9 +19,9 @@ const sendResponse = <T>(
   data: IApiReponse<T>
 ): Promise<NextResponse<IApiReponse<T>>> => {
   const responseData: IApiReponse<T> = {
-    statusCode: data.statusCode,
-    success: data.success,
-    message: data.message || null,
+    statusCode: !data.data ? httpStatus.NOT_FOUND : data.statusCode,
+    success: !data.data ? false : data.success,
+    message: !data.data ? "Data Not found" : data.message || null,
     meta: data.meta || null || undefined,
     data: data.data || null,
   };

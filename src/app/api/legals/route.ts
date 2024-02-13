@@ -10,7 +10,7 @@ import { LegalService } from "./legal.services";
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const paginationOptions = pick(req.url, paginationFields);
-    const response = await LegalService.find(paginationOptions);
+    const response = await LegalService.findAll(paginationOptions);
 
     return sendResponse<ILegal[]>({
       statusCode: httpStatus.OK,

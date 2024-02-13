@@ -3,8 +3,9 @@ import {
   paginationHelpers,
 } from "@/utils/server/helpers/paginationHelper";
 import Legal, { ILegal } from "../legal.models";
+import { ObjectId } from "mongoose";
 
-const find = async (paginationOptions: IPaginationOptions) => {
+const findAll = async (paginationOptions: IPaginationOptions) => {
   const { limit, page, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -24,12 +25,39 @@ const find = async (paginationOptions: IPaginationOptions) => {
     data: response,
   };
 };
+
+const findOne = async (_id: ObjectId) => {
+  const response = await Legal.findById(_id);
+  return response;
+};
+
 const create = async (data: ILegal): Promise<ILegal> => {
   const result = await Legal.create(data);
   return result;
 };
 
+const updateOne = async (
+  data: ILegal,
+  id: ObjectId
+): Promise<ILegal | null> => {
+  const result = await Legal.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
+const deleteOne = async (id: ObjectId): Promise<ILegal | null> => {
+  const result = await Legal.findByIdAndDelete(id);
+
+  console.log(result);
+  return result;
+};
+
 export const LegalService = {
-  find,
+  findAll,
+  findOne,
   create,
+  updateOne,
+  deleteOne,
 };
