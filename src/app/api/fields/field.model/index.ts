@@ -19,6 +19,7 @@ export interface IField extends Document {
   name: string;
   required: boolean;
   isSearchable: boolean;
+  options?: ObjectId[];
 }
 
 const fieldSchema: Schema<IField> = new Schema<IField>(
@@ -49,6 +50,11 @@ const fieldSchema: Schema<IField> = new Schema<IField>(
     isSearchable: {
       type: Boolean,
       default: false,
+    },
+    options: {
+      type: [Schema.Types.ObjectId],
+      ref: "Option",
+      default: [],
     },
   },
   {
