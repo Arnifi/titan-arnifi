@@ -8,7 +8,9 @@ const findAll = async (): Promise<IField[]> => {
 };
 
 const findOne = async (_id: ObjectId): Promise<IField | null> => {
-  const response = await Field.findById(_id).populate("dividerID");
+  const response = await Field.findById(_id).populate({
+    path: "options",
+  });
   return response;
 };
 
