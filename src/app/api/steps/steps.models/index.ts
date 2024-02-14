@@ -9,6 +9,7 @@ export interface IStep extends Document {
   legalID: ObjectId;
   type: StepType;
   label: string;
+  contents: Schema.Types.ObjectId[];
 }
 
 const stepSchema: Schema<IStep> = new Schema<IStep>(
@@ -29,6 +30,11 @@ const stepSchema: Schema<IStep> = new Schema<IStep>(
       type: String,
       required: true,
       trim: true,
+    },
+    contents: {
+      type: [Schema.Types.ObjectId],
+      ref: "Content",
+      default: [],
     },
   },
   {

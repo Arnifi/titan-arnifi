@@ -8,7 +8,7 @@ const findAll = async (): Promise<IStep[]> => {
 };
 
 const findOne = async (_id: ObjectId): Promise<IStep | null> => {
-  const response = await Step.findById(_id).populate("legalID");
+  const response = await Step.findById(_id).populate("contents");
   return response;
 };
 
