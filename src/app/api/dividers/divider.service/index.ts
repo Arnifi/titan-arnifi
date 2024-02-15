@@ -1,6 +1,6 @@
 import { ObjectId } from "mongoose";
-import Legal from "../../legals/legal.models";
 import Divider, { IDivider } from "../divider.model";
+import LegalDocument from "../../legal-documents/legalDocument.model";
 
 const findAll = async (): Promise<IDivider[]> => {
   const response = await Divider.find();
@@ -16,7 +16,7 @@ const create = async (data: IDivider): Promise<IDivider> => {
   const result = await Divider.create(data);
 
   if (result._id) {
-    await Legal.findByIdAndUpdate(result.stepID, {
+    await LegalDocument.findByIdAndUpdate(result.stepID, {
       $push: {
         steps: result._id,
       },
@@ -36,7 +36,7 @@ const updateOne = async (
   });
 
   if (result?._id) {
-    await Legal.findByIdAndUpdate(result.stepID, {
+    await LegalDocument.findByIdAndUpdate(result.stepID, {
       $pull: {
         steps: data.stepID,
       },
@@ -52,7 +52,7 @@ const deleteOne = async (id: ObjectId): Promise<IDivider | null> => {
   const result = await Divider.findByIdAndDelete(id);
 
   if (result?._id) {
-    await Legal.findByIdAndUpdate(result.stepID, {
+    await LegalDocument.findByIdAndUpdate(result.stepID, {
       $pull: {
         steps: result._id,
       },

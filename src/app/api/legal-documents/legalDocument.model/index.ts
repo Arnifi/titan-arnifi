@@ -7,7 +7,7 @@ export enum LegalType {
   Other = "other",
 }
 
-export interface ILegal extends Document {
+export interface ILegalDocument extends Document {
   title: string;
   country: string;
   type: LegalType;
@@ -17,7 +17,7 @@ export interface ILegal extends Document {
   steps: Schema.Types.ObjectId[];
 }
 
-const legalSchema: Schema<ILegal> = new Schema<ILegal>(
+const legalDocumentSchema: Schema<ILegalDocument> = new Schema<ILegalDocument>(
   {
     title: {
       type: String,
@@ -62,7 +62,8 @@ const legalSchema: Schema<ILegal> = new Schema<ILegal>(
   }
 );
 
-const Legal: Model<ILegal> =
-  (models.Legal as Model<ILegal>) || model<ILegal>("Legal", legalSchema);
+const LegalDocument: Model<ILegalDocument> =
+  (models.LegalDocument as Model<ILegalDocument>) ||
+  model<ILegalDocument>("LegalDocument", legalDocumentSchema);
 
-export default Legal;
+export default LegalDocument;

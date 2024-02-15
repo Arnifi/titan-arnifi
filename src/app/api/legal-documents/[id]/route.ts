@@ -1,7 +1,7 @@
 import catchAsync from "@/utils/server/helpers/catchAsync";
 import { NextResponse } from "next/server";
-import { LegalService } from "../legal.services";
-import { ILegal } from "../legal.models";
+import { LegalService } from "../legalDocument.service";
+import { ILegalDocument } from "../legalDocument.model";
 import httpStatus from "http-status";
 import { ObjectId } from "mongoose";
 import sendResponse from "@/utils/server/helpers/sendResponse";
@@ -11,10 +11,10 @@ export const GET = catchAsync(
     const id = req.url.split("/").pop();
     const response = await LegalService.findOne(id as unknown as ObjectId);
 
-    return await sendResponse<ILegal>({
+    return await sendResponse<ILegalDocument>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Get Successfully",
+      message: "Legal Documents Get Successfully",
       data: response,
     });
   }
@@ -29,10 +29,10 @@ export const PATCH = catchAsync(
       id as unknown as ObjectId
     );
 
-    return await sendResponse<ILegal | null>({
+    return await sendResponse<ILegalDocument | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Update Successfully",
+      message: "Legal Document Update Successfully",
       data: response,
     });
   }
@@ -43,10 +43,10 @@ export const DELETE = catchAsync(
     const id = req.url.split("/").pop();
     const response = await LegalService.deleteOne(id as unknown as ObjectId);
 
-    return await sendResponse<ILegal | null>({
+    return await sendResponse<ILegalDocument | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Delete Successfully",
+      message: "Legal Document Delete Successfully",
       data: response,
     });
   }
