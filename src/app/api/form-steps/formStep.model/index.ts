@@ -5,14 +5,15 @@ export enum StepType {
   Multiple = "multiple",
 }
 
-export interface IStep extends Document {
+export interface IFormStep extends Document {
   legalID: ObjectId;
   type: StepType;
   label: string;
-  contents: Schema.Types.ObjectId[];
+  heading: string;
+  description: string;
 }
 
-const stepSchema: Schema<IStep> = new Schema<IStep>(
+const formStepSchema: Schema<IFormStep> = new Schema<IFormStep>(
   {
     legalID: {
       type: Schema.Types.ObjectId,
@@ -31,10 +32,17 @@ const stepSchema: Schema<IStep> = new Schema<IStep>(
       required: true,
       trim: true,
     },
-    contents: {
-      type: [Schema.Types.ObjectId],
-      ref: "Content",
-      default: [],
+
+    heading: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      default: "",
+      trim: true,
     },
   },
   {
@@ -42,7 +50,8 @@ const stepSchema: Schema<IStep> = new Schema<IStep>(
   }
 );
 
-const Step: Model<IStep> =
-  (models.Step as Model<IStep>) || model<IStep>("Step", stepSchema);
+const FormStep: Model<IFormStep> =
+  (models.FormStep as Model<IFormStep>) ||
+  model<IFormStep>("FormStep", formStepSchema);
 
-export default Step;
+export default FormStep;

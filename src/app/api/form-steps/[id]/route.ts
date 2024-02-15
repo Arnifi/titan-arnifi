@@ -3,18 +3,18 @@ import { NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { ObjectId } from "mongoose";
 import sendResponse from "@/utils/server/helpers/sendResponse";
-import { ContentService } from "../content.service";
-import { IContent } from "../content.model";
+import { FormStepService } from "../formStep.service";
+import { IFormStep } from "../formStep.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const response = await ContentService.findOne(id as unknown as ObjectId);
+    const response = await FormStepService.findOne(id as unknown as ObjectId);
 
-    return await sendResponse<IContent>({
+    return await sendResponse<IFormStep>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Content Get Successfully",
+      message: "Form Step Get Successfully",
       data: response,
     });
   }
@@ -24,15 +24,15 @@ export const PATCH = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
     const data = await req.json();
-    const response = await ContentService.updateOne(
+    const response = await FormStepService.updateOne(
       data,
       id as unknown as ObjectId
     );
 
-    return await sendResponse<IContent | null>({
+    return await sendResponse<IFormStep | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Content Update Successfully",
+      message: "Form Step Update Successfully",
       data: response,
     });
   }
@@ -41,12 +41,12 @@ export const PATCH = catchAsync(
 export const DELETE = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const response = await ContentService.deleteOne(id as unknown as ObjectId);
+    const response = await FormStepService.deleteOne(id as unknown as ObjectId);
 
-    return await sendResponse<IContent | null>({
+    return await sendResponse<IFormStep | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Content Delete Successfully",
+      message: "Form Step Delete Successfully",
       data: response,
     });
   }

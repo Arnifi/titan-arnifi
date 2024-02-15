@@ -2,17 +2,17 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
-import { StepService } from "./steps.services";
-import { IStep } from "./steps.models";
+import { FormStepService } from "./formStep.service";
+import { IFormStep } from "./formStep.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const response = await StepService.findAll();
+    const response = await FormStepService.findAll();
 
-    return sendResponse<IStep[]>({
+    return sendResponse<IFormStep[]>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Steps Get Successfully",
+      message: "Form Steps Get Successfully",
       data: response,
     });
   }
@@ -21,12 +21,12 @@ export const GET = catchAsync(
 export const POST = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const data = await req.json();
-    const response = await StepService.create(data);
+    const response = await FormStepService.create(data);
 
-    return await sendResponse<IStep>({
+    return await sendResponse<IFormStep>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Step Create Successfully",
+      message: "Form Step Create Successfully",
       data: response,
     });
   }
