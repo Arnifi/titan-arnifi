@@ -3,13 +3,13 @@ import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { FieldBlockService } from "./fieldsBlock.service";
-import { IFieldBlock } from "./fieldsBlock.model";
+import { IFieldsBlock } from "./fieldsBlock.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const response = await FieldBlockService.findAll();
 
-    return sendResponse<IFieldBlock[]>({
+    return sendResponse<IFieldsBlock[]>({
       statusCode: httpStatus.OK,
       success: true,
       message: "Fields Blocks Get Successfully",
@@ -23,7 +23,7 @@ export const POST = catchAsync(
     const data = await req.json();
     const response = await FieldBlockService.create(data);
 
-    return await sendResponse<IFieldBlock>({
+    return await sendResponse<IFieldsBlock>({
       statusCode: httpStatus.OK,
       success: true,
       message: "Fields Block Create Successfully",

@@ -1,14 +1,14 @@
 import { ObjectId } from "mongoose";
-import FieldBlock, { IFieldBlock } from "../fieldsBlock.model";
+import FieldsBlock, { IFieldsBlock } from "../fieldsBlock.model";
 import FormStep from "../../form-steps/formStep.model";
 
-const findAll = async (): Promise<IFieldBlock[]> => {
-  const response = await FieldBlock.find().sort({ createdAt: 1 });
+const findAll = async (): Promise<IFieldsBlock[]> => {
+  const response = await FieldsBlock.find().sort({ createdAt: 1 });
   return response;
 };
 
-const findOne = async (_id: ObjectId): Promise<IFieldBlock | null> => {
-  const response = await FieldBlock.findById(_id).populate({
+const findOne = async (_id: ObjectId): Promise<IFieldsBlock | null> => {
+  const response = await FieldsBlock.findById(_id).populate({
     path: "stepID",
     select: ["_id", "label"],
   });
@@ -16,8 +16,8 @@ const findOne = async (_id: ObjectId): Promise<IFieldBlock | null> => {
   return response;
 };
 
-const create = async (data: IFieldBlock): Promise<IFieldBlock> => {
-  const result = await FieldBlock.create(data);
+const create = async (data: IFieldsBlock): Promise<IFieldsBlock> => {
+  const result = await FieldsBlock.create(data);
 
   if (result._id) {
     await FormStep.findByIdAndUpdate(result.stepID, {
@@ -31,11 +31,11 @@ const create = async (data: IFieldBlock): Promise<IFieldBlock> => {
 };
 
 const updateOne = async (
-  data: IFieldBlock,
+  data: IFieldsBlock,
   id: ObjectId
-): Promise<IFieldBlock | null> => {
-  const fieldsBlock = await FieldBlock.findById(id);
-  const result = await FieldBlock.findByIdAndUpdate(id, data, {
+): Promise<IFieldsBlock | null> => {
+  const fieldsBlock = await FieldsBlock.findById(id);
+  const result = await FieldsBlock.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
   });
@@ -53,8 +53,8 @@ const updateOne = async (
   return result;
 };
 
-const deleteOne = async (id: ObjectId): Promise<IFieldBlock | null> => {
-  const result = await FieldBlock.findByIdAndDelete(id);
+const deleteOne = async (id: ObjectId): Promise<IFieldsBlock | null> => {
+  const result = await FieldsBlock.findByIdAndDelete(id);
 
   if (result?._id) {
     await FormStep.findByIdAndUpdate(result.stepID, {

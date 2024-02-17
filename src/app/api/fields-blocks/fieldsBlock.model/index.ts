@@ -1,13 +1,13 @@
 import { Document, model, Model, models, ObjectId, Schema } from "mongoose";
 
-export interface IFieldBlock extends Document {
+export interface IFieldsBlock extends Document {
   stepID: ObjectId;
   label: string;
   isShow: boolean;
   fields: ObjectId[];
 }
 
-const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
+const fieldBlockSchema: Schema<IFieldsBlock> = new Schema<IFieldsBlock>(
   {
     stepID: {
       type: Schema.Types.ObjectId,
@@ -40,8 +40,8 @@ const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
   }
 );
 
-const FieldBlock: Model<IFieldBlock> =
-  (models.Fields_Block as Model<IFieldBlock>) ||
-  model<IFieldBlock>("Fields_Block", fieldBlockSchema);
+const FieldsBlock: Model<IFieldsBlock> =
+  (models.Fields_Block as Model<IFieldsBlock>) ||
+  model<IFieldsBlock>("Fields_Block", fieldBlockSchema);
 
-export default FieldBlock;
+export default FieldsBlock;
