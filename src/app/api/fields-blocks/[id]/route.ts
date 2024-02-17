@@ -3,18 +3,18 @@ import { NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { ObjectId } from "mongoose";
 import sendResponse from "@/utils/server/helpers/sendResponse";
-import { IDivider } from "../divider.model";
-import { DividerService } from "../divider.service";
+import { FieldBlockService } from "../fieldsBlock.service";
+import { IFieldBlock } from "../fieldsBlock.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const response = await DividerService.findOne(id as unknown as ObjectId);
+    const response = await FieldBlockService.findOne(id as unknown as ObjectId);
 
-    return await sendResponse<IDivider>({
+    return await sendResponse<IFieldBlock>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Divider Get Successfully",
+      message: "Fields Block Get Successfully",
       data: response,
     });
   }
@@ -24,15 +24,15 @@ export const PATCH = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
     const data = await req.json();
-    const response = await DividerService.updateOne(
+    const response = await FieldBlockService.updateOne(
       data,
       id as unknown as ObjectId
     );
 
-    return await sendResponse<IDivider | null>({
+    return await sendResponse<IFieldBlock | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Divider Update Successfully",
+      message: "Fields Block Update Successfully",
       data: response,
     });
   }
@@ -41,12 +41,14 @@ export const PATCH = catchAsync(
 export const DELETE = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const response = await DividerService.deleteOne(id as unknown as ObjectId);
+    const response = await FieldBlockService.deleteOne(
+      id as unknown as ObjectId
+    );
 
-    return await sendResponse<IDivider | null>({
+    return await sendResponse<IFieldBlock | null>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Divider Delete Successfully",
+      message: "Fields Block Delete Successfully",
       data: response,
     });
   }

@@ -2,17 +2,17 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
-import { DividerService } from "./divider.service";
-import { IDivider } from "./divider.model";
+import { FieldBlockService } from "./fieldsBlock.service";
+import { IFieldBlock } from "./fieldsBlock.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const response = await DividerService.findAll();
+    const response = await FieldBlockService.findAll();
 
-    return sendResponse<IDivider[]>({
+    return sendResponse<IFieldBlock[]>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Steps Dividers Get Successfully",
+      message: "Fields Blocks Get Successfully",
       data: response,
     });
   }
@@ -21,12 +21,12 @@ export const GET = catchAsync(
 export const POST = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const data = await req.json();
-    const response = await DividerService.create(data);
+    const response = await FieldBlockService.create(data);
 
-    return await sendResponse<IDivider>({
+    return await sendResponse<IFieldBlock>({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Step Divider Create Successfully",
+      message: "Fields Block Create Successfully",
       data: response,
     });
   }

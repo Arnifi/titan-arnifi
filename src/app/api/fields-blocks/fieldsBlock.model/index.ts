@@ -1,13 +1,13 @@
 import { Document, model, Model, models, ObjectId, Schema } from "mongoose";
 
-export interface IDivider extends Document {
+export interface IFieldBlock extends Document {
   stepID: ObjectId;
   label: string;
   isShow: boolean;
   fields: ObjectId[];
 }
 
-const dividerSchema: Schema<IDivider> = new Schema<IDivider>(
+const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
   {
     stepID: {
       type: Schema.Types.ObjectId,
@@ -40,8 +40,8 @@ const dividerSchema: Schema<IDivider> = new Schema<IDivider>(
   }
 );
 
-const Divider: Model<IDivider> =
-  (models.Divider as Model<IDivider>) ||
-  model<IDivider>("Divider", dividerSchema);
+const FieldBlock: Model<IFieldBlock> =
+  (models.FieldBlock as Model<IFieldBlock>) ||
+  model<IFieldBlock>("FieldBlock", fieldBlockSchema);
 
-export default Divider;
+export default FieldBlock;
