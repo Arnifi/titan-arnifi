@@ -11,6 +11,11 @@ export enum IFieldType {
   FILE = "file",
 }
 
+export interface IOption {
+  label: string;
+  value: string;
+}
+
 export interface IInputField extends Document {
   blockID: ObjectId;
   label: string;
@@ -20,7 +25,7 @@ export interface IInputField extends Document {
   required: boolean;
   isSearchable: boolean;
   tooltip?: string;
-  options?: ObjectId[];
+  options?: IOption[];
   width: number;
 }
 
@@ -55,11 +60,21 @@ const inputFieldSchema: Schema<IInputField> = new Schema<IInputField>(
       default: false,
     },
 
-    options: {
-      type: [Schema.Types.ObjectId],
-      ref: "Option",
-      default: [],
-    },
+    options: [
+      {
+        label: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        value: {
+          type: String,
+          required: true,
+          trim: true,
+          loadClass: true,
+        },
+      },
+    ],
 
     tooltip: {
       type: String,
