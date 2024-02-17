@@ -63,7 +63,7 @@ const legalDocumentSchema: Schema<ILegalDocument> = new Schema<ILegalDocument>(
 );
 
 const LegalDocument: Model<ILegalDocument> =
-  (models.LegalDocument as Model<ILegalDocument>) ||
-  model<ILegalDocument>("LegalDocument", legalDocumentSchema);
+  (models.Legal_Document as Model<ILegalDocument>) ||
+  model<ILegalDocument>("Legal_Document", legalDocumentSchema);
 
 export default LegalDocument;

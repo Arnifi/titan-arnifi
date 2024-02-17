@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 import FormStep, { IFormStep } from "../formStep.model";
 
 const findAll = async (): Promise<IFormStep[]> => {
-  const response = await FormStep.find().sort({ createdAt: -1 });
+  const response = await FormStep.find().sort({ createdAt: 1 });
   return response;
 };
 

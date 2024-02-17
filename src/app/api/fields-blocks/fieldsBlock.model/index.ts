@@ -41,7 +41,7 @@ const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
 );
 
 const FieldBlock: Model<IFieldBlock> =
-  (models.FieldBlock as Model<IFieldBlock>) ||
-  model<IFieldBlock>("FieldBlock", fieldBlockSchema);
+  (models.Field_Block as Model<IFieldBlock>) ||
+  model<IFieldBlock>("Field_Block", fieldBlockSchema);
 
 export default FieldBlock;

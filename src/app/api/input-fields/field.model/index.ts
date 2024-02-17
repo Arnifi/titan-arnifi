@@ -11,28 +11,30 @@ export enum IFieldType {
   FILE = "file",
 }
 
-export interface IField extends Document {
-  dividerID: ObjectId;
+export interface IInputField extends Document {
+  blockID: ObjectId;
   label: string;
   placeholder: string;
   type: IFieldType;
   name: string;
   required: boolean;
   isSearchable: boolean;
+  tooltip?: string;
   options?: ObjectId[];
+  width: number;
 }
 
-const fieldSchema: Schema<IField> = new Schema<IField>(
+const inputFieldSchema: Schema<IInputField> = new Schema<IInputField>(
   {
-    dividerID: {
+    blockID: {
       type: Schema.Types.ObjectId,
-      ref: "Divider",
+      ref: "FieldBlock",
       required: true,
     },
 
     label: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
 
@@ -47,14 +49,29 @@ const fieldSchema: Schema<IField> = new Schema<IField>(
       enum: Object.values(IFieldType),
       required: true,
     },
+
     isSearchable: {
       type: Boolean,
       default: false,
     },
+
     options: {
       type: [Schema.Types.ObjectId],
       ref: "Option",
       default: [],
+    },
+
+    tooltip: {
+      type: String,
+      default: "",
+    },
+
+    width: {
+      type: Number,
+      default: 4,
+      required: true,
+      max: 12,
+      min: 1,
     },
   },
   {
@@ -62,7 +79,8 @@ const fieldSchema: Schema<IField> = new Schema<IField>(
   }
 );
 
-const Field: Model<IField> =
-  (models.Field as Model<IField>) || model<IField>("Field", fieldSchema);
+const InputField: Model<IInputField> =
+  (models.Input_Field as Model<IInputField>) ||
+  model<IInputField>("Input_Field", inputFieldSchema);
 
-export default Field;
+export default InputField;

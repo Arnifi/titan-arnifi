@@ -51,7 +51,7 @@ const formStepSchema: Schema<IFormStep> = new Schema<IFormStep>(
 );
 
 const FormStep: Model<IFormStep> =
-  (models.FormStep as Model<IFormStep>) ||
-  model<IFormStep>("FormStep", formStepSchema);
+  (models.Form_Step as Model<IFormStep>) ||
+  model<IFormStep>("Form_Step", formStepSchema);
 
 export default FormStep;
