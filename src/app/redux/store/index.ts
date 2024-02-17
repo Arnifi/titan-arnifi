@@ -1,6 +1,6 @@
 import envConfig from "@/Configs/envConfig";
 import { configureStore } from "@reduxjs/toolkit";
-import { baseApi } from "../features/baseApi";
+import baseApi from "../features/baseApi";
 
 export const store = configureStore({
   reducer: {
@@ -11,3 +11,6 @@ export const store = configureStore({
 
   devTools: envConfig.environment !== "production",
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
