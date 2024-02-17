@@ -10,6 +10,7 @@ export interface IFormStep extends Document {
   type: StepType;
   label: string;
   heading: string;
+  fieldsBlocks: Schema.Types.ObjectId[];
   description: string;
 }
 
@@ -43,6 +44,12 @@ const formStepSchema: Schema<IFormStep> = new Schema<IFormStep>(
       type: String,
       default: "",
       trim: true,
+    },
+
+    fieldsBlocks: {
+      type: [Schema.Types.ObjectId],
+      ref: "Fields_Block",
+      default: [],
     },
   },
   {

@@ -8,10 +8,16 @@ const findAll = async (): Promise<IFormStep[]> => {
 };
 
 const findOne = async (_id: ObjectId): Promise<IFormStep | null> => {
-  const response = await FormStep.findById(_id).populate({
-    path: "legalID",
-    select: ["_id", "title", "type"],
-  });
+  const response = await FormStep.findById(_id).populate([
+    {
+      path: "legalID",
+      select: ["_id", "title", "type"],
+    },
+    {
+      path: "fieldsBlocks",
+      select: ["-__v", "-createdAt", "-updatedAt", "-stepID"],
+    },
+  ]);
   return response;
 };
 

@@ -27,9 +27,16 @@ const findAll = async (paginationOptions: IPaginationOptions) => {
 };
 
 const findOne = async (_id: ObjectId) => {
-  const response = await LegalDocument.findById(_id).select(["-__v"]).populate({
-    path: "steps",
-  });
+  const response = await LegalDocument.findById(_id)
+    .select(["-__v"])
+    .populate({
+      path: "steps",
+      select: ["-__v", "-legalID", "-createdAt", "-updatedAt"],
+      populate: {
+        path: "fieldsBlocks",
+        select: ["-__v", "-createdAt", "-updatedAt"],
+      },
+    });
 
   return response;
 };

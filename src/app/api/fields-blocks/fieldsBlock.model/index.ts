@@ -11,7 +11,7 @@ const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
   {
     stepID: {
       type: Schema.Types.ObjectId,
-      ref: "Step",
+      ref: "Form_Step",
       required: true,
     },
 
@@ -29,7 +29,7 @@ const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
     fields: [
       {
         type: [Schema.Types.ObjectId],
-        ref: "Field",
+        ref: "Input_Field",
         required: true,
         default: [],
       },
@@ -41,7 +41,7 @@ const fieldBlockSchema: Schema<IFieldBlock> = new Schema<IFieldBlock>(
 );
 
 const FieldBlock: Model<IFieldBlock> =
-  (models.Field_Block as Model<IFieldBlock>) ||
-  model<IFieldBlock>("Field_Block", fieldBlockSchema);
+  (models.Fields_Block as Model<IFieldBlock>) ||
+  model<IFieldBlock>("Fields_Block", fieldBlockSchema);
 
 export default FieldBlock;
