@@ -17,7 +17,7 @@ const formStepSchema: Schema<IFormStep> = new Schema<IFormStep>(
   {
     legalID: {
       type: Schema.Types.ObjectId,
-      ref: "Legal",
+      ref: "Legal_Document",
       required: true,
     },
 

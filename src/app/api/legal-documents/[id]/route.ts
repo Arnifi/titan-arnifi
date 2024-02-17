@@ -5,6 +5,7 @@ import { ILegalDocument } from "../legalDocument.model";
 import httpStatus from "http-status";
 import { ObjectId } from "mongoose";
 import sendResponse from "@/utils/server/helpers/sendResponse";
+import ApiError from "@/utils/server/ErrorHandelars/ApiError";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
@@ -41,6 +42,16 @@ export const PATCH = catchAsync(
 export const DELETE = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
+
+    const deletedDoc = await LegalService.findOne(id as unknown as ObjectId);
+
+    if (deletedDoc?.steps?.length) {
+      throw new ApiError(
+        httpStatus.NOT_EXTENDED,
+        "Can't delete legal document with steps"
+      );
+    }
+
     const response = await LegalService.deleteOne(id as unknown as ObjectId);
 
     return await sendResponse<ILegalDocument | null>({

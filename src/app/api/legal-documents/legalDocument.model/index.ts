@@ -53,7 +53,7 @@ const legalDocumentSchema: Schema<ILegalDocument> = new Schema<ILegalDocument>(
     },
     steps: {
       type: [Schema.Types.ObjectId],
-      ref: "Step",
+      ref: "Form_Step",
       default: [],
     },
   },
