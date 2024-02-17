@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import httpStatus from "http-status";
 import { ObjectId } from "mongoose";
 import sendResponse from "@/utils/server/helpers/sendResponse";
-import { InputFieldService } from "../field.service";
-import { IInputField } from "../field.model";
+import { InputFieldService } from "../inputField.service";
+import { IInputField } from "../inputField.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {

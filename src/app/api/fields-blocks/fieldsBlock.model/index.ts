@@ -26,14 +26,12 @@ const fieldBlockSchema: Schema<IFieldsBlock> = new Schema<IFieldsBlock>(
       default: false,
     },
 
-    fields: [
-      {
-        type: [Schema.Types.ObjectId],
-        ref: "Input_Field",
-        required: true,
-        default: [],
-      },
-    ],
+    fields: {
+      type: [Schema.Types.ObjectId],
+      ref: "Input_Field",
+      required: true,
+      default: [],
+    },
   },
   {
     timestamps: true,

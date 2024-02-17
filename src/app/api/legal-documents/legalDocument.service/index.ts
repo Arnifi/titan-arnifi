@@ -35,6 +35,10 @@ const findOne = async (_id: ObjectId) => {
       populate: {
         path: "fieldsBlocks",
         select: ["-__v", "-createdAt", "-updatedAt"],
+        populate: {
+          path: "fields",
+          select: ["-__v", "-createdAt", "-updatedAt"],
+        },
       },
     });
 

@@ -8,10 +8,16 @@ const findAll = async (): Promise<IFieldsBlock[]> => {
 };
 
 const findOne = async (_id: ObjectId): Promise<IFieldsBlock | null> => {
-  const response = await FieldsBlock.findById(_id).populate({
-    path: "stepID",
-    select: ["_id", "label"],
-  });
+  const response = await FieldsBlock.findById(_id).populate([
+    {
+      path: "stepID",
+      select: ["_id", "label"],
+    },
+    {
+      path: "fields",
+      select: ["-__v", "-createdAt", "-updatedAt"],
+    },
+  ]);
 
   return response;
 };

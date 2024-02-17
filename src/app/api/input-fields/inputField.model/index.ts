@@ -33,7 +33,7 @@ const inputFieldSchema: Schema<IInputField> = new Schema<IInputField>(
   {
     blockID: {
       type: Schema.Types.ObjectId,
-      ref: "FieldBlock",
+      ref: "Fields_Block",
       required: true,
     },
 
