@@ -13,7 +13,7 @@ export const GET = catchAsync(
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Form Steps Get Successfully",
+      message: "Input Fields Get Successfully",
       data: response,
     });
   }
@@ -25,7 +25,7 @@ export const POST = catchAsync(
     const isExists = await InputFieldService.isExists(data);
 
     if (isExists?.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Already Exists");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Input Field Already Exists");
     }
 
     const response = await InputFieldService.create(data);
@@ -33,7 +33,7 @@ export const POST = catchAsync(
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Form Step Create Successfully",
+      message: "Input Field Create Successfully",
       data: response,
     });
   }
