@@ -51,6 +51,10 @@ export const DELETE = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
     }
 
+    if (isExists?.steps?.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Has Steps");
+    }
+
     await LegalDocumentService.deleteOne(id as string);
 
     return await sendResponse({

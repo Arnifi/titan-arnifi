@@ -31,9 +31,6 @@ export const PATCH = catchAsync(
     if (!isExists?.id) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
-
-    console.log(isExists);
-
     const response = await FormStepService.updateOne(id as string, data);
 
     return await sendResponse({
