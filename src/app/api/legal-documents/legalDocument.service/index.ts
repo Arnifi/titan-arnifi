@@ -3,6 +3,7 @@ import Legal_Documents, { ILegalDocument } from "../legalDocument.model";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
 import httpStatus from "http-status";
 import Form_Steps from "../../form-steps/formStep.model";
+import Form_Fields from "../../form-fields/formField.model";
 
 const findAll = async (): Promise<ObjectType> => {
   const response = await Legal_Documents.scan().exec();
@@ -20,6 +21,15 @@ const findOne = async (id: string) => {
 
   const stepsPromise = response?.steps?.map(async (stepID: string) => {
     const step = await Form_Steps.get(stepID);
+
+    const fieldsPromise = step?.fields?.map(async (fieldID: string) => {
+      return await Form_Fields.get(fieldID);
+    });
+
+    step.fields = (await Promise.all(fieldsPromise)).sort((a, b) => {
+      return a.createdAt < b.createdAt ? -1 : 1;
+    });
+
     return step;
   });
 

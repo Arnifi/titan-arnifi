@@ -5,6 +5,7 @@ import sendResponse from "@/utils/server/helpers/sendResponse";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
 import { FormFieldService } from "../formField.service";
 import { IFormField } from "../formField.model";
+import { IFormStep } from "../../form-steps/formStep.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
@@ -30,8 +31,8 @@ export const PATCH = catchAsync(
     if (!isExists?.id) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Input Field Not Found");
     }
-    const response = await FormFieldService.updateOne(id as string, data);
 
+    const response = await FormFieldService.updateOne(id as string, data);
     return await sendResponse({
       statusCode: httpStatus.OK,
       success: true,
@@ -51,7 +52,7 @@ export const DELETE = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
 
-    await FormFieldService.deleteOne(id as string);
+    await FormFieldService.deleteOne(id as string, isExists.step as IFormStep);
 
     return await sendResponse({
       statusCode: httpStatus.OK,
