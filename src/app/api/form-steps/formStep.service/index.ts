@@ -1,5 +1,5 @@
 import { ObjectType } from "dynamoose/dist/General";
-import Form_Steps, { IFormStep } from "../legalDocument.model";
+import Form_Steps, { IFormStep } from "../formStep.model";
 
 const findAll = async (): Promise<ObjectType> => {
   const response = await Form_Steps.scan().exec();

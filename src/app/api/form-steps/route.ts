@@ -2,9 +2,9 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
-import { FormStepService } from "./legalDocument.service";
+import { FormStepService } from "./formStep.service";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
-import { IFormStep } from "./legalDocument.model";
+import { IFormStep } from "./formStep.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
