@@ -28,10 +28,17 @@ const deleteOne = async (id: string) => {
   return result;
 };
 
+const isExists = async (data: ILegalDocument) => {
+  const { title, country, type } = data;
+  const result = await Legal_Documents.scan({ title, country, type }).exec();
+  return result;
+};
+
 export const LegalDocumentService = {
   findAll,
   findOne,
   create,
   updateOne,
   deleteOne,
+  isExists,
 };
