@@ -18,7 +18,7 @@ export interface IOption {
   value: string;
 }
 
-export interface IInputField extends Document {
+export interface IFormField extends Document {
   id: string;
   step: string | IFormStep;
   label: string;
@@ -32,7 +32,7 @@ export interface IInputField extends Document {
   width: number;
 }
 
-export const inputFieldsSchema = new dynamoose.Schema(
+export const formFieldsSchema = new dynamoose.Schema(
   {
     id: {
       type: String,
@@ -87,6 +87,6 @@ export const inputFieldsSchema = new dynamoose.Schema(
   }
 );
 
-const Input_Fields = dynamoose.model("Input_Fields", inputFieldsSchema);
+const Form_Fields = dynamoose.model("Form_Fields", formFieldsSchema);
 
-export default Input_Fields;
+export default Form_Fields;
