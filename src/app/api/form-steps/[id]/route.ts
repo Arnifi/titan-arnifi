@@ -5,6 +5,7 @@ import sendResponse from "@/utils/server/helpers/sendResponse";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
 import { FormStepService } from "../formStep.service";
 import { IFormStep } from "../formStep.model";
+import { ILegalDocument } from "../../legal-documents/legalDocument.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
@@ -31,6 +32,8 @@ export const PATCH = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
 
+    console.log(isExists);
+
     const response = await FormStepService.updateOne(id as string, data);
 
     return await sendResponse({
@@ -47,11 +50,19 @@ export const DELETE = catchAsync(
     const id = req.url.split("/").pop();
 
     const isExists = await FormStepService.findOne(id as string);
+
     if (!isExists?.id) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
 
-    await FormStepService.deleteOne(id as string);
+    if (isExists?.fields?.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Has Fields");
+    }
+
+    await FormStepService.deleteOne(
+      id as string,
+      isExists?.legalDocument as ILegalDocument
+    );
 
     return await sendResponse({
       statusCode: httpStatus.OK,

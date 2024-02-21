@@ -2,7 +2,9 @@ import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
 import { ModelType } from "dynamoose/dist/General";
 import { AnyItem } from "dynamoose/dist/Item";
-import Legal_Documents from "../../legal-documents/legalDocument.model";
+import Legal_Documents, {
+  ILegalDocument,
+} from "../../legal-documents/legalDocument.model";
 
 export enum StepType {
   SINGLE = "single",
@@ -11,11 +13,12 @@ export enum StepType {
 
 export interface IFormStep extends Document {
   id: string;
-  legalDocument: string;
+  legalDocument: string | ILegalDocument;
   type: StepType;
   label: string;
   heading: string;
   description: string;
+  fields: string[];
 }
 
 export const formStepSchema = new dynamoose.Schema(

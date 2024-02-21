@@ -23,6 +23,9 @@ export const POST = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const data: IFormStep = await req.json();
     const isExists = await FormStepService.isExists(data);
+
+    console.log(isExists, "isExists");
+
     if (isExists?.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Already Exists");
     }
