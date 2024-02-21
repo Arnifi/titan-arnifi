@@ -1,19 +1,18 @@
-import mongoose from "mongoose";
 import envConfig from "../Configs/envConfig";
-
-const uri: string | undefined =
-  envConfig.environment !== "production"
-    ? "mongodb://127.0.0.1:27017/legal_drafter"
-    : envConfig.db_uri;
+import dynamoose from "dynamoose";
 
 const dbConnection = async () => {
   console.log("Initializing database connection...");
+  console.log(envConfig);
   try {
-    if (!uri) {
-      throw new Error("Database URI is not defined");
-    }
-
-    await mongoose.connect(uri as string);
+    const ddb = new dynamoose.aws.ddb.DynamoDB({
+      credentials: {
+        accessKeyId: envConfig.accessKeyId,
+        secretAccessKey: envConfig.secretAccessKey,
+      },
+      region: envConfig.region,
+    });
+    dynamoose.aws.ddb.set(ddb);
     console.log("Database connection established successfully");
   } catch (error) {
     console.error("Failed to connect to the database:", error);
