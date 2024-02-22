@@ -3,14 +3,14 @@ import { v4 as uuidv4 } from "uuid";
 import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
 
 export enum IFieldType {
-  TEXT = "text",
-  NUMBER = "number",
-  EMAIL = "email",
-  DATE = "date",
-  CHECKBOX = "checkbox",
-  RADIO = "radio",
-  SELECT = "select",
-  FILE = "file",
+  TEXT = "Text",
+  NUMBER = "Number",
+  EMAIL = "Email",
+  DATE = "Date",
+  CHECKBOX = "Checkbox",
+  RADIO = "Radio",
+  SELECT = "Select",
+  FILE = "File",
 }
 
 export interface IOption {
@@ -26,6 +26,7 @@ export interface IFormField extends Document {
   type: IFieldType;
   name: string;
   required: boolean;
+  errorMessage?: string;
   isSearchable?: boolean;
   tooltip: string;
   options?: IOption[];
@@ -62,6 +63,10 @@ export const formFieldsSchema = new dynamoose.Schema(
     required: {
       type: Boolean,
       default: false,
+    },
+    errorMessage: {
+      type: String,
+      default: "",
     },
     isSearchable: {
       type: Boolean,

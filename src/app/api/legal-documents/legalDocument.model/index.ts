@@ -2,10 +2,10 @@ import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
 
 export enum LegalType {
-  Will = "will",
-  Rental = "rental",
-  Agreement = "agreement",
-  Other = "other",
+  Will = "Will",
+  Rental = "Rental",
+  Agreement = "Agreement",
+  Other = "Other",
 }
 
 export interface ILegalDocument extends Document {

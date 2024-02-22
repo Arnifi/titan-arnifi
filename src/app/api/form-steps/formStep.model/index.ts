@@ -7,8 +7,8 @@ import Legal_Documents, {
 } from "../../legal-documents/legalDocument.model";
 
 export enum StepType {
-  SINGLE = "single",
-  MULTIPLE = "multiple",
+  SINGLE = "Single",
+  MULTIPLE = "Multiple",
 }
 
 export interface IFormStep extends Document {
