@@ -8,6 +8,18 @@ export enum LegalType {
   Other = "other",
 }
 
+export interface ILegalsFilters {
+  [key: string]: string | undefined;
+}
+
+// export interface ILegalsFilters {
+//   search?: string;
+//   type?: string;
+//   country?: string;
+// }
+
+export const legalsFilterableFields: string[] = ["search", "type", "country"];
+
 export interface ILegalDocument extends Document {
   id: string;
   title: string;

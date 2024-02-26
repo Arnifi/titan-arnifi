@@ -1,8 +1,23 @@
 import { ObjectType } from "dynamoose/dist/General";
-import Legal_Documents, { ILegalDocument } from "../legalDocument.model";
+import Legal_Documents, {
+  ILegalDocument,
+  ILegalsFilters,
+} from "../legalDocument.model";
 
-const findAll = async (): Promise<ObjectType> => {
-  const response = await Legal_Documents.scan().exec();
+const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
+  const { search, ...filterData } = filtersOptions;
+
+  const conditions: ILegalsFilters = {};
+  Object.keys(filterData).map((key) => {
+    if (filterData[key]) {
+      conditions[key] = filterData[key];
+    }
+  });
+
+  const response = await Legal_Documents.scan(conditions)
+    .where("title")
+    .contains(search || "")
+    .exec();
   return (await response).sort((a, b) => {
     return a.createdAt > b.createdAt ? -1 : 1;
   });
@@ -14,6 +29,7 @@ const findOne = async (id: string) => {
 };
 
 const create = async (data: ILegalDocument) => {
+  data.title = data.title.toLowerCase();
   const result = await Legal_Documents.create(data);
   return result;
 };
