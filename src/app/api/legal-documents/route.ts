@@ -3,12 +3,22 @@ import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { LegalDocumentService } from "./legalDocument.service";
-import { ILegalDocument } from "./legalDocument.model";
+import {
+  ILegalDocument,
+  ILegalsFilters,
+  legalsFilterableFields,
+} from "./legalDocument.model";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import pick from "@/utils/server/Pick";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const response = await LegalDocumentService.findAll();
+    const filtersOptions: ILegalsFilters = pick(
+      req.url,
+      legalsFilterableFields
+    );
+
+    const response = await LegalDocumentService.findAll(filtersOptions);
 
     return sendResponse({
       statusCode: httpStatus.OK,

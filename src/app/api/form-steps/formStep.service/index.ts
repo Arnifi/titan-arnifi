@@ -1,12 +1,19 @@
 import { ObjectType } from "dynamoose/dist/General";
-import Form_Steps, { IFormStep } from "../formStep.model";
+import Form_Steps, { IFormStep, IFormStepsFilters } from "../formStep.model";
 import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
 import dynamoose from "dynamoose";
 
-const findAll = async (): Promise<ObjectType> => {
-  const response = await Form_Steps.scan().exec();
+const findAll = async (
+  filtersOptions: IFormStepsFilters
+): Promise<ObjectType> => {
+  const conditions: IFormStepsFilters = {};
+
+  if (filtersOptions.documentId) {
+    conditions.legalDocument = filtersOptions.documentId;
+  }
+  const response = await Form_Steps.scan({ ...conditions }).exec();
   return (await response).sort((a, b) => {
     return a.createdAt > b.createdAt ? -1 : 1;
   });

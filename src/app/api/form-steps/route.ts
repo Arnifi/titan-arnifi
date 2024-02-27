@@ -4,11 +4,21 @@ import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { FormStepService } from "./formStep.service";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
-import { IFormStep } from "./formStep.model";
+import {
+  IFormStep,
+  IFormStepsFilters,
+  formStepsFilterableFields,
+} from "./formStep.model";
+import pick from "@/utils/server/Pick";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const response = await FormStepService.findAll();
+    const filtersOptions: IFormStepsFilters = pick(
+      req.url,
+      formStepsFilterableFields
+    );
+
+    const response = await FormStepService.findAll(filtersOptions);
 
     return sendResponse({
       statusCode: httpStatus.OK,

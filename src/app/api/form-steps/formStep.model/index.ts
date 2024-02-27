@@ -11,6 +11,12 @@ export enum StepType {
   MULTIPLE = "multiple",
 }
 
+export const formStepsFilterableFields: string[] = ["documentId"];
+
+export interface IFormStepsFilters {
+  [key: string]: string | undefined;
+}
+
 export interface IFormStep extends Document {
   id: string;
   legalDocument: string | ILegalDocument;
