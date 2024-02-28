@@ -5,6 +5,7 @@ import Fields_Block, {
   IFieldsBlockFilters,
 } from "../fieldsBlock.model";
 import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
+import Form_Fields from "../../form-fields/formField.model";
 
 const findAll = async (
   filtersOptions: IFieldsBlockFilters
@@ -15,13 +16,29 @@ const findAll = async (
     conditions.step = filtersOptions.stepId;
   }
   const response = await Fields_Block.scan({ ...conditions }).exec();
-  return (await response).sort((a, b) => {
-    return a.createdAt > b.createdAt ? -1 : 1;
+
+  const fieldsBlocksPromise = Promise.all(
+    (response || []).map(async (fieldBlock) => {
+      const fieldsPromise = Promise.all(
+        (fieldBlock.fields || []).map(async (fieldID: string) => {
+          const field = await Form_Fields.get(fieldID);
+          return field;
+        })
+      );
+
+      fieldBlock.fields = (await fieldsPromise).sort((a, b) =>
+        a.createdAt < b.createdAt ? -1 : 1
+      );
+      return fieldBlock;
+    })
+  );
+
+  return (await fieldsBlocksPromise).sort((a, b) => {
+    return a.createdAt < b.createdAt ? -1 : 1;
   });
 };
 
 const findOne = async (id: string): Promise<IFieldsBlock> => {
-  console.log(id);
   const response = await Fields_Block.get(id);
   return (await response?.populate())?.toJSON() as IFieldsBlock;
 };

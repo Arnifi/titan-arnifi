@@ -1,35 +1,37 @@
 import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
-import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
+import Fields_Block, {
+  IFieldsBlock,
+} from "../../fields-blocks/fieldsBlock.model";
 
-export enum IFieldType {
-  TEXT = "Text",
-  NUMBER = "Number",
-  EMAIL = "Email",
-  DATE = "Date",
-  CHECKBOX = "Checkbox",
-  RADIO = "Radio",
-  SELECT = "Select",
-  FILE = "File",
+export const formFieldsFilterableFields: string[] = ["blockId"];
+
+export interface IFormFieldFilters {
+  [key: string]: string | undefined;
 }
 
-export interface IOption {
-  label: string;
-  value: string;
+export enum IFieldType {
+  TEXT = "text",
+  NUMBER = "number",
+  EMAIL = "email",
+  DATE = "date",
+  CHECKBOX = "checkbox",
+  RADIO = "radio",
+  SELECT = "select",
+  FILE = "file",
 }
 
 export interface IFormField extends Document {
   id: string;
-  step: string | IFormStep;
+  block: string | IFieldsBlock;
   label: string;
   placeholder: string;
   type: IFieldType;
-  name: string;
-  required: boolean;
-  errorMessage?: string;
+  isRequired: boolean;
+  isCountriesOption?: boolean;
   isSearchable?: boolean;
-  tooltip: string;
-  options?: IOption[];
+  errorMessage?: string;
+  options?: string[];
   width: number;
 }
 
@@ -40,7 +42,7 @@ export const formFieldsSchema = new dynamoose.Schema(
       hashKey: true,
       default: () => uuidv4(),
     },
-    step: Form_Steps,
+    block: Fields_Block,
 
     label: {
       type: String,
@@ -56,31 +58,32 @@ export const formFieldsSchema = new dynamoose.Schema(
       required: true,
     },
 
-    name: {
-      type: String,
-      required: true,
-    },
-    required: {
+    isRequired: {
       type: Boolean,
       default: false,
     },
+
     errorMessage: {
       type: String,
       default: "",
     },
+
+    isCountriesOption: {
+      type: Boolean,
+      default: false,
+    },
+
     isSearchable: {
       type: Boolean,
       default: false,
     },
-    tooltip: {
-      type: String,
-      default: "",
-    },
+
     options: {
       type: Array,
-      schema: [new dynamoose.Schema({ label: String, value: String })],
+      schema: [String],
       default: [],
     },
+
     width: {
       type: Number,
       default: 6,
