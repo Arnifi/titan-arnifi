@@ -1,6 +1,14 @@
 import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
-import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
+import Fields_Block, {
+  IFieldsBlock,
+} from "../../fields-blocks/fieldsBlock.model";
+
+export const formFieldsFilterableFields: string[] = ["blockId"];
+
+export interface IFormFieldFilters {
+  [key: string]: string | undefined;
+}
 
 export enum IFieldType {
   TEXT = "text",
@@ -13,33 +21,27 @@ export enum IFieldType {
   FILE = "file",
 }
 
-export interface IOption {
-  label: string;
-  value: string;
-}
-
-export interface IInputField extends Document {
+export interface IFormField extends Document {
   id: string;
-  step: string | IFormStep;
+  block: string | IFieldsBlock;
   label: string;
   placeholder: string;
   type: IFieldType;
-  name: string;
-  required: boolean;
+  isRequired: boolean;
+  isCountriesOption?: boolean;
   isSearchable?: boolean;
-  tooltip: string;
-  options?: IOption[];
+  options?: string[];
   width: number;
 }
 
-export const inputFieldsSchema = new dynamoose.Schema(
+export const formFieldsSchema = new dynamoose.Schema(
   {
     id: {
       type: String,
       hashKey: true,
       default: () => uuidv4(),
     },
-    step: Form_Steps,
+    block: Fields_Block,
 
     label: {
       type: String,
@@ -55,27 +57,27 @@ export const inputFieldsSchema = new dynamoose.Schema(
       required: true,
     },
 
-    name: {
-      type: String,
-      required: true,
-    },
-    required: {
+    isRequired: {
       type: Boolean,
       default: false,
     },
+
+    isCountriesOption: {
+      type: Boolean,
+      default: false,
+    },
+
     isSearchable: {
       type: Boolean,
       default: false,
     },
-    tooltip: {
-      type: String,
-      default: "",
-    },
+
     options: {
       type: Array,
-      schema: [new dynamoose.Schema({ label: String, value: String })],
+      schema: [String],
       default: [],
     },
+
     width: {
       type: Number,
       default: 6,
@@ -87,6 +89,6 @@ export const inputFieldsSchema = new dynamoose.Schema(
   }
 );
 
-const Input_Fields = dynamoose.model("Input_Fields", inputFieldsSchema);
+const Form_Fields = dynamoose.model("Form_Fields", formFieldsSchema);
 
-export default Input_Fields;
+export default Form_Fields;

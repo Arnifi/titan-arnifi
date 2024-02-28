@@ -2,18 +2,28 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
-import { InputFieldService } from "./inputField.service";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
-import { IInputField } from "./inputField.model";
+import { FormFieldService } from "./formField.service";
+import {
+  IFormField,
+  IFormFieldFilters,
+  formFieldsFilterableFields,
+} from "./formField.model";
+import pick from "@/utils/server/Pick";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const response = await InputFieldService.findAll();
+    const filtersOptions: IFormFieldFilters = pick(
+      req.url,
+      formFieldsFilterableFields
+    );
+
+    const response = await FormFieldService.findAll(filtersOptions);
 
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Input Fields Get Successfully",
+      message: "Form Fields Get Successfully",
       data: response,
     });
   }
@@ -21,19 +31,19 @@ export const GET = catchAsync(
 
 export const POST = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const data: IInputField = await req.json();
-    const isExists = await InputFieldService.isExists(data);
+    const data: IFormField = await req.json();
+    const isExists = await FormFieldService.isExists(data);
 
     if (isExists?.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Input Field Already Exists");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Form Field Already Exists");
     }
 
-    const response = await InputFieldService.create(data);
+    const response = await FormFieldService.create(data);
 
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Input Field Create Successfully",
+      message: "Form Field Create Successfully",
       data: response,
     });
   }

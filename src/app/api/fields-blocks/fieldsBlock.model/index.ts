@@ -22,7 +22,7 @@ export interface IFieldsBlock extends Document {
   isShow: boolean;
   label: string;
   description: string;
-  blocks: string[];
+  fields: string[];
 }
 
 export const fieldsBlockSchema = new dynamoose.Schema(
@@ -52,7 +52,7 @@ export const fieldsBlockSchema = new dynamoose.Schema(
       type: String,
       default: "",
     },
-    blocks: {
+    fields: {
       type: Array,
       schema: [String],
       default: [],
