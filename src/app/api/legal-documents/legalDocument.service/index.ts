@@ -6,6 +6,7 @@ import Legal_Documents, {
   ILegalDocument,
   ILegalsFilters,
 } from "../legalDocument.model";
+import Fields_Block from "../../fields-blocks/fieldsBlock.model";
 
 const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
   const { search, ...filterData } = filtersOptions;
@@ -35,6 +36,16 @@ const findOne = async (id: string) => {
 
   const stepsPromise = response?.steps?.map(async (stepID: string) => {
     const step = await Form_Steps.get(stepID);
+
+    const fieldsBlocks = step?.blocks?.map(async (blockID: string) => {
+      const block = await Fields_Block.get(blockID);
+      return block;
+    });
+
+    step.blocks = (await Promise.all(fieldsBlocks)).sort((a, b) => {
+      return a.createdAt < b.createdAt ? -1 : 1;
+    });
+
     return step;
   });
 

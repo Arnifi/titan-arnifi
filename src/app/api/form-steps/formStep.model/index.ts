@@ -5,11 +5,7 @@ import { AnyItem } from "dynamoose/dist/Item";
 import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
-
-export enum StepType {
-  SINGLE = "Single",
-  MULTIPLE = "Multiple",
-}
+import { IFieldsBlock } from "../../fields-blocks/fieldsBlock.model";
 
 export const formStepsFilterableFields: string[] = ["documentId"];
 
@@ -20,11 +16,10 @@ export interface IFormStepsFilters {
 export interface IFormStep extends Document {
   id: string;
   legalDocument: string | ILegalDocument;
-  type: StepType;
   label: string;
   heading: string;
   description: string;
-  fields: string[];
+  blocks: string[] | IFieldsBlock[];
 }
 
 export const formStepSchema = new dynamoose.Schema(
@@ -35,11 +30,7 @@ export const formStepSchema = new dynamoose.Schema(
       default: () => uuidv4(),
     },
     legalDocument: Legal_Documents,
-    type: {
-      type: String,
-      enum: Object.values(StepType),
-      required: true,
-    },
+
     label: {
       type: String,
       required: true,
@@ -52,7 +43,7 @@ export const formStepSchema = new dynamoose.Schema(
       type: String,
       default: "",
     },
-    fields: {
+    blocks: {
       type: Array,
       schema: [String],
       default: [],

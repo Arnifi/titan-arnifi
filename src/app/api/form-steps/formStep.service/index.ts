@@ -62,9 +62,9 @@ const deleteOne = async (id: string, legalDocument: ILegalDocument) => {
 };
 
 const isExists = async (data: IFormStep) => {
-  const { legalDocument, label, type } = data;
+  const { legalDocument, label } = data;
   const result = (
-    await Form_Steps.scan({ legalDocument, label, type }).exec()
+    await Form_Steps.scan({ legalDocument, label }).exec()
   ).toJSON();
 
   return result;
