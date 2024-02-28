@@ -2,28 +2,28 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import sendResponse from "@/utils/server/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
-import { LegalDocumentService } from "./legalDocument.service";
-import {
-  ILegalDocument,
-  ILegalsFilters,
-  legalsFilterableFields,
-} from "./legalDocument.model";
+import { FieldBlockService } from "./fieldsBlock.service";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
 import pick from "@/utils/server/Pick";
+import {
+  IFieldsBlock,
+  IFieldsBlockFilters,
+  fieldBlocksFilterableFields,
+} from "./fieldsBlock.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const filtersOptions: ILegalsFilters = pick(
+    const filtersOptions: IFieldsBlockFilters = pick(
       req.url,
-      legalsFilterableFields
+      fieldBlocksFilterableFields
     );
 
-    const response = await LegalDocumentService.findAll(filtersOptions);
+    const response = await FieldBlockService.findAll(filtersOptions);
 
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legals Documents Get Successfully",
+      message: "Fields Blocks Get Successfully",
       data: response,
     });
   }
@@ -31,21 +31,19 @@ export const GET = catchAsync(
 
 export const POST = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
-    const data: ILegalDocument = await req.json();
-    const isExists = await LegalDocumentService.isExists(data);
+    const data: IFieldsBlock = await req.json();
+    const isExists = await FieldBlockService.isExists(data);
+
     if (isExists?.length) {
-      throw new ApiError(
-        httpStatus.BAD_REQUEST,
-        "Legal Document Already Exists"
-      );
+      throw new ApiError(httpStatus.BAD_REQUEST, "Fields Block Already Exists");
     }
 
-    const response = await LegalDocumentService.create(data);
+    const response = await FieldBlockService.create(data);
 
     return sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legals Documents Create Successfully",
+      message: "Fields Block Create Successfully",
       data: response,
     });
   }
