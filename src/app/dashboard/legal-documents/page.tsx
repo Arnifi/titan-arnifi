@@ -1,6 +1,5 @@
 "use client";
 
-import { LegalType } from "@/app/api/legal-documents/legalDocument.model";
 import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import CountrySelect from "@/components/Form/ACountrySelect";
@@ -16,18 +15,10 @@ import {
   Grid,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-
-export const legalTypeOptions = [
-  LegalType.Will,
-  LegalType.Rental,
-  LegalType.Agreement,
-  LegalType.Other,
-];
 
 const LegalDocuments = () => {
   const [legalType, setLegalType] = useState<string>("All Type");
@@ -86,16 +77,14 @@ const LegalDocuments = () => {
 
             <Grid item xs={3}>
               <Select
-                onChange={(e: SelectChangeEvent) =>
-                  setLegalType(e.target.value)
-                }
+                onChange={(e) => setLegalType(e.target.value)}
                 sx={{
                   width: "100%",
                 }}
                 value={legalType}
               >
                 <MenuItem value="All Type">All Type</MenuItem>
-                {legalTypeOptions.map((type, i) => (
+                {["Will", "Rental", "Agreement", "Other"].map((type, i) => (
                   <MenuItem key={i} value={type}>
                     {type}
                   </MenuItem>

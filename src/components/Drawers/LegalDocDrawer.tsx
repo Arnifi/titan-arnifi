@@ -16,7 +16,6 @@ import FormTextArea from "../Form/ATextArea";
 import { FormikValues } from "formik";
 import * as Yup from "yup";
 import FormCountrySelectField from "../Form/ACountrySelectField";
-import { legalTypeOptions } from "@/app/dashboard/legal-documents/page";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 import {
   useCreateNewDocumentMutation,
@@ -141,7 +140,7 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
                 name="type"
                 label="Legal Document Type"
                 placeholder="Select Type"
-                options={legalTypeOptions}
+                options={["Will", "Rental", "Agreement", "Other"]}
                 required
               />
             </Box>

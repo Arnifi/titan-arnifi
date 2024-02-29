@@ -58,7 +58,6 @@ const FormSelectField: React.FC<ISelect> = ({
             <>
               {searchableField !== undefined && searchableField !== null ? (
                 <Autocomplete
-                  required={required || false}
                   value={selectedOptions ?? selectedOptions}
                   disablePortal={disableClearable}
                   disableClearable={disableClearable}
