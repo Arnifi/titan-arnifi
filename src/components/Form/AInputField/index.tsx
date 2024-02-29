@@ -1,4 +1,4 @@
-import theme from "@/Theme";
+import theme from "@/theme";
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import { Field, FieldProps } from "formik";
 import React from "react";

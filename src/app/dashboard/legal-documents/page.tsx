@@ -1,6 +1,7 @@
 "use client";
 
 import { LegalType } from "@/app/api/legal-documents/legalDocument.model";
+import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import CountrySelect from "@/components/Form/ACountrySelect";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
@@ -131,6 +132,8 @@ const LegalDocuments = () => {
           )}
         </Box>
       </Box>
+
+      <LegalDocDrawer open={openDrawer} setOpen={setOpenDrawer} />
     </Box>
   );
 };

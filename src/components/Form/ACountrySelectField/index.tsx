@@ -1,4 +1,4 @@
-import theme from "@/Theme";
+import theme from "@/theme";
 import {
   Autocomplete,
   Box,

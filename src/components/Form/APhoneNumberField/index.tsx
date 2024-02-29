@@ -13,7 +13,7 @@ import {
   getCountryCallingCode,
 } from "react-phone-number-input/input";
 import { Field, FieldProps } from "formik";
-import theme from "../../../../../Theme";
+import theme from "@/theme";
 
 interface IPhoneNumber {
   name: string;

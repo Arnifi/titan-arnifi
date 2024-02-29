@@ -11,31 +11,31 @@ import React from "react";
 import { Edit, Delete, Description } from "@mui/icons-material";
 import GlobalModal from "../../Modals/GlobalModal";
 
-// import LegalDocDrawer, { ILegal } from "../../Drawers/LegalDocDrawer";
 import Link from "next/link";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
+import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
+import { useDeleteDocumentMutation } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
 
 const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
   const { id, title, country, type, steps, status } = data || {};
+  const [deleteDocument, { isLoading }] = useDeleteDocumentMutation();
 
   const handleLegalDelete = async () => {
-    // try {
-    //   await deleteLegalDoc({ id }).then((res) => {
-    //     dispatch(removeLegalDoc(id));
-    //     setOpenModal(false);
-    //     console.log(res);
-    //   });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      await deleteDocument({ id }).then((res) => {
+        setOpenModal(false);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const modalInfo = (
     <Box>
       <Typography>
-        Legal Title: <strong>{title}</strong>
+        Document Title: <strong>{title}</strong>
       </Typography>
       <Typography>
         Country: <strong>{country}</strong>
@@ -99,11 +99,11 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
         open={openModal}
         setOpen={setOpenModal}
         okFn={handleLegalDelete}
-        title="Are you sure delete this legal?"
+        title="Are you sure delete this Document?"
         info={modalInfo}
-        loading={false}
+        loading={isLoading}
       />
-      {/* <LegalDocDrawer setOpen={setOpenDrawer} open={openDrawer} values={data} /> */}
+      <LegalDocDrawer setOpen={setOpenDrawer} open={openDrawer} values={data} />
     </>
   );
 };

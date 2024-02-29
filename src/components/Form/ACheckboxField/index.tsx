@@ -2,7 +2,7 @@ import { Box, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import React from "react";
 import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
 import { Field, FieldProps } from "formik";
-import theme from "@/Theme";
+import theme from "@/theme";
 
 interface IRadio {
   name: string;

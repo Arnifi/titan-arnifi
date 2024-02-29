@@ -10,7 +10,38 @@ export const legalDocumentApi = baseApi.injectEndpoints({
       }),
       providesTags: ["documents"],
     }),
+
+    createNewDocument: build.mutation({
+      query: (body) => ({
+        url: "/legal-documents",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["documents"],
+    }),
+
+    updateDocument: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/legal-documents/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["documents"],
+    }),
+
+    deleteDocument: build.mutation({
+      query: ({ id }) => ({
+        url: `/legal-documents/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["documents"],
+    }),
   }),
 });
 
-export const { useGetAllDocumentsQuery } = legalDocumentApi;
+export const {
+  useGetAllDocumentsQuery,
+  useCreateNewDocumentMutation,
+  useUpdateDocumentMutation,
+  useDeleteDocumentMutation,
+} = legalDocumentApi;

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Field, FieldProps } from "formik";
 import React from "react";
-import theme from "@/Theme";
+import theme from "@/theme";
 
 interface SelectOptions {
   label: string;
