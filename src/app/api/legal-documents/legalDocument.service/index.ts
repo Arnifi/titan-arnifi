@@ -6,6 +6,8 @@ import Legal_Documents, {
   ILegalDocument,
   ILegalsFilters,
 } from "../legalDocument.model";
+import Fields_Block from "../../fields-blocks/fieldsBlock.model";
+import Form_Fields from "../../form-fields/formField.model";
 
 const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
   const { search, ...filterData } = filtersOptions;
@@ -33,14 +35,35 @@ const findOne = async (id: string) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
   }
 
-  const stepsPromise = response?.steps?.map(async (stepID: string) => {
-    const step = await Form_Steps.get(stepID);
-    return step;
-  });
+  const stepsPromise = Promise.all(
+    response.steps.map(async (stepID: string) => {
+      const step = await Form_Steps.get(stepID);
 
-  const steps = (await Promise.all(stepsPromise)).sort((a, b) => {
-    return a.createdAt < b.createdAt ? -1 : 1;
-  });
+      const fieldsBlocksPromise = Promise.all(
+        step.blocks.map(async (blockID: string) => {
+          const blocks = await Fields_Block.get(blockID);
+
+          const fieldsPromise = Promise.all(
+            (blocks.fields || []).map(async (fieldID: string) => {
+              const field = await Form_Fields.get(fieldID);
+              return field;
+            })
+          );
+
+          blocks.fields = await fieldsPromise;
+          return blocks;
+        })
+      );
+
+      step.blocks = (await fieldsBlocksPromise).sort(
+        (a, b) => a.createdAt - b.createdAt
+      );
+
+      return step;
+    })
+  );
+
+  const steps = (await stepsPromise).sort((a, b) => a.createdAt - b.createdAt);
 
   response.steps = steps;
   return response;
