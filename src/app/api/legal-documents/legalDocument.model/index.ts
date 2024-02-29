@@ -1,4 +1,5 @@
-import { Document, model, Model, models, Schema } from "mongoose";
+import dynamoose from "dynamoose";
+import { v4 as uuidv4 } from "uuid";
 
 export enum LegalType {
   Will = "will",
@@ -7,37 +8,49 @@ export enum LegalType {
   Other = "other",
 }
 
-export interface ILegal extends Document {
+export interface ILegalsFilters {
+  [key: string]: string | undefined;
+}
+
+// export interface ILegalsFilters {
+//   search?: string;
+//   type?: string;
+//   country?: string;
+// }
+
+export const legalsFilterableFields: string[] = ["search", "type", "country"];
+
+export interface ILegalDocument extends Document {
+  id: string;
   title: string;
   country: string;
   type: LegalType;
   status: boolean;
   downloadCount: number;
   metaData: string;
-  steps: Schema.Types.ObjectId[];
+  steps: string[];
 }
 
-const legalSchema: Schema<ILegal> = new Schema<ILegal>(
+const legalDocumentSchema = new dynamoose.Schema(
   {
+    id: {
+      type: String,
+      hashKey: true,
+      default: () => uuidv4(),
+    },
+
     title: {
       type: String,
       required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
     },
     country: {
       type: String,
       required: true,
-      lowercase: true,
-      trim: true,
     },
     type: {
       type: String,
       enum: Object.values(LegalType),
       required: true,
-      lowercase: true,
-      trim: true,
     },
     status: {
       type: Boolean,
@@ -49,11 +62,10 @@ const legalSchema: Schema<ILegal> = new Schema<ILegal>(
     },
     metaData: {
       type: String,
-      trim: true,
     },
     steps: {
-      type: [Schema.Types.ObjectId],
-      ref: "Step",
+      type: Array,
+      schema: [String],
       default: [],
     },
   },
@@ -62,7 +74,5 @@ const legalSchema: Schema<ILegal> = new Schema<ILegal>(
   }
 );
 
-const Legal: Model<ILegal> =
-  (models.Legal as Model<ILegal>) || model<ILegal>("Legal", legalSchema);
-
-export default Legal;
+const Legal_Documents = dynamoose.model("Legal_Documents", legalDocumentSchema);
+export default Legal_Documents;
