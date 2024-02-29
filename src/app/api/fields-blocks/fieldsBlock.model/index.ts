@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ModelType } from "dynamoose/dist/General";
 import { AnyItem } from "dynamoose/dist/Item";
 import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
+import { IFormField } from "../../form-fields/formField.model";
 
 export enum BlockType {
   SINGLE = "Single",
@@ -22,7 +23,7 @@ export interface IFieldsBlock extends Document {
   isShow: boolean;
   label: string;
   description: string;
-  fields: string[];
+  fields: string[] | IFormField[];
 }
 
 export const fieldsBlockSchema = new dynamoose.Schema(
