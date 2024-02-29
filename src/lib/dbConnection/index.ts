@@ -1,4 +1,4 @@
-import envConfig from "../Configs/envConfig";
+import envConfig from "../../Configs/envConfig";
 import dynamoose from "dynamoose";
 
 const dbConnection = async () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetLegalDocumentsQuery } from "./redux/features/legalDocument/legalDocumentApi";
+import { useGetLegalDocumentsQuery } from "../lib/Redux/features/legalDocument/legalDocumentApi";
 
 export default function Home() {
   const { data, isError, isLoading, isSuccess } = useGetLegalDocumentsQuery({});
