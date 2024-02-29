@@ -1,14 +1,16 @@
-import baseApi from "../../../../lib/Redux/features/baseApi";
+import baseApi from "../baseApi";
 
-export const attractionApi = baseApi.injectEndpoints({
+export const legalDocumentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getLegalDocuments: build.query({
-      query: () => ({
-        url: "/legals",
+    getAllDocuments: build.query({
+      query: (params) => ({
+        url: "/legal-documents",
         method: "GET",
+        params,
       }),
+      providesTags: ["documents"],
     }),
   }),
 });
 
-export const { useGetLegalDocumentsQuery } = attractionApi;
+export const { useGetAllDocumentsQuery } = legalDocumentApi;
