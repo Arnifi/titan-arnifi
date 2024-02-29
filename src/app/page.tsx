@@ -1,21 +1,13 @@
 "use client";
-
-import { useGetLegalDocumentsQuery } from "../lib/Redux/features/legalDocument/legalDocumentApi";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { data, isError, isLoading, isSuccess } = useGetLegalDocumentsQuery({});
+  const router = useRouter();
 
-  console.log(data, isError, isLoading, isSuccess);
-  return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h1>Arnifi - Legal Drafter - CMS</h1>
-    </main>
-  );
+  useEffect(() => {
+    router.push("/dashboard");
+  }, [router]);
+
+  return null;
 }
