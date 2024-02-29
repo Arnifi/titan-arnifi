@@ -15,7 +15,7 @@ const findAll = async (
   }
   const response = await Form_Steps.scan({ ...conditions }).exec();
   return (await response).sort((a, b) => {
-    return a.createdAt > b.createdAt ? -1 : 1;
+    return a.createdAt < b.createdAt ? -1 : 1;
   });
 };
 
