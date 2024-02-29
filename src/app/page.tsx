@@ -1,7 +1,11 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useGetLegalDocumentsQuery } from "./redux/features/legalDocument/legalDocumentApi";
 
 export default function Home() {
+  const { data, isError, isLoading, isSuccess } = useGetLegalDocumentsQuery({});
+
+  console.log(data, isError, isLoading, isSuccess);
   return (
     <main
       style={{
