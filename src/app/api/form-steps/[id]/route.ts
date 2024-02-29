@@ -2,19 +2,20 @@ import catchAsync from "@/utils/server/helpers/catchAsync";
 import { NextResponse } from "next/server";
 import httpStatus from "http-status";
 import sendResponse from "@/utils/server/helpers/sendResponse";
-import { LegalDocumentService } from "../legalDocument.service";
-import { ILegalDocument } from "../legalDocument.model";
 import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import { FormStepService } from "../formStep.service";
+import { IFormStep } from "../formStep.model";
+import { ILegalDocument } from "../../legal-documents/legalDocument.model";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const response = await LegalDocumentService.findOne(id as string);
+    const response = await FormStepService.findOne(id as string);
 
     return await sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Document Get Successfully",
+      message: "Form Step Get Successfully",
       data: response,
     });
   }
@@ -23,20 +24,19 @@ export const GET = catchAsync(
 export const PATCH = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
-    const data: ILegalDocument = await req.json();
+    const data: IFormStep = await req.json();
 
-    const isExists = await LegalDocumentService.findOne(id as string);
+    const isExists = await FormStepService.findOne(id as string);
 
     if (!isExists?.id) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
-
-    const response = await LegalDocumentService.updateOne(id as string, data);
+    const response = await FormStepService.updateOne(id as string, data);
 
     return await sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Document Update Successfully",
+      message: "Form Step Update Successfully",
       data: response,
     });
   }
@@ -46,21 +46,25 @@ export const DELETE = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
     const id = req.url.split("/").pop();
 
-    const isExists = await LegalDocumentService.findOne(id as string);
+    const isExists = await FormStepService.findOne(id as string);
+
     if (!isExists?.id) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
+      throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
 
-    if (isExists?.steps?.length) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Has Steps");
+    if (isExists?.fields?.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Has Fields");
     }
 
-    await LegalDocumentService.deleteOne(id as string);
+    await FormStepService.deleteOne(
+      id as string,
+      isExists?.legalDocument as ILegalDocument
+    );
 
     return await sendResponse({
       statusCode: httpStatus.OK,
       success: true,
-      message: "Legal Document Delete Successfully",
+      message: "Form Step Delete Successfully",
       data: isExists,
     });
   }

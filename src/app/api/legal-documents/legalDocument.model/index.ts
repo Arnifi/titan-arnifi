@@ -1,11 +1,12 @@
 import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
+import { IFormStep } from "../../form-steps/formStep.model";
 
 export enum LegalType {
-  Will = "will",
-  Rental = "rental",
-  Agreement = "agreement",
-  Other = "other",
+  Will = "Will",
+  Rental = "Rental",
+  Agreement = "Agreement",
+  Other = "Other",
 }
 
 export interface ILegalsFilters {
@@ -28,7 +29,7 @@ export interface ILegalDocument extends Document {
   status: boolean;
   downloadCount: number;
   metaData: string;
-  steps: string[];
+  steps: string[] | IFormStep[];
 }
 
 const legalDocumentSchema = new dynamoose.Schema(

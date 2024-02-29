@@ -1,4 +1,7 @@
 import { ObjectType } from "dynamoose/dist/General";
+import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import httpStatus from "http-status";
+import Form_Steps from "../../form-steps/formStep.model";
 import Legal_Documents, {
   ILegalDocument,
   ILegalsFilters,
@@ -25,6 +28,21 @@ const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
 
 const findOne = async (id: string) => {
   const response = await Legal_Documents.get(id);
+
+  if (!response) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
+  }
+
+  const stepsPromise = response?.steps?.map(async (stepID: string) => {
+    const step = await Form_Steps.get(stepID);
+    return step;
+  });
+
+  const steps = (await Promise.all(stepsPromise)).sort((a, b) => {
+    return a.createdAt < b.createdAt ? -1 : 1;
+  });
+
+  response.steps = steps;
   return response;
 };
 
