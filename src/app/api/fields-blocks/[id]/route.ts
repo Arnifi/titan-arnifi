@@ -52,7 +52,7 @@ export const DELETE = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
     }
 
-    if (isExists?.blocks?.length) {
+    if (isExists?.fields?.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Fields Block Has Fields");
     }
 
