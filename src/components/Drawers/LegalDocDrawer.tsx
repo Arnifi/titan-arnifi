@@ -21,6 +21,8 @@ import {
   useCreateNewDocumentMutation,
   useUpdateDocumentMutation,
 } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
+import { useAppDispatch } from "@/lib/Redux/store";
+import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 
 interface ILegalDocDrawerProps {
   open: boolean;
@@ -38,6 +40,8 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
 
   const [updateDocument, { isLoading: updateLoading }] =
     useUpdateDocumentMutation();
+
+  const dispatch = useAppDispatch();
 
   const validationSchema: Yup.Schema<FormikValues> = Yup.object().shape({
     title: Yup.string().required("Title is required"),
@@ -57,18 +61,39 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
       if (values?.id) {
         await updateDocument({ id: values?.id, data: formValues })
           .unwrap()
-          .then(() => {
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res?.message || "Document updated successfully",
+                type: "success",
+              })
+            );
             setOpen(false);
           });
       } else {
         await createNewDocument(formValues)
           .unwrap()
-          .then(() => {
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res?.message || "Document Create successfully",
+                type: res?.status ? "success" : "error",
+              })
+            );
             setOpen(false);
           });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Something went wrong",
+          type: "error",
+        })
+      );
     }
   };
 

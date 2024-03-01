@@ -15,6 +15,8 @@ import Link from "next/link";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
 import { useDeleteDocumentMutation } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
+import { useAppDispatch } from "@/lib/Redux/store";
+import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 
 const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
@@ -22,13 +24,30 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
   const { id, title, country, type, steps, status } = data || {};
   const [deleteDocument, { isLoading }] = useDeleteDocumentMutation();
 
+  const dispatch = useAppDispatch();
   const handleLegalDelete = async () => {
     try {
-      await deleteDocument({ id }).then((res) => {
-        setOpenModal(false);
-      });
+      await deleteDocument({ id })
+        .unwrap()
+        .then((res) => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: res?.message || "Document deleted successfully",
+              type: res?.status ? "success" : "error",
+            })
+          );
+          setOpenModal(false);
+        });
     } catch (error) {
       console.error(error);
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Something went wrong",
+          type: "error",
+        })
+      );
     }
   };
 
