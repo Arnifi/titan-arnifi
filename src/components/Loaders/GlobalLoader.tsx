@@ -2,13 +2,13 @@ import theme from "@/theme";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 
-const GlobalLoader = () => {
+const GlobalLoader = ({ height }: { height?: string }) => {
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
-      height="40vh"
+      height={height || "40vh"}
       flexDirection="column"
     >
       <CircularProgress variant="indeterminate" />

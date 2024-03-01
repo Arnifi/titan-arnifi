@@ -11,6 +11,14 @@ export const legalDocumentApi = baseApi.injectEndpoints({
       providesTags: ["documents"],
     }),
 
+    getLegalDocument: build.query({
+      query: ({ id }) => ({
+        url: `/legal-documents/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["documents", "steps"],
+    }),
+
     createNewDocument: build.mutation({
       query: (body) => ({
         url: "/legal-documents",
@@ -44,4 +52,5 @@ export const {
   useCreateNewDocumentMutation,
   useUpdateDocumentMutation,
   useDeleteDocumentMutation,
+  useGetLegalDocumentQuery,
 } = legalDocumentApi;
