@@ -10,7 +10,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableItem from "./TableItem";
-import { IFormStep } from "@/app/api/form-steps/formStep.model";
 import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
 
 const FieldBlockTable = ({ data }: { data: IFieldsBlock[] }) => {
@@ -22,6 +21,10 @@ const FieldBlockTable = ({ data }: { data: IFieldsBlock[] }) => {
     {
       label: "Label",
       align: "left",
+    },
+    {
+      label: "Type",
+      align: "center",
     },
     {
       label: "Is Show",

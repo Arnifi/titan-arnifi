@@ -20,8 +20,6 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const { data, isLoading, isError } = useGetFormStepQuery({ id: params.id });
 
-  console.log(data, isLoading, isError);
-
   if (isLoading) {
     return <GlobalLoader height={"70vh"} />;
   }

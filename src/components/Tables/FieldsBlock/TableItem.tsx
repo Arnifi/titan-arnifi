@@ -22,7 +22,7 @@ const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
   const [deleteFieldsBlock, { isLoading }] = useDeleteFieldsBlockMutation();
-  const { step, id, label, isShow, description, fields } = data;
+  const { step, id, label, isShow, description, fields, type } = data;
 
   const dispatch = useAppDispatch();
   const handleDelete = async () => {
@@ -72,6 +72,7 @@ const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {
       <TableRow hover>
         <TableCell align="center">{sl}.</TableCell>
         <TableCell align="left">{label}</TableCell>
+        <TableCell align="center">{type}</TableCell>
         <TableCell align="center">
           <Typography variant="h5">{isShow ? "Yes" : "No"}</Typography>
         </TableCell>
