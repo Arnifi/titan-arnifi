@@ -4,6 +4,11 @@ import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
 import dynamoose from "dynamoose";
+import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import httpStatus from "http-status";
+import Fields_Block, {
+  IFieldsBlock,
+} from "../../fields-blocks/fieldsBlock.model";
 
 const findAll = async (
   filtersOptions: IFormStepsFilters
@@ -19,9 +24,32 @@ const findAll = async (
   });
 };
 
-const findOne = async (id: string): Promise<IFormStep> => {
+const findOne = async (id: string) => {
   const response = await Form_Steps.get(id);
-  return (await response?.populate())?.toJSON() as IFormStep;
+
+  if (!response) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Form Step Not Found");
+  }
+
+  const result = (await response?.populate()).toJSON() as IFormStep;
+
+  if (result) {
+    const blocksPromise = Promise.all(
+      result.blocks.map(async (blockID) => {
+        return (
+          await Fields_Block.get(blockID as string)
+        ).toJSON() as IFieldsBlock;
+      })
+    );
+
+    const blocks = await blocksPromise;
+
+    result.blocks = blocks?.sort((a, b) => {
+      return a.createdAt < b.createdAt ? -1 : 1;
+    });
+  }
+
+  return result;
 };
 
 const create = async (data: IFormStep) => {

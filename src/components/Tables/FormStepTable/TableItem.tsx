@@ -80,7 +80,7 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
           <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell sx={{ display: "flex", justifyContent: "center" }}>
-          <Link href={`/dashboard/legal-documents/steps/${id}`}>
+          <Link href={`/dashboard/legal-documents/blocks/${id}`}>
             <IconButton
               sx={{
                 bgcolor: "#f9f9f9",
