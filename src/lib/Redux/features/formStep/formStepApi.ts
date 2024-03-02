@@ -38,6 +38,22 @@ export const formStepApi = baseApi.injectEndpoints({
               }
             )
           );
+
+          dispatch(
+            baseApi.util.updateQueryData(
+              "getAllDocuments" as never,
+              {} as never,
+              (draft: { data: ILegalDocument[] }) => {
+                const index = draft?.data?.findIndex(
+                  (doc: ILegalDocument) =>
+                    doc.id === response.data.legalDocument
+                );
+                if (index !== -1) {
+                  draft.data[index].steps.push(response.data.id);
+                }
+              }
+            )
+          );
         }
       },
     }),
@@ -115,6 +131,25 @@ export const formStepApi = baseApi.injectEndpoints({
 
                 draft.data.steps = remain;
                 return draft;
+              }
+            )
+          );
+
+          dispatch(
+            baseApi.util.updateQueryData(
+              "getAllDocuments" as never,
+              {} as never,
+              (draft: { data: ILegalDocument[] }) => {
+                const index = draft?.data?.findIndex(
+                  (doc: ILegalDocument) =>
+                    doc.id === response.data.legalDocument.id
+                );
+                if (index !== -1) {
+                  draft.data[index].steps = draft.data[index].steps.filter(
+                    (stepId: string | IFormStep) => stepId !== response.data.id
+                  ) as IFormStep[];
+                  return draft;
+                }
               }
             )
           );

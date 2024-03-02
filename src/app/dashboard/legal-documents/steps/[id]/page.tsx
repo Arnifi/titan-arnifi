@@ -47,7 +47,10 @@ const FormSteps = ({ params }: { params: { id: string } }) => {
         }}
       >
         <Typography
-          sx={{ color: theme.colorConstants.primaryDarkBlue }}
+          sx={{
+            color: theme.colorConstants.primaryDarkBlue,
+            textTransform: "capitalize",
+          }}
           variant="h3"
         >
           <strong>{title}</strong>
@@ -109,8 +112,17 @@ const FormSteps = ({ params }: { params: { id: string } }) => {
       <Box>
         {isLoading ? (
           <GlobalLoader />
-        ) : (
+        ) : steps?.length > 0 ? (
           <FormStepTable data={steps as IFormStep[]} />
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            height="40vh"
+            alignItems="center"
+          >
+            <Typography variant="h3">No steps found! Create New</Typography>
+          </Box>
         )}
       </Box>
       <FormStepDrawer

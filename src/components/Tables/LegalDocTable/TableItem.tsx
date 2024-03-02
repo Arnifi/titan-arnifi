@@ -34,7 +34,7 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
             openSnackbar({
               isOpen: true,
               message: res?.message || "Document deleted successfully",
-              type: res?.status ? "success" : "error",
+              type: res?.success ? "success" : "error",
             })
           );
           setOpenModal(false);
@@ -53,7 +53,7 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
 
   const modalInfo = (
     <Box>
-      <Typography>
+      <Typography sx={{ textTransform: "capitalize" }}>
         Document Title: <strong>{title}</strong>
       </Typography>
       <Typography>
@@ -69,7 +69,9 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
     <>
       <TableRow hover>
         <TableCell align="center">{sl}.</TableCell>
-        <TableCell align="left">{title}</TableCell>
+        <TableCell sx={{ textTransform: "capitalize" }} align="left">
+          {title}
+        </TableCell>
         <TableCell align="center">
           <Typography>{country}</Typography>
         </TableCell>
