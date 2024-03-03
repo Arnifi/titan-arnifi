@@ -30,7 +30,7 @@ const FormInputField: React.FC<IInput> = ({
 }) => {
   return (
     <Box
-      maxWidth={"480px"}
+      maxWidth={"500px"}
       display={"flex"}
       flexDirection={{ xs: "column", md: inline ?? false ? "row" : "column" }}
     >

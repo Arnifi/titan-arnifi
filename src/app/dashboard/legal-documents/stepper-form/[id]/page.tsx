@@ -9,6 +9,8 @@ import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import theme from "@/theme";
 import { KeyboardReturn } from "@mui/icons-material";
+import { IFormStep } from "@/app/api/form-steps/formStep.model";
+import DynamicStepper from "@/components/DynamicStepper";
 
 const StepperForm = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -98,6 +100,10 @@ const StepperForm = ({ params }: { params: { id: string } }) => {
             Return to Legal Documents
           </Button>
         </Stack>
+      </Box>
+
+      <Box marginTop="50px" maxWidth={"1200px"} marginX={"auto"}>
+        <DynamicStepper data={steps as IFormStep[]} />
       </Box>
     </Box>
   );

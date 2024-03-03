@@ -84,7 +84,7 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
       </Box>
 
       <Box display="flex" justifyContent="space-between" alignItems="start">
-        <Box marginY={"20px"}>
+        <Box marginY={"20px"} maxWidth={"1000px"}>
           <Typography
             variant="h3"
             sx={{
