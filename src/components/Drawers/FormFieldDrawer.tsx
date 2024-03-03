@@ -71,7 +71,7 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
     isSearchable: values?.isSearchable || false,
     errorMessage: values?.errorMessage || "",
     options: values?.options || [],
-    width: values?.width || 12,
+    width: values?.width || 6,
   };
 
   const handleSubmit = async (formValues: FormikValues) => {
