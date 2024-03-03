@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { Edit, Delete, Description } from "@mui/icons-material";
+import { Edit, Delete, Description, OpenInNew } from "@mui/icons-material";
 import GlobalModal from "../../Modals/GlobalModal";
 
 import Link from "next/link";
@@ -105,6 +105,15 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
             </IconButton>
           </Link>
         </TableCell>
+
+        <TableCell align="center">
+          <Link href={`/dashboard/legal-documents/stepper-form/${id}`}>
+            <IconButton>
+              <OpenInNew />
+            </IconButton>
+          </Link>
+        </TableCell>
+
         <TableCell align="right">
           <Stack justifyContent="center" direction="row" spacing={2}>
             <IconButton onClick={() => setOpenDrawer(true)}>
