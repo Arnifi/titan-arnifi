@@ -12,57 +12,59 @@ import GlobalModal from "../../Modals/GlobalModal";
 
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
-import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
-import FieldBlockDrawer from "@/components/Drawers/FieldBlockDrawer";
-import { useDeleteFieldsBlockMutation } from "@/lib/Redux/features/fieldsBlock/fieldsBlockApi";
 import { IFormField } from "@/app/api/form-fields/formField.model";
+import FormFieldDrawer from "@/components/Drawers/FormFieldDrawer";
+import { useDeleteFormFieldMutation } from "@/lib/Redux/features/formField/formFieldApi";
 
 const TableItem = ({ data, sl }: { data: IFormField; sl: number }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
-  const [deleteFieldsBlock, { isLoading }] = useDeleteFieldsBlockMutation();
-  const { id, label, placeholder, isRequired, type, width } = data;
+  const [deleteFormField, { isLoading }] = useDeleteFormFieldMutation();
+  const { id, label, placeholder, isRequired, type, width, block } = data;
 
   const dispatch = useAppDispatch();
   const handleDelete = async () => {
-    // try {
-    //   await deleteFieldsBlock({ id })
-    //     .unwrap()
-    //     .then((res) => {
-    //       dispatch(
-    //         openSnackbar({
-    //           isOpen: true,
-    //           message: res?.message,
-    //           type: res?.success ? "success" : "error",
-    //         })
-    //       );
-    //       setOpenModal(false);
-    //     });
-    // } catch (error) {
-    //   dispatch(
-    //     openSnackbar({
-    //       isOpen: true,
-    //       message: "Something went wrong",
-    //       type: "error",
-    //     })
-    //   );
-    // }
+    try {
+      await deleteFormField({ id })
+        .unwrap()
+        .then((res) => {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: res?.message,
+              type: res?.success ? "success" : "error",
+            })
+          );
+          setOpenModal(false);
+        });
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Something went wrong",
+          type: "error",
+        })
+      );
+    }
   };
 
   const modalInfo = (
     <Box>
       <Typography>
-        Fields Block: <strong>{label}</strong>
+        Form Fields : <strong>{label}</strong>
+      </Typography>
+      <Typography sx={{ textTransform: "capitalize" }}>
+        Type: <strong>{type}</strong>
       </Typography>
       <Typography>
-        {/* Showing: <strong>{isShow ? "Yes" : "No"}</strong> */}
+        Placeholder: <strong>{placeholder}</strong>
       </Typography>
       <Typography>
-        {/* Description: <strong>{description ? "Yes" : "No"}</strong> */}
+        Is Required : <strong>{isRequired ? "Yes" : "No"}</strong>
       </Typography>
       <Typography>
-        {/* Total Fields Blocks: <strong>{fields?.length}</strong> */}
+        Field With : <strong>{width}</strong>
       </Typography>
     </Box>
   );
@@ -106,12 +108,12 @@ const TableItem = ({ data, sl }: { data: IFormField; sl: number }) => {
         loading={isLoading}
       />
 
-      {/* <FieldBlockDrawer
-        stepID={step as string}
-        setOpen={setOpenDrawer}
-        open={openDrawer}
+      <FormFieldDrawer
+        blockId={block as string}
         values={data}
-      /> */}
+        open={openDrawer}
+        setOpen={setOpenDrawer}
+      />
     </>
   );
 };

@@ -35,8 +35,6 @@ const FormFields = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  console.log(data, isLoading, isError);
-
   const {
     id: blockId,
     label: blockLabel,

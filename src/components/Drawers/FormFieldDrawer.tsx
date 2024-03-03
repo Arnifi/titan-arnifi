@@ -15,14 +15,14 @@ import FormSelectField from "../Form/ASelectField";
 import * as Yup from "yup";
 import { FormikValues, useFormikContext } from "formik";
 import FormCheckboxField from "../Form/ACheckboxField";
-import {
-  useCreateFieldsBlockMutation,
-  useUpdateFieldsBlockMutation,
-} from "@/lib/Redux/features/fieldsBlock/fieldsBlockApi";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { IFormField } from "@/app/api/form-fields/formField.model";
 import FormChipInputField from "../Form/AChipInputField";
+import {
+  useCreateFormFieldMutation,
+  useUpdateFormFieldMutation,
+} from "@/lib/Redux/features/formField/formFieldApi";
 
 interface IFormFieldDrawerProps {
   open: boolean;
@@ -49,11 +49,11 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
   values,
 }) => {
   const dispatch = useAppDispatch();
-  const [createFieldsBlock, { isLoading: createLoading }] =
-    useCreateFieldsBlockMutation();
+  const [createFormField, { isLoading: createLoading }] =
+    useCreateFormFieldMutation();
 
-  const [updateFieldsBlock, { isLoading: updateLoading }] =
-    useUpdateFieldsBlockMutation();
+  const [updateFormField, { isLoading: updateLoading }] =
+    useUpdateFormFieldMutation();
 
   const validationSchema: Yup.Schema<FormikValues> = Yup.object().shape({
     type: Yup.string().required("Type is required"),
@@ -75,43 +75,49 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
   };
 
   const handleSubmit = async (formValues: FormikValues) => {
-    // try {
-    //   if (values?.id) {
-    //     await updateFieldsBlock({ id: values?.id, data: formValues })
-    //       .unwrap()
-    //       .then((res) => {
-    //         dispatch(
-    //           openSnackbar({
-    //             isOpen: true,
-    //             message: res.message,
-    //             type: res.success ? "success" : "error",
-    //           })
-    //         );
-    //         setOpen(false);
-    //       });
-    //   } else {
-    //     await createFieldsBlock(formValues)
-    //       .unwrap()
-    //       .then((res) => {
-    //         dispatch(
-    //           openSnackbar({
-    //             isOpen: true,
-    //             message: res.message,
-    //             type: res.success ? "success" : "error",
-    //           })
-    //         );
-    //         setOpen(false);
-    //       });
-    //   }
-    // } catch (error) {
-    //   dispatch(
-    //     openSnackbar({
-    //       isOpen: true,
-    //       message: "something went wrong",
-    //       type: "error",
-    //     })
-    //   );
-    // }
+    try {
+      if (values?.id) {
+        await updateFormField({
+          id: values?.id,
+          data: { ...formValues, width: parseInt(formValues.width) },
+        })
+          .unwrap()
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res.message,
+                type: res.success ? "success" : "error",
+              })
+            );
+            setOpen(false);
+          });
+      } else {
+        await createFormField({
+          ...formValues,
+          width: parseInt(formValues.width),
+        })
+          .unwrap()
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res.message,
+                type: res.success ? "success" : "error",
+              })
+            );
+            setOpen(false);
+          });
+      }
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "something went wrong",
+          type: "error",
+        })
+      );
+    }
   };
 
   const FieldInputFields: React.FC = () => {
@@ -162,6 +168,16 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
             name="placeholder"
             label="Field Placeholder"
             placeholder="Enter Field Placeholder"
+            required
+          />
+        </Box>
+
+        <Box paddingTop={2}>
+          <FormSelectField
+            name="width"
+            label="Select Field Width"
+            placeholder="Select With"
+            options={["3", "6", "9", "12"]}
             required
           />
         </Box>
