@@ -57,11 +57,6 @@ const FormPhoneNumberField: React.FC<IPhoneNumber> = ({
                   height: "45px",
                   fontSize: "14px",
                   fontWeight: 500,
-                  "& .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-fullWidth.MuiAutocomplete-inputRoot.css-ghallm-MuiInputBase-root-MuiOutlinedInput-root":
-                    {
-                      height: "45px",
-                      padding: "0px 0px 0px 15px",
-                    },
                 }}
                 options={countryCodes}
                 renderOption={(props, option) => (

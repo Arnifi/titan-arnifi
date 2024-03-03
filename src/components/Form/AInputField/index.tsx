@@ -61,9 +61,6 @@ const FormInputField: React.FC<IInput> = ({
               width: "100%",
               fontSize: "14px",
               fontWeight: 500,
-              "& .css-1jqimar-MuiInputBase-root-MuiOutlinedInput-root": {
-                height: "45px",
-              },
             }}
             required={required}
             variant="outlined"
