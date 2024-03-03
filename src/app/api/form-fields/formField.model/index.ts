@@ -33,6 +33,8 @@ export interface IFormField extends Document {
   errorMessage?: string;
   options?: string[];
   width: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const formFieldsSchema = new dynamoose.Schema(

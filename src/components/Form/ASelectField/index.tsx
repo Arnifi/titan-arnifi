@@ -12,11 +12,6 @@ import { Field, FieldProps } from "formik";
 import React from "react";
 import theme from "@/theme";
 
-interface SelectOptions {
-  label: string;
-  value: string;
-}
-
 interface ISelect {
   name: string;
   options: string[];
@@ -108,6 +103,7 @@ const FormSelectField: React.FC<ISelect> = ({
                       color: theme.colorConstants.darkGray,
                       fontSize: "14",
                       fontWeight: 500,
+                      textTransform: "capitalize",
                     }}
                     {...field}
                     name={name}
@@ -134,6 +130,7 @@ const FormSelectField: React.FC<ISelect> = ({
                           color: theme.colorConstants.darkGray,
                           fontSize: "14px",
                           fontWeight: 500,
+                          textTransform: "capitalize",
                         }}
                         key={item}
                         value={item}

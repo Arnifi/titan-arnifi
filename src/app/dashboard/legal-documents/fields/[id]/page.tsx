@@ -1,24 +1,26 @@
 "use client";
-
 import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
+import { IFormField } from "@/app/api/form-fields/formField.model";
 import { IFormStep } from "@/app/api/form-steps/formStep.model";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
-import FieldBlockDrawer from "@/components/Drawers/FieldBlockDrawer";
+import FormFieldDrawer from "@/components/Drawers/FormFieldDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
-import FieldBlockTable from "@/components/Tables/FieldsBlockTable";
-import { useGetFormStepQuery } from "@/lib/Redux/features/formStep/formStepApi";
+import FormFieldTable from "@/components/Tables/FormFieldTable";
+import { useGetFieldsBlockQuery } from "@/lib/Redux/features/fieldsBlock/fieldsBlockApi";
 import theme from "@/theme";
-import { KeyboardReturn } from "@mui/icons-material";
+import { East, KeyboardReturn } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const FieldBlock = ({ params }: { params: { id: string } }) => {
+const FormFields = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
-
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const { data, isLoading, isError } = useGetFormStepQuery({ id: params.id });
+
+  const { data, isLoading, isError } = useGetFieldsBlockQuery({
+    id: params.id,
+  });
 
   if (isLoading) {
     return <GlobalLoader height={"70vh"} />;
@@ -33,8 +35,22 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const { id, label, description, heading, legalDocument, blocks } =
-    data?.data as IFormStep;
+  console.log(data, isLoading, isError);
+
+  const {
+    id: blockId,
+    label: blockLabel,
+    description: blockDescription,
+    fields,
+    step,
+  } = data?.data as IFieldsBlock;
+
+  const {
+    legalDocument,
+    label: stepLabel,
+    description: stepDescription,
+    heading,
+  } = step as IFormStep;
 
   const { type, title, country } = legalDocument as ILegalDocument;
 
@@ -84,33 +100,66 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
       </Box>
 
       <Box display="flex" justifyContent="space-between" alignItems="start">
-        <Box marginY={"20px"}>
-          <Typography
-            variant="h3"
-            sx={{
-              color: theme.colorConstants.primaryDarkBlue,
-            }}
-          >
-            {label}
-          </Typography>
+        <Box display="flex" alignItems={"center"}>
+          <Box marginY={"20px"}>
+            <Typography
+              variant="h4"
+              sx={{
+                color: theme.colorConstants.primaryDarkBlue,
+                fontSize: "24px",
+              }}
+            >
+              {stepLabel}
+            </Typography>
 
-          <Typography
-            variant="h5"
-            sx={{
-              color: theme.colorConstants.primaryDarkBlue,
-            }}
-          >
-            {heading}
-          </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                color: theme.colorConstants.primaryDarkBlue,
+                fontSize: "16px",
+              }}
+            >
+              {heading}
+            </Typography>
 
-          <Typography
-            variant="body1"
-            sx={{
-              color: theme.colorConstants.primaryDarkBlue,
-            }}
-          >
-            {description}
-          </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: theme.colorConstants.primaryDarkBlue,
+              }}
+            >
+              {stepDescription}
+            </Typography>
+          </Box>
+
+          <Box marginX="50px">
+            <East
+              sx={{
+                fontSize: "50px",
+              }}
+            />
+          </Box>
+
+          <Box marginY={"20px"}>
+            <Typography
+              variant="h4"
+              sx={{
+                color: theme.colorConstants.primaryDarkBlue,
+                fontSize: "24px",
+              }}
+            >
+              {blockLabel}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              sx={{
+                color: theme.colorConstants.primaryDarkBlue,
+              }}
+            >
+              {blockDescription}
+            </Typography>
+          </Box>
         </Box>
 
         <Stack
@@ -134,13 +183,13 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
             variant="contained"
             sx={{ textTransform: "none" }}
           >
-            + Create Fields Block
+            + Create Form Field
           </Button>
         </Stack>
       </Box>
 
       <Box>
-        {blocks.length === 0 ? (
+        {fields.length === 0 ? (
           <Box
             display="flex"
             justifyContent="center"
@@ -151,17 +200,21 @@ const FieldBlock = ({ params }: { params: { id: string } }) => {
               variant="h4"
               sx={{ color: theme.colorConstants.primaryDarkBlue }}
             >
-              No Fields Blocks found! Create New
+              No Form Fields found! Create New
             </Typography>
           </Box>
         ) : (
-          <FieldBlockTable data={blocks as IFieldsBlock[]} />
+          <FormFieldTable data={fields as IFormField[]} />
         )}
       </Box>
 
-      <FieldBlockDrawer open={openDrawer} setOpen={setOpenDrawer} stepID={id} />
+      <FormFieldDrawer
+        setOpen={setOpenDrawer}
+        open={openDrawer}
+        blockId={blockId}
+      />
     </Box>
   );
 };
 
-export default FieldBlock;
+export default FormFields;

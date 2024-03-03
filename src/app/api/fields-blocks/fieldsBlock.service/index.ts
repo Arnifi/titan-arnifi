@@ -5,7 +5,9 @@ import Fields_Block, {
   IFieldsBlockFilters,
 } from "../fieldsBlock.model";
 import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
-import Form_Fields from "../../form-fields/formField.model";
+import Form_Fields, { IFormField } from "../../form-fields/formField.model";
+import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import httpStatus from "http-status";
 
 const findAll = async (
   filtersOptions: IFieldsBlockFilters
@@ -40,7 +42,28 @@ const findAll = async (
 
 const findOne = async (id: string): Promise<IFieldsBlock> => {
   const response = await Fields_Block.get(id);
-  return (await response?.populate())?.toJSON() as IFieldsBlock;
+
+  if (!response) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Fields Block Not Found");
+  }
+
+  const result = (await (await response?.populate())?.toJSON()) as IFieldsBlock;
+
+  if (result) {
+    const fieldsPromise = Promise.all(
+      result.fields.map(async (fieldId) => {
+        return (
+          await Form_Fields.get(fieldId as string)
+        ).toJSON() as IFormField;
+      })
+    );
+    const fields = await fieldsPromise;
+    result.fields = fields?.sort((a, b) => {
+      return a.createdAt < b.createdAt ? -1 : 1;
+    });
+  }
+
+  return result;
 };
 
 const create = async (data: IFieldsBlock) => {
