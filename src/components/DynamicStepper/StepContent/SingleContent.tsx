@@ -2,6 +2,7 @@ import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
 import { IFieldType, IFormField } from "@/app/api/form-fields/formField.model";
 import FormCheckboxField from "@/components/Form/ACheckboxField";
 import FormCountrySelectField from "@/components/Form/ACountrySelectField";
+import FormDateField from "@/components/Form/ADateField";
 import FormInputField from "@/components/Form/AInputField";
 import FormRadioField from "@/components/Form/ARadioField";
 import FormSelectField from "@/components/Form/ASelectField";
@@ -61,6 +62,12 @@ const SingleContent = ({
                   name={`${step}.${label}`}
                   label={label}
                   options={options as string[]}
+                />
+              ) : type === IFieldType.DATE ? (
+                <FormDateField
+                  name={`${step}.${label}`}
+                  label={label}
+                  required={isRequired}
                 />
               ) : null}
             </Grid>

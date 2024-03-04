@@ -15,6 +15,7 @@ import FormProvaider from "../Form";
 import { FormikValues } from "formik";
 import theme from "@/theme";
 import StepContent from "./StepContent";
+import ReviewContent from "./ReviewContent";
 
 const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
   const [activeStep, setActiveStep] = useState(() => {
@@ -81,7 +82,11 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
             submitHandlar={handleSubmit}
           >
             <Box>
-              <StepContent data={data[activeStep]} />
+              {activeStep === data?.length ? (
+                <ReviewContent data={data as IFormStep[]} />
+              ) : (
+                <StepContent data={data[activeStep]} />
+              )}
             </Box>
 
             <Box marginTop={"20px"}>

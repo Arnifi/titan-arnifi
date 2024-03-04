@@ -117,7 +117,7 @@ const MultipleContent = ({
                         />
                       ) : type === IFieldType.DATE ? (
                         <FormDateField
-                          name={label}
+                          name={`${step}.${index}.${label}`}
                           label={label}
                           required={isRequired}
                         />
