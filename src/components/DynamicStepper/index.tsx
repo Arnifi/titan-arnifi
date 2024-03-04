@@ -17,7 +17,11 @@ import theme from "@/theme";
 import StepContent from "./StepContent";
 
 const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(() => {
+    const storedData = localStorage.getItem("form-step");
+    return storedData ? JSON.parse(storedData) : 0;
+  });
+
   const [storedFormData] = useState<FormikValues>(() => {
     const storedData = localStorage.getItem("form-data");
     return storedData ? JSON.parse(storedData) : {};
@@ -27,6 +31,7 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
       console.log(formValues, "formValues");
     } else {
       setActiveStep(activeStep + 1);
+      localStorage.setItem("form-step", JSON.stringify(activeStep + 1));
     }
   };
 
@@ -83,7 +88,13 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
               <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>
                 <Button
                   disabled={activeStep === 0}
-                  onClick={() => setActiveStep(activeStep - 1)}
+                  onClick={() => {
+                    setActiveStep(activeStep - 1);
+                    localStorage.setItem(
+                      "form-step",
+                      JSON.stringify(activeStep - 1)
+                    );
+                  }}
                   variant="contained"
                 >
                   Preview

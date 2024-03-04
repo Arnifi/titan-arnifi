@@ -2,6 +2,7 @@ import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
 import { IFieldType, IFormField } from "@/app/api/form-fields/formField.model";
 import FormCheckboxField from "@/components/Form/ACheckboxField";
 import FormCountrySelectField from "@/components/Form/ACountrySelectField";
+import FormDateField from "@/components/Form/ADateField";
 import FormInputField from "@/components/Form/AInputField";
 import FormRadioField from "@/components/Form/ARadioField";
 import FormSelectField from "@/components/Form/ASelectField";
@@ -25,16 +26,25 @@ const MultipleContent = ({
   data: IFieldsBlock;
   step: string;
 }) => {
-  const [stepStoredData, setStepStoredData] = useState(() => {
+  const [storedData] = useState(() => {
     const storedData = localStorage.getItem("form-data");
-    const formData = storedData ? JSON.parse(storedData) : {};
-    return formData[step];
+    return storedData ? JSON.parse(storedData) : {};
   });
+  const [stepStoreData, setStepStoredData] = useState(storedData[step] || {});
+
+  const removeHandelar = (index: number) => {
+    const remain = stepStoreData?.filter((_: any, i: number) => i !== index);
+    setStepStoredData(remain);
+    localStorage.setItem(
+      "form-data",
+      JSON.stringify({ ...storedData, [step]: remain })
+    );
+  };
 
   return (
     <Box>
       <Paper sx={{ padding: "30px" }} variant="outlined">
-        {Array.from({ length: stepStoredData?.length || 1 }).map((_, index) => (
+        {Array.from({ length: stepStoreData?.length || 1 }).map((_, index) => (
           <Box key={index} marginBottom={"30px"}>
             <Box
               sx={{
@@ -49,9 +59,7 @@ const MultipleContent = ({
 
               {index > 0 && (
                 <IconButton
-                  onClick={() => {
-                    setStepStoredData(stepStoredData?.splice(index, 1));
-                  }}
+                  onClick={() => removeHandelar(index)}
                   size="small"
                   color="error"
                 >
@@ -107,6 +115,12 @@ const MultipleContent = ({
                           label={label}
                           options={options as string[]}
                         />
+                      ) : type === IFieldType.DATE ? (
+                        <FormDateField
+                          name={label}
+                          label={label}
+                          required={isRequired}
+                        />
                       ) : null}
                     </Grid>
                   );
@@ -120,7 +134,7 @@ const MultipleContent = ({
       <Stack marginY={2} justifyContent={"flex-end"} direction={"row"}>
         <Button
           onClick={() => {
-            setStepStoredData([...stepStoredData, {}]);
+            setStepStoredData([...stepStoreData, {}]);
           }}
           sx={{ textTransform: "capitalize" }}
           variant="contained"
