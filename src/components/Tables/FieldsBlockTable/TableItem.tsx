@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
-import FieldBlockDrawer from "@/components/Editors/Drawers/FieldBlockDrawer";
+import FieldBlockDrawer from "@/components/Drawers/FieldBlockDrawer";
 import { useDeleteFieldsBlockMutation } from "@/lib/Redux/features/fieldsBlock/fieldsBlockApi";
 
 const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {

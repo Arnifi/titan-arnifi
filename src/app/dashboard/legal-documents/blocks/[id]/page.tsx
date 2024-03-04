@@ -3,7 +3,7 @@
 import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
 import { IFormStep } from "@/app/api/form-steps/formStep.model";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
-import FieldBlockDrawer from "@/components/Editors/Drawers/FieldBlockDrawer";
+import FieldBlockDrawer from "@/components/Drawers/FieldBlockDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
 import FieldBlockTable from "@/components/Tables/FieldsBlockTable";

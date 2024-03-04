@@ -1,7 +1,25 @@
 import { $isAtNodeEnd } from "@lexical/selection";
-import { ReactElement, JSXElementConstructor, ReactNode, Key } from "react";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  Key,
+  ChangeEvent,
+} from "react";
 
-export const Select = ({ onChange, className, options, value }) => (
+interface SelectProps {
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  className?: string;
+  options: string[];
+  value: string;
+}
+
+export const Select: React.FC<SelectProps> = ({
+  onChange,
+  className,
+  options,
+  value,
+}) => (
   <select className={className} onChange={onChange} value={value}>
     <option hidden={true} value="" />
     {options.map((option) => (
@@ -12,7 +30,7 @@ export const Select = ({ onChange, className, options, value }) => (
   </select>
 );
 
-export const GetSelectedNode = (selection) => {
+export const GetSelectedNode = (selection: any) => {
   const anchor = selection.anchor;
   const focus = selection.focus;
   const anchorNode = selection.anchor.getNode();

@@ -1,9 +1,9 @@
 import { BeautifulMentionsPlugin } from "lexical-beautiful-mentions";
 import { Combobox, ComboboxItem } from "./Combobox";
 import { getVariableKeys } from "./GetVariableKeys";
-import { ILegal } from "@/components/Tables";
+import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 
-const MentionsVarible = ({ data }: { data: ILegal }) => {
+const MentionsVarible = ({ data }: { data: ILegalDocument }) => {
   const mentionItems = {
     "@": getVariableKeys(data).map((item) => item.label),
   };

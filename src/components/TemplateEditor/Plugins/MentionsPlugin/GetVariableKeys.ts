@@ -1,35 +1,41 @@
-import { IFieldsBlock } from "@/app/dashboard/legals-docs/step-fields/[id]/page";
-import { IFormField } from "@/components/Drawers/FormFieldsDrawer";
-import { ILegal } from "@/components/Tables";
+import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
+import { IFormStep } from "@/app/api/form-steps/formStep.model";
+import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 
-export const getVariableKeys = (data: ILegal) => {
+export const getVariableKeys = (data: ILegalDocument) => {
   const variableKeys: {
     label: string;
     key?: string;
     value?: { key: string; value: string };
   }[] = [];
 
-  const formSteps = data?.steps;
+  const formSteps = data?.steps as IFormStep[];
 
   formSteps.map((step) => {
     const lebel = step?.label;
-    step.blocks.map((block: IFieldsBlock) => {
-      if (block.type === "Single") {
-        block?.fields?.map((field: IFormField) => {
-          variableKeys.push({
-            label: `{{${lebel.split(" ").join("")}_${field.label
-              .split(" ")
-              .join("")}}}`,
+    step.blocks.map((block: IFieldsBlock | string) => {
+      if (typeof block !== "string") {
+        if (block.type === "Single") {
+          block?.fields?.map((field) => {
+            if (typeof field !== "string") {
+              variableKeys.push({
+                label: `{{${lebel.split(" ").join("")}_${field.label
+                  .split(" ")
+                  .join("")}}}`,
+              });
+            }
           });
-        });
-      } else if (block.type === "Multiple") {
-        block?.fields?.map((field: IFormField) => {
-          variableKeys.push({
-            label: `{{${lebel.split(" ").join("")}_[ ]_${field.label
-              .split(" ")
-              .join("")}}}`,
+        } else if (block.type === "Multiple") {
+          block?.fields?.map((field) => {
+            if (typeof field !== "string") {
+              variableKeys.push({
+                label: `{{${lebel.split(" ").join("")}_[ ]_${field.label
+                  .split(" ")
+                  .join("")}}}`,
+              });
+            }
           });
-        });
+        }
       }
     });
   });

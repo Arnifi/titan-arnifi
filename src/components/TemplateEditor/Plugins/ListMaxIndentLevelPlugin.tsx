@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { $getListDepth, $isListItemNode, $isListNode } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
@@ -38,7 +37,7 @@ function isIndentPermitted(maxDepth: any) {
 
   let totalDepth = 0;
 
-  for (const elementNode of elementNodesInSelection) {
+  for (const elementNode of elementNodesInSelection as any) {
     if ($isListNode(elementNode)) {
       totalDepth = Math.max($getListDepth(elementNode) + 1, totalDepth);
     } else if ($isListItemNode(elementNode)) {

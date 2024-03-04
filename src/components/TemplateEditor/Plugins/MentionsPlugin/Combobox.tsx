@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BeautifulMentionsComboboxItemProps,
   BeautifulMentionsComboboxProps,
 } from "lexical-beautiful-mentions";
 import { forwardRef } from "react";
 
-/**
- * Combobox component for the BeautifulMentionsPlugin.
- */
 export const Combobox = forwardRef<any, BeautifulMentionsComboboxProps>(
   ({ loading, ...other }, ref) => {
     if (loading) {
