@@ -13,7 +13,13 @@ import editorConfig from "./config";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
-import { $getRoot, $insertNodes, EditorState, LexicalEditor } from "lexical";
+import {
+  $getRoot,
+  $getSelection,
+  $insertNodes,
+  EditorState,
+  LexicalEditor,
+} from "lexical";
 import { BeautifulMentionNode } from "lexical-beautiful-mentions";
 import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin";
 import ListMaxIndentLevelPlugin from "./Plugins/ListMaxIndentLevelPlugin";
@@ -36,10 +42,11 @@ function MyCustomAutoFocusPlugin() {
   return null;
 }
 
-const ConvertToHtmlPlugin = () => {
+const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
   const [editor] = useLexicalComposerContext();
   const { values, setFieldValue }: FormikContextType<FormikValues> =
     useFormikContext();
+
   useEffect(() => {
     if (values?.htmlTemp) {
       const parser = new DOMParser();
@@ -62,72 +69,18 @@ const ConvertToHtmlPlugin = () => {
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const tmp = $generateHtmlFromNodes(editor);
+        localStorage.setItem(
+          "templates",
+          JSON.stringify({
+            [docName]: tmp,
+          })
+        );
         return setFieldValue("htmlTemp", tmp);
       });
     });
-  }, [editor, setFieldValue, values]);
+  }, [editor, setFieldValue, values, docName]);
 
-  // editor.update(() => {
-  //   const dom = parser.parseFromString(value, "text/html");
-  //   const nodes = $generateNodesFromDOM(editor, dom);
-  //   const root = $getRoot();
-
-  //   if (!root.isEmpty()) {
-  //     root.clear();
-  //   }
-
-  //   $insertNodes(nodes);
-  // });
-
-  // useEffect(() => {
-  //   const parser = new DOMParser();
-
-  //   if (value) {
-  //     editor.update(() => {
-  //       const dom = parser.parseFromString(value, "text/html");
-  //       const nodes = $generateNodesFromDOM(editor, dom);
-  //       const root = $getRoot();
-
-  //       if (!root.isEmpty()) {
-  //         root.clear();
-  //       }
-
-  //       $insertNodes(nodes);
-  //     });
-  //   }
-  //   editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
-  //     textNode.__trigger = "";
-  //   });
-
-  //   editor.registerUpdateListener(({ editorState }) => {
-  //     editorState.read(() => {
-  //       const tmp = $generateHtmlFromNodes(editor);
-  //       console.log("html", tmp);
-  //       // return setValue(docName, tmp);
-  //     });
-  //   });
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // return null;
-};
-
-const handelOnChange = (
-  editorState: EditorState,
-  editor: LexicalEditor,
-  tags: Set<string>
-) => {
-  // editor.update(() => {
-  //   // if (!root.isEmpty()) {
-  //   //   root.clear();
-  //   // }
-  // });
-  // editorState.read(() => {
-  //   const root = $getRoot();
-  //   const selection = $getSelection();
-  //   console.log(root, selection);
-  // });
+  return null;
 };
 
 const ArnifiRichEditor = ({ document }: { document: ILegalDocument }) => {
@@ -142,16 +95,13 @@ const ArnifiRichEditor = ({ document }: { document: ILegalDocument }) => {
             placeholder={<Box></Box>}
             ErrorBoundary={LexicalErrorBoundary}
           />
-          <OnChangePlugin onChange={handelOnChange} />
           <HistoryPlugin />
-          <HistoryPlugin />
-          <ListPlugin />
           <LinkPlugin />
           <MentionsPlugin data={document} />
           <PlaygroundAutoLinkPlugin />
           <CodeHighlightPlugin />
           <ListMaxIndentLevelPlugin />
-          {/* <ConvertToHtmlPlugin /> */}
+          <ConvertToHtmlPlugin docName={document?.title} />
         </Box>
       </LexicalComposer>
     </Box>

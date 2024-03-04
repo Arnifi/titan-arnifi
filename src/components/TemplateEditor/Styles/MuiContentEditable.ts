@@ -11,7 +11,8 @@ export const MuiContentEditable = styled(ContentEditable)({
   overflow: "none",
   gutter: "0px",
   background: "white",
-  margin: "20px auto",
+  margin: "5px auto",
+  color: "black",
 });
 
 export const placeHolderSx = {

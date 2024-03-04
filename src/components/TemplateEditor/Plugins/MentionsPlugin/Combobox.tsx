@@ -44,23 +44,22 @@ Combobox.displayName = "Combobox";
 export const ComboboxItem = forwardRef<
   HTMLLIElement,
   BeautifulMentionsComboboxItemProps
->(({ selected, ...props }, ref) => (
-  <>
-    <li
-      ref={ref}
-      style={{
-        cursor: "pointer",
-        padding: "8px",
-        fontFamily: "sans-serif",
-        fontSize: "14px",
-        borderRadius: "5px",
-        ...(selected && {
-          background: "#eee",
-        }),
-      }}
-      {...props}
-    />
-  </>
+>(({ selected, itemValue, ...props }, ref) => (
+  <li
+    ref={ref}
+    style={{
+      cursor: "pointer",
+      fontWeight: "bold",
+      padding: "5px",
+      fontSize: "12px",
+      borderRadius: "5px",
+      ...(selected && {
+        background: "#eee",
+      }),
+    }}
+    {...props}
+    data-itemvalue={itemValue}
+  />
 ));
 
 ComboboxItem.displayName = "ComboboxItem";
