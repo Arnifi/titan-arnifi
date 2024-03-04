@@ -1,7 +1,7 @@
 "use client";
 import { IFormStep } from "@/app/api/form-steps/formStep.model";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
-import FormStepDrawer from "@/components/Drawers/FormStepDrawer";
+import FormStepDrawer from "@/components/Editors/Drawers/FormStepDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
 import FormStepTable from "@/components/Tables/FormStepTable";

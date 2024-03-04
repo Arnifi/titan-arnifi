@@ -9,13 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import FormProvaider from "../Form";
-import FormInputField from "../Form/AInputField";
-import FormSelectField from "../Form/ASelectField";
-import FormTextArea from "../Form/ATextArea";
+import FormProvaider from "@/components/Form";
+import FormInputField from "@/components/Form/AInputField";
+import FormSelectField from "@/components/Form/ASelectField";
+import FormTextArea from "@/components/Form/ATextArea";
 import { FormikValues } from "formik";
 import * as Yup from "yup";
-import FormCountrySelectField from "../Form/ACountrySelectField";
+import FormCountrySelectField from "@/components/Form/ACountrySelectField";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 import {
   useCreateNewDocumentMutation,

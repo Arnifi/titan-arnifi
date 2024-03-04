@@ -9,8 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import FormProvaider from "../Form";
-import FormInputField from "../Form/AInputField";
+import FormProvaider from "@/components/Form";
+import FormInputField from "@/components/Form/AInputField";
 import * as Yup from "yup";
 import { FormikValues } from "formik";
 import { IFormStep } from "@/app/api/form-steps/formStep.model";
