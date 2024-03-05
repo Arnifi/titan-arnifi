@@ -30,7 +30,7 @@ const MultipleContent = ({
     const storedData = localStorage.getItem("form-data");
     return storedData ? JSON.parse(storedData) : {};
   });
-  const [stepStoreData, setStepStoredData] = useState(storedData[step] || {});
+  const [stepStoreData, setStepStoredData] = useState(storedData[step] || []);
 
   const removeHandelar = (index: number) => {
     const remain = stepStoreData?.filter((_: any, i: number) => i !== index);
