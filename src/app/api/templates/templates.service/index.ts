@@ -11,18 +11,21 @@ const findAll = async (): Promise<ObjectType> => {
   });
 };
 
-const findOne = async (id: string) => {
-  const response = await Templates.get(id);
-  if (!response) {
+const findOne = async (documentID: string) => {
+  const response = await Templates.scan("document")
+    .eq(documentID)
+    .limit(1)
+    .exec();
+  const template = response[0];
+  if (!template) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Template Not Found");
   } else {
     const document = await LegalDocumentService.findOne(
-      response?.document as string
+      template?.document as string
     );
-    response.document = document;
+    template.document = document;
   }
-
-  return response;
+  return template;
 };
 
 const create = async (data: ITemplate) => {
