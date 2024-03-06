@@ -1,8 +1,7 @@
 import { ObjectType } from "dynamoose/dist/General";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
-import httpStatus from "http-status";
 import Templates, { ITemplate } from "../templates.model";
 import { LegalDocumentService } from "../../legal-documents/legalDocument.service";
+import { ILegalDocument } from "../../legal-documents/legalDocument.model";
 
 const findAll = async (): Promise<ObjectType> => {
   const response = await Templates.scan().exec();
@@ -11,25 +10,20 @@ const findAll = async (): Promise<ObjectType> => {
   });
 };
 
-const findOne = async (documentID: string) => {
-  const response = await Templates.scan("document")
-    .eq(documentID)
-    .limit(1)
-    .exec();
-  const template = response[0];
-  if (!template) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Template Not Found");
-  } else {
-    const document = await LegalDocumentService.findOne(
-      template?.document as string
-    );
-    template.document = document;
-  }
-  return template;
+const findOne = async (id: string) => {
+  const response = await Templates.get(id);
+  return response;
 };
 
 const create = async (data: ITemplate) => {
   const result = await Templates.create(data);
+
+  if (result?.id) {
+    await LegalDocumentService.updateOne(result?.document, {
+      template: result?.id,
+    } as ILegalDocument);
+  }
+
   return result;
 };
 
