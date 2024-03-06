@@ -3,13 +3,19 @@ import { ErrorOutline } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const GlobalError = ({ message }: { message?: string }) => {
+const GlobalError = ({
+  message,
+  height,
+}: {
+  message?: string;
+  height?: string;
+}) => {
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
-      height="40vh"
+      height={height || "40vh"}
       flexDirection="column"
     >
       <ErrorOutline color="error" sx={{ fontSize: "50px" }} />

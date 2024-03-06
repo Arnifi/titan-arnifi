@@ -1,10 +1,5 @@
 import theme from "@/theme";
-import {
-  Box,
-  InputAdornment,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
+import { Box, TextareaAutosize, Typography } from "@mui/material";
 import { Field, FieldProps } from "formik";
 import React from "react";
 
@@ -26,7 +21,6 @@ const FormTextArea: React.FC<ITexArea> = ({
   name,
   label,
   placeholder,
-  icon,
   inline,
 }) => {
   return (

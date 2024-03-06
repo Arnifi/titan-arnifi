@@ -23,7 +23,7 @@ export interface ILegalDocument extends Document {
   status: boolean;
   downloadCount: number;
   metaData: string;
-  steps: string[] | IFormStep[];
+  steps: IFormStep[] | string[];
 }
 
 const legalDocumentSchema = new dynamoose.Schema(

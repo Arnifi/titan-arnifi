@@ -2,32 +2,32 @@ import {
   Box,
   IconButton,
   Stack,
-  Switch,
   TableCell,
   TableRow,
   Typography,
 } from "@mui/material";
 import React from "react";
-import { Edit, Delete, Description } from "@mui/icons-material";
+import { Edit, Delete } from "@mui/icons-material";
 import GlobalModal from "../../Modals/GlobalModal";
 
 import Link from "next/link";
-import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
-import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
-import { useDeleteDocumentMutation } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
+import { IFormStep } from "@/app/api/form-steps/formStep.model";
+import FormStepDrawer from "@/components/Drawers/FormStepDrawer";
+import { useDeleteFormStepMutation } from "@/lib/Redux/features/formStep/formStepApi";
 
-const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
+const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
-  const { id, title, country, type, steps, status } = data || {};
-  const [deleteDocument, { isLoading }] = useDeleteDocumentMutation();
+
+  const [deleteFormStep, { isLoading }] = useDeleteFormStepMutation();
+  const { id, legalDocument, label, heading, description, blocks } = data;
 
   const dispatch = useAppDispatch();
-  const handleLegalDelete = async () => {
+  const handleDelete = async () => {
     try {
-      await deleteDocument({ id })
+      await deleteFormStep({ id })
         .unwrap()
         .then((res) => {
           dispatch(
@@ -53,14 +53,17 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
 
   const modalInfo = (
     <Box>
-      <Typography sx={{ textTransform: "capitalize" }}>
-        Document Title: <strong>{title}</strong>
+      <Typography>
+        Form Step: <strong>{label}</strong>
       </Typography>
       <Typography>
-        Country: <strong>{country}</strong>
+        Heading: <strong>{heading ? "Yes" : "No"}</strong>
       </Typography>
       <Typography>
-        Type: <strong>{type}</strong>
+        Description: <strong>{description ? "Yes" : "No"}</strong>
+      </Typography>
+      <Typography>
+        Total Fields Blocks: <strong>{blocks?.length}</strong>
       </Typography>
     </Box>
   );
@@ -69,14 +72,12 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
     <>
       <TableRow hover>
         <TableCell align="center">{sl}.</TableCell>
-        <TableCell sx={{ textTransform: "capitalize" }} align="left">
-          {title}
+        <TableCell align="left">{label}</TableCell>
+        <TableCell align="center">
+          <Typography variant="h5">{heading ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>{country}</Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography>{type}</Typography>
+          <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell sx={{ display: "flex", justifyContent: "center" }}>
           <Link href={`/dashboard/legal-documents/steps/${id}`}>
@@ -88,23 +89,11 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
                 height: "50px",
               }}
             >
-              {steps?.length}
+              {blocks?.length}
             </IconButton>
           </Link>
-        </TableCell>
-        <TableCell align="center">
-          <Box>
-            <Switch value={status} color="default" />
-          </Box>
         </TableCell>
 
-        <TableCell align="center">
-          <Link href={`/dashboard/legals-docs/templates/${id}`}>
-            <IconButton>
-              <Description />
-            </IconButton>
-          </Link>
-        </TableCell>
         <TableCell align="right">
           <Stack justifyContent="center" direction="row" spacing={2}>
             <IconButton onClick={() => setOpenDrawer(true)}>
@@ -119,12 +108,18 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
       <GlobalModal
         open={openModal}
         setOpen={setOpenModal}
-        okFn={handleLegalDelete}
-        title="Are you sure delete this Document?"
+        okFn={handleDelete}
+        title="Are you sure delete this Form Step?"
         info={modalInfo}
         loading={isLoading}
       />
-      <LegalDocDrawer setOpen={setOpenDrawer} open={openDrawer} values={data} />
+
+      <FormStepDrawer
+        legalID={legalDocument as string}
+        setOpen={setOpenDrawer}
+        open={openDrawer}
+        values={data}
+      />
     </>
   );
 };

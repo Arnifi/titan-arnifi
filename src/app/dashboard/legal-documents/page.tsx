@@ -114,10 +114,21 @@ const LegalDocuments = () => {
         <Box>
           {isLoading ? (
             <GlobalLoader />
-          ) : isError ? (
+          ) : isError || !data?.success ? (
             <GlobalError />
-          ) : (
+          ) : data?.data?.length > 0 ? (
             <LegalDocTable data={data?.data} />
+          ) : (
+            <Box
+              display="flex"
+              justifyContent="center"
+              height="40vh"
+              alignItems="center"
+            >
+              <Typography variant="h3">
+                No Documents found! Create New
+              </Typography>
+            </Box>
           )}
         </Box>
       </Box>
