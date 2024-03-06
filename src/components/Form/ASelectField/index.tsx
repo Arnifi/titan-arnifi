@@ -12,11 +12,6 @@ import { Field, FieldProps } from "formik";
 import React from "react";
 import theme from "@/theme";
 
-interface SelectOptions {
-  label: string;
-  value: string;
-}
-
 interface ISelect {
   name: string;
   options: string[];
@@ -65,11 +60,6 @@ const FormSelectField: React.FC<ISelect> = ({
                   getOptionLabel={(option) => option}
                   sx={{
                     width: "100%",
-                    "& .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-fullWidth.MuiAutocomplete-inputRoot.css-ghallm-MuiInputBase-root-MuiOutlinedInput-root":
-                      {
-                        height: "45px",
-                        padding: "0px 0px 0px 15px",
-                      },
                   }}
                   onChange={(_, value) => {
                     void form.setFieldValue(field.name, value ?? value);
@@ -104,10 +94,10 @@ const FormSelectField: React.FC<ISelect> = ({
                     required={required}
                     sx={{
                       width: "100%",
-                      height: "45px",
                       color: theme.colorConstants.darkGray,
                       fontSize: "14",
                       fontWeight: 500,
+                      textTransform: "capitalize",
                     }}
                     {...field}
                     name={name}
@@ -134,6 +124,7 @@ const FormSelectField: React.FC<ISelect> = ({
                           color: theme.colorConstants.darkGray,
                           fontSize: "14px",
                           fontWeight: 500,
+                          textTransform: "capitalize",
                         }}
                         key={item}
                         value={item}

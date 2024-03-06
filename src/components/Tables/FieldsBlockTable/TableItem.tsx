@@ -80,7 +80,7 @@ const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {
           <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell sx={{ display: "flex", justifyContent: "center" }}>
-          <Link href={`/dashboard/legal-documents/blocks/${id}`}>
+          <Link href={`/dashboard/legal-documents/fields/${id}`}>
             <IconButton
               sx={{
                 bgcolor: "#f9f9f9",
