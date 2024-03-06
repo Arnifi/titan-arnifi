@@ -19,7 +19,6 @@ const templateSchema = new dynamoose.Schema(
     },
 
     document: Legal_Documents,
-
     htmlTemp: {
       type: String,
       required: true,
