@@ -24,6 +24,8 @@ export interface IFieldsBlock extends Document {
   label: string;
   description: string;
   fields: string[] | IFormField[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const fieldsBlockSchema = new dynamoose.Schema(

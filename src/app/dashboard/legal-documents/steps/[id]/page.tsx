@@ -16,7 +16,7 @@ const FormSteps = ({ params }: { params: { id: string } }) => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const router = useRouter();
 
-  const { data, isLoading } = useGetLegalDocumentQuery({
+  const { data, isLoading, isError } = useGetLegalDocumentQuery({
     id: params.id,
   });
 
@@ -24,7 +24,7 @@ const FormSteps = ({ params }: { params: { id: string } }) => {
     return <GlobalLoader height={"70vh"} />;
   }
 
-  if (!data?.success) {
+  if (!data?.success || isError) {
     return (
       <GlobalError
         height={"70vh"}

@@ -13,34 +13,33 @@ import GlobalModal from "../../Modals/GlobalModal";
 import Link from "next/link";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
-import { IFormStep } from "@/app/api/form-steps/formStep.model";
-import FormStepDrawer from "@/components/Drawers/FormStepDrawer";
-import { useDeleteFormStepMutation } from "@/lib/Redux/features/formStep/formStepApi";
+import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
+import FieldBlockDrawer from "@/components/Drawers/FieldBlockDrawer";
+import { useDeleteFieldsBlockMutation } from "@/lib/Redux/features/fieldsBlock/fieldsBlockApi";
 
-const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
+const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
 
-  const [deleteFormStep, { isLoading }] = useDeleteFormStepMutation();
-  const { id, legalDocument, label, heading, description, blocks } = data;
+  const [deleteFieldsBlock, { isLoading }] = useDeleteFieldsBlockMutation();
+  const { step, id, label, isShow, description, fields, type } = data;
 
   const dispatch = useAppDispatch();
   const handleDelete = async () => {
     try {
-      await deleteFormStep({ id })
+      await deleteFieldsBlock({ id })
         .unwrap()
         .then((res) => {
           dispatch(
             openSnackbar({
               isOpen: true,
-              message: res?.message || "Document deleted successfully",
+              message: res?.message,
               type: res?.success ? "success" : "error",
             })
           );
           setOpenModal(false);
         });
     } catch (error) {
-      console.error(error);
       dispatch(
         openSnackbar({
           isOpen: true,
@@ -54,16 +53,16 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
   const modalInfo = (
     <Box>
       <Typography>
-        Form Step: <strong>{label}</strong>
+        Fields Block: <strong>{label}</strong>
       </Typography>
       <Typography>
-        Heading: <strong>{heading ? "Yes" : "No"}</strong>
+        Showing: <strong>{isShow ? "Yes" : "No"}</strong>
       </Typography>
       <Typography>
         Description: <strong>{description ? "Yes" : "No"}</strong>
       </Typography>
       <Typography>
-        Total Fields Blocks: <strong>{blocks?.length}</strong>
+        Total Fields Blocks: <strong>{fields?.length}</strong>
       </Typography>
     </Box>
   );
@@ -73,8 +72,9 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
       <TableRow hover>
         <TableCell align="center">{sl}.</TableCell>
         <TableCell align="left">{label}</TableCell>
+        <TableCell align="center">{type}</TableCell>
         <TableCell align="center">
-          <Typography variant="h5">{heading ? "Yes" : "No"}</Typography>
+          <Typography variant="h5">{isShow ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell align="center">
           <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
@@ -89,7 +89,7 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
                 height: "50px",
               }}
             >
-              {blocks?.length}
+              {fields?.length}
             </IconButton>
           </Link>
         </TableCell>
@@ -109,13 +109,13 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
         open={openModal}
         setOpen={setOpenModal}
         okFn={handleDelete}
-        title="Are you sure delete this Form Step?"
+        title="Are you sure delete this Fields Block?"
         info={modalInfo}
         loading={isLoading}
       />
 
-      <FormStepDrawer
-        legalID={legalDocument as string}
+      <FieldBlockDrawer
+        stepID={step as string}
         setOpen={setOpenDrawer}
         open={openDrawer}
         values={data}
