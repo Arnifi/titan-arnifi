@@ -99,7 +99,7 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
         </TableCell>
 
         <TableCell align="center">
-          <Link href={`/dashboard/legals-docs/templates/${id}`}>
+          <Link href={`/dashboard/legal-documents/templates/${id}`}>
             <IconButton>
               <Description />
             </IconButton>

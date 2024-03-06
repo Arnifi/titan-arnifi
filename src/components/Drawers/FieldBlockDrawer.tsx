@@ -9,12 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import FormProvaider from "../Form";
-import FormInputField from "../Form/AInputField";
-import FormSelectField from "../Form/ASelectField";
+import FormProvaider from "@/components/Form";
+import FormInputField from "@/components/Form/AInputField";
+import FormSelectField from "@/components/Form/ASelectField";
 import * as Yup from "yup";
 import { FormikValues } from "formik";
-import FormCheckboxField from "../Form/ACheckboxField";
+import FormCheckboxField from "@/components/Form/ACheckboxField";
 import { IFieldsBlock } from "@/app/api/fields-blocks/fieldsBlock.model";
 import {
   useCreateFieldsBlockMutation,
