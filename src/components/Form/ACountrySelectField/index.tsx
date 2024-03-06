@@ -24,9 +24,13 @@ const countryesOptions: string[] = Array.from(
   new Set(getCountries()?.map((countryCode) => en[countryCode]))
 );
 
-const FormCountrySelectField: React.FC<ICountrySelect> = ({ name, label }) => {
+const FormCountrySelectField: React.FC<ICountrySelect> = ({
+  name,
+  label,
+  placeholder,
+}) => {
   return (
-    <Box>
+    <Box maxWidth={"500px"}>
       <Typography
         variant="body1"
         marginBottom={"10px"}
@@ -44,6 +48,7 @@ const FormCountrySelectField: React.FC<ICountrySelect> = ({ name, label }) => {
           return (
             <>
               <Autocomplete
+                aria-required
                 sx={{ width: "100%" }}
                 options={countryesOptions}
                 renderOption={(props, option) => (
@@ -58,7 +63,7 @@ const FormCountrySelectField: React.FC<ICountrySelect> = ({ name, label }) => {
                   return (
                     <TextField
                       {...params}
-                      placeholder={"Select Country"}
+                      placeholder={placeholder}
                       variant="outlined"
                       inputProps={{
                         ...params.inputProps,

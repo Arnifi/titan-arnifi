@@ -58,6 +58,10 @@ const LegalDocTable = ({ data }: { data: ILegalDocument[] }) => {
       align: "center",
     },
     {
+      label: "Created Form",
+      align: "center",
+    },
+    {
       label: "Action",
       align: "center",
     },

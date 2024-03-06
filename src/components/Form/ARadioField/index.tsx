@@ -10,12 +10,8 @@ import { Field, FieldProps } from "formik";
 import React from "react";
 import theme from "@/theme";
 
-interface SelectOptions {
-  label: string;
-  value: string | boolean;
-}
 interface IRadio {
-  options: SelectOptions[];
+  options: string[];
   name: string;
   label?: string | boolean;
 }
@@ -45,8 +41,8 @@ const FormRadioField: React.FC<IRadio> = ({ name, label, options }) => {
             >
               {options.map((item) => (
                 <FormControlLabel
-                  key={item.label}
-                  value={item.value}
+                  key={item}
+                  value={item}
                   control={<Radio />}
                   label={
                     <Typography
@@ -56,7 +52,7 @@ const FormRadioField: React.FC<IRadio> = ({ name, label, options }) => {
                         color: theme.colorConstants.darkGray,
                       }}
                     >
-                      {item.label}
+                      {item}
                     </Typography>
                   }
                 />

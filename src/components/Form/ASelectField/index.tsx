@@ -32,7 +32,7 @@ const FormSelectField: React.FC<ISelect> = ({
   required,
 }) => {
   return (
-    <Box>
+    <Box maxWidth={"500px"}>
       <Typography
         variant="body1"
         sx={{
@@ -46,7 +46,7 @@ const FormSelectField: React.FC<ISelect> = ({
 
       <Field name={name}>
         {({ field, meta, form }: FieldProps<string>) => {
-          const selectedOptions = options.find(
+          const selectedOptions = options?.find(
             (option) => option === field.value
           );
           return (
@@ -117,6 +117,7 @@ const FormSelectField: React.FC<ISelect> = ({
                     onChange={field.onChange}
                     onBlur={field.onBlur}
                     error={meta.touched && Boolean(meta.error)}
+                    MenuProps={{ disableScrollLock: true }}
                   >
                     {options?.map((item) => (
                       <MenuItem

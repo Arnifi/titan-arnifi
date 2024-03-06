@@ -99,7 +99,7 @@ const FormFields = ({ params }: { params: { id: string } }) => {
 
       <Box display="flex" justifyContent="space-between" alignItems="start">
         <Box display="flex" alignItems={"center"}>
-          <Box marginY={"20px"}>
+          <Box marginY={"20px"} maxWidth={"800px"}>
             <Typography
               variant="h4"
               sx={{
