@@ -1,6 +1,7 @@
 import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
 import { IFormStep } from "../../form-steps/formStep.model";
+import { ITemplate } from "../../templates/templates.model";
 
 export enum LegalType {
   Will = "Will",
@@ -24,6 +25,7 @@ export interface ILegalDocument extends Document {
   downloadCount: number;
   metaData: string;
   steps: IFormStep[] | string[];
+  template: string | ITemplate;
 }
 
 const legalDocumentSchema = new dynamoose.Schema(
@@ -62,6 +64,10 @@ const legalDocumentSchema = new dynamoose.Schema(
       type: Array,
       schema: [String],
       default: [],
+    },
+    template: {
+      type: String,
+      default: "",
     },
   },
   {

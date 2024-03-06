@@ -8,6 +8,7 @@ import Legal_Documents, {
 } from "../legalDocument.model";
 import Fields_Block from "../../fields-blocks/fieldsBlock.model";
 import Form_Fields from "../../form-fields/formField.model";
+import { TemplateService } from "../../templates/templates.service";
 
 const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
   const { search, ...filterData } = filtersOptions;
@@ -33,6 +34,11 @@ const findOne = async (id: string) => {
 
   if (!response) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Legal Document Not Found");
+  }
+
+  if (response?.template) {
+    const template = await TemplateService.findOne(response?.template);
+    response.template = template;
   }
 
   const stepsPromise = Promise.all(
