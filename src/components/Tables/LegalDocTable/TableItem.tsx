@@ -14,7 +14,10 @@ import GlobalModal from "../../Modals/GlobalModal";
 import Link from "next/link";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
-import { useDeleteDocumentMutation } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
+import {
+  useDeleteDocumentMutation,
+  useDocumentStatusToggleMutation,
+} from "@/lib/Redux/features/legalDocument/legalDocumentApi";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 
@@ -23,6 +26,7 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
   const [openDrawer, setOpenDrawer] = React.useState<boolean>(false);
   const { id, title, country, type, steps, status } = data || {};
   const [deleteDocument, { isLoading }] = useDeleteDocumentMutation();
+  const [documentStatusToggle] = useDocumentStatusToggleMutation();
 
   const dispatch = useAppDispatch();
   const handleLegalDelete = async () => {
@@ -38,6 +42,33 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
             })
           );
           setOpenModal(false);
+        });
+    } catch (error) {
+      console.error(error);
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Something went wrong",
+          type: "error",
+        })
+      );
+    }
+  };
+
+  const handleToggleStatus = async () => {
+    try {
+      await documentStatusToggle({ data })
+        .unwrap()
+        .then((res) => {
+          if (!res?.success) {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res?.message,
+                type: "error",
+              })
+            );
+          }
         });
     } catch (error) {
       console.error(error);
@@ -94,7 +125,11 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
         </TableCell>
         <TableCell align="center">
           <Box>
-            <Switch value={status} color="default" />
+            <Switch
+              onChange={handleToggleStatus}
+              checked={status}
+              color="primary"
+            />
           </Box>
         </TableCell>
 
