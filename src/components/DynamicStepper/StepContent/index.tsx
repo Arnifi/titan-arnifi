@@ -32,6 +32,7 @@ const StepContent = ({ data }: { data: IFormStep }) => {
                 )}
                 <SingleContent
                   step={data?.label}
+                  block={label}
                   data={block as IFieldsBlock}
                 />
               </Box>

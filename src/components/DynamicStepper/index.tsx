@@ -16,31 +16,65 @@ import { FormikValues } from "formik";
 import theme from "@/theme";
 import StepContent from "./StepContent";
 import ReviewContent from "./ReviewContent";
+import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
+import generateTemplate from "@/utils/client/generateTemplate";
+import prientAsPDF from "@/utils/client/prientPDF";
 
-const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
+const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
+  const [pdfLoading, setPdfLoading] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState(() => {
     const storedData = localStorage.getItem("form-step");
     return storedData ? JSON.parse(storedData) : 0;
   });
 
+  const formSteps = data?.steps as IFormStep[];
+
   const [storedFormData] = useState<FormikValues>(() => {
     const storedData = localStorage.getItem("form-data");
-    return storedData ? JSON.parse(storedData) : {};
+    return storedData !== null && storedData !== undefined
+      ? JSON.parse(storedData)
+      : {};
   });
-  const handleSubmit = (formValues: FormikValues) => {
-    if (activeStep === data?.length) {
-      console.log(formValues, "formValues");
+
+  const handleSubmit = async (formValues: FormikValues) => {
+    if (activeStep === formSteps?.length) {
+      setPdfLoading(true);
+      const template = generateTemplate(data as ILegalDocument, formValues);
+      await prientAsPDF(template, data?.title + ".pdf");
+
+      // const newWindow = window.open();
+      // if (newWindow) {
+      //   newWindow.document.open();
+      //   newWindow.document.write(template);
+      //   newWindow.document.close();
+      // } else {
+      //   alert("Popup window blocked. Please allow popups for this site.");
+      // }
+
+      setPdfLoading(false);
     } else {
       setActiveStep(activeStep + 1);
       localStorage.setItem("form-step", JSON.stringify(activeStep + 1));
     }
   };
 
+  // const handlePreviewPDF = () => {
+  //   const template = generateTemplate(data as ILegalDocument);
+  //   const newWindow = window.open();
+  //   if (newWindow) {
+  //     newWindow.document.open();
+  //     newWindow.document.write(template);
+  //     newWindow.document.close();
+  //   } else {
+  //     alert("Popup window blocked. Please allow popups for this site.");
+  //   }
+  // };
+
   return (
     <Paper sx={{ padding: "50px", bgcolor: "#EEEDEB", marginY: "50px" }}>
       <Box>
         <Stepper activeStep={activeStep} alternativeLabel>
-          {data.map((step: IFormStep) => (
+          {formSteps?.map((step: IFormStep) => (
             <Step key={step.id}>
               <StepLabel>{step.label}</StepLabel>
             </Step>
@@ -62,7 +96,7 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
               }}
               variant="h3"
             >
-              {data[activeStep]?.heading}
+              {formSteps[activeStep]?.heading}
             </Typography>
             <Typography
               gutterBottom
@@ -73,7 +107,7 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
               }}
               variant="body1"
             >
-              {data[activeStep]?.description}
+              {formSteps[activeStep]?.description}
             </Typography>
           </Box>
 
@@ -82,16 +116,17 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
             submitHandlar={handleSubmit}
           >
             <Box>
-              {activeStep === data?.length ? (
-                <ReviewContent data={data as IFormStep[]} />
+              {activeStep === formSteps?.length ? (
+                <ReviewContent data={formSteps as IFormStep[]} />
               ) : (
-                <StepContent data={data[activeStep]} />
+                <StepContent data={formSteps[activeStep]} />
               )}
             </Box>
 
             <Box marginTop={"20px"}>
               <Stack direction={"row"} spacing={2} justifyContent={"flex-end"}>
                 <Button
+                  sx={{ textTransform: "none" }}
                   disabled={activeStep === 0}
                   onClick={() => {
                     setActiveStep(activeStep - 1);
@@ -104,8 +139,18 @@ const DynamicStepper = ({ data }: { data: IFormStep[] }) => {
                 >
                   Preview
                 </Button>
-                <Button type="submit" variant="contained">
-                  Next
+
+                <Button
+                  sx={{ textTransform: "none" }}
+                  color={activeStep === formSteps?.length ? "error" : "primary"}
+                  type="submit"
+                  variant="contained"
+                >
+                  {activeStep === formSteps?.length
+                    ? pdfLoading
+                      ? "Please Wait"
+                      : "Prient PDF"
+                    : "Next"}
                 </Button>
               </Stack>
             </Box>
