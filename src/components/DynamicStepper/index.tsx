@@ -22,10 +22,7 @@ import prientAsPDF from "@/utils/client/prientPDF";
 
 const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
   const [pdfLoading, setPdfLoading] = useState<boolean>(false);
-  const [activeStep, setActiveStep] = useState(() => {
-    const storedData = localStorage.getItem("form-step");
-    return storedData ? JSON.parse(storedData) : 0;
-  });
+  const [activeStep, setActiveStep] = useState(0);
 
   const formSteps = data?.steps as IFormStep[];
 
@@ -43,7 +40,6 @@ const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
       await prientAsPDF(template, data?.title + ".pdf", setPdfLoading);
     } else {
       setActiveStep(activeStep + 1);
-      localStorage.setItem("form-step", JSON.stringify(activeStep + 1));
     }
   };
 

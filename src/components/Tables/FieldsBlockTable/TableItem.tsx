@@ -77,7 +77,9 @@ const TableItem = ({ data, sl }: { data: IFieldsBlock; sl: number }) => {
           <Typography variant="h5">{isShow ? "Yes" : "No"}</Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
+          <Typography variant="h5">
+            {description ? `${description.slice(0, 30)}...` : "No"}
+          </Typography>
         </TableCell>
         <TableCell sx={{ display: "flex", justifyContent: "center" }}>
           <Link href={`/dashboard/legal-documents/fields/${id}`}>

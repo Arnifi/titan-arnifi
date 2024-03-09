@@ -84,30 +84,39 @@ const FormSteps = ({ params }: { params: { id: string } }) => {
         </Box>
       </Box>
 
-      <Stack
-        sx={{
-          marginY: "20px",
-        }}
-        direction="row"
-        spacing={2}
-        justifyContent="flex-end"
-      >
-        <Button
-          onClick={handleReturn}
-          startIcon={<KeyboardReturn />}
-          variant="contained"
-          sx={{ textTransform: "none" }}
+      <Box display="flex" justifyContent="space-between">
+        <Typography
+          variant="h3"
+          sx={{ color: theme.colorConstants.primaryDarkBlue, paddingY: "10px" }}
         >
-          Back
-        </Button>
-        <Button
-          onClick={() => setOpenDrawer(true)}
-          variant="contained"
-          sx={{ textTransform: "none" }}
+          Form Steps
+        </Typography>
+
+        <Stack
+          sx={{
+            marginY: "20px",
+          }}
+          direction="row"
+          spacing={2}
+          justifyContent="flex-end"
         >
-          + Create New Step
-        </Button>
-      </Stack>
+          <Button
+            onClick={handleReturn}
+            startIcon={<KeyboardReturn />}
+            variant="contained"
+            sx={{ textTransform: "none" }}
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setOpenDrawer(true)}
+            variant="contained"
+            sx={{ textTransform: "none" }}
+          >
+            + Create New Step
+          </Button>
+        </Stack>
+      </Box>
 
       <Box>
         {isLoading ? (

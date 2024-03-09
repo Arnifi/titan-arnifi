@@ -99,7 +99,7 @@ const SideNav = () => {
             </Box>
           ))}
         </Stack>
-        <Button
+        {/* <Button
           startIcon={<Logout />}
           variant="contained"
           fullWidth
@@ -107,7 +107,7 @@ const SideNav = () => {
           sx={{ textTransform: "none", borderRadius: 1 }}
         >
           Logout
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );
