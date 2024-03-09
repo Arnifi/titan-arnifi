@@ -8,13 +8,11 @@ const generateTemplate = (
   document: ILegalDocument,
   formValues: FormikValues
 ): string => {
-  // const storedData = localStorage.getItem("form-data");
   const docTemplate = document?.template as ITemplate;
 
   const sourceTemp = docTemplate?.htmlTemp;
   const template = Handlebars.compile(sourceTemp);
   const formVariables = getVariableKeys(document);
-  // const formValues = JSON.parse(storedData as string) as FormikValues;
 
   const variablesObj: { [key: string]: string } = formVariables.reduce(
     (acc, item) => {

@@ -78,6 +78,14 @@ export const templateApi = baseApi.injectEndpoints({
         }
       },
     }),
+
+    generateTemplate: build.mutation({
+      query: ({ data }) => ({
+        url: `/templates/generate`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -86,4 +94,5 @@ export const {
   useGetTemplateQuery,
   useGetAllTemplatesQuery,
   useUpdateTemplateMutation,
+  useGenerateTemplateMutation,
 } = templateApi;

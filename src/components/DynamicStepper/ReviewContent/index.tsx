@@ -62,7 +62,6 @@ const ReviewContent = ({ data }: { data: IFormStep[] }) => {
                       </Typography>
                       <Typography sx={{ color: "black", fontWeight: 600 }}>
                         {values[step?.label][blockLabel][label]}
-                        {/* {JSON.stringify(values[step?.label][blockLabel][label])} */}
                       </Typography>
                     </Box>
                   );

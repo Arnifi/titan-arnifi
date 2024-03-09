@@ -40,35 +40,12 @@ const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
     if (activeStep === formSteps?.length) {
       setPdfLoading(true);
       const template = generateTemplate(data as ILegalDocument, formValues);
-      await prientAsPDF(template, data?.title + ".pdf");
-
-      // const newWindow = window.open();
-      // if (newWindow) {
-      //   newWindow.document.open();
-      //   newWindow.document.write(template);
-      //   newWindow.document.close();
-      // } else {
-      //   alert("Popup window blocked. Please allow popups for this site.");
-      // }
-
-      setPdfLoading(false);
+      await prientAsPDF(template, data?.title + ".pdf", setPdfLoading);
     } else {
       setActiveStep(activeStep + 1);
       localStorage.setItem("form-step", JSON.stringify(activeStep + 1));
     }
   };
-
-  // const handlePreviewPDF = () => {
-  //   const template = generateTemplate(data as ILegalDocument);
-  //   const newWindow = window.open();
-  //   if (newWindow) {
-  //     newWindow.document.open();
-  //     newWindow.document.write(template);
-  //     newWindow.document.close();
-  //   } else {
-  //     alert("Popup window blocked. Please allow popups for this site.");
-  //   }
-  // };
 
   return (
     <Paper sx={{ padding: "50px", bgcolor: "#EEEDEB", marginY: "50px" }}>

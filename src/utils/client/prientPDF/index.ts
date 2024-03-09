@@ -1,4 +1,10 @@
-const prientAsPDF = async (temp: string, fileName: string) => {
+import { Dispatch, SetStateAction } from "react";
+
+const prientAsPDF = async (
+  temp: string,
+  fileName: string,
+  setPdfLoading: Dispatch<SetStateAction<boolean>>
+) => {
   const html2pdf = (await import("html2pdf.js")).default;
 
   const options = {
@@ -36,6 +42,7 @@ const prientAsPDF = async (temp: string, fileName: string) => {
       const browserWindow = window.open("", "_blank");
 
       if (browserWindow) {
+        setPdfLoading(false);
         browserWindow.document.write(
           '<iframe src="' +
             pdfDataUri +
