@@ -4,9 +4,12 @@ module.exports = {
   async headers() {
     return [
       {
-        // matching all API routes
         source: "/api/:path*",
         headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "https://www.arnifi.com",
+          },
           {
             key: "Access-Control-Allow-Origin",
             value: "http://localhost:3001",
