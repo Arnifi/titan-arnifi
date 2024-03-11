@@ -31,7 +31,7 @@ const FormStepTable = ({ data }: { data: IFormStep[] }) => {
       align: "center",
     },
     {
-      label: "Fields Blocks",
+      label: "Create Fields Blocks",
       align: "center",
     },
     {

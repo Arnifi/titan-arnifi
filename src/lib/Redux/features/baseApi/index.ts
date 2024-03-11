@@ -4,7 +4,7 @@ const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: () => ({}),
-  tagTypes: ["documents", "steps", "blocks", "fields"],
+  tagTypes: ["documents", "steps", "blocks", "fields", "templates"],
 });
 
 export default baseApi;

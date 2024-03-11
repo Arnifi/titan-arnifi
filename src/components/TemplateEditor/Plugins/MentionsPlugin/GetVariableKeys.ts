@@ -6,22 +6,24 @@ export const getVariableKeys = (data: ILegalDocument) => {
   const variableKeys: {
     label: string;
     key?: string;
-    value?: { key: string; value: string };
   }[] = [];
 
   const formSteps = data?.steps as IFormStep[];
 
   formSteps.map((step) => {
-    const lebel = step?.label;
-    step.blocks.map((block: IFieldsBlock | string) => {
+    const stepLebel = step?.label;
+    const blocks = step?.blocks as IFieldsBlock[];
+    blocks.map((block, i: number) => {
+      const blockLabel = block.label;
       if (typeof block !== "string") {
         if (block.type === "Single") {
           block?.fields?.map((field) => {
             if (typeof field !== "string") {
               variableKeys.push({
-                label: `{{${lebel.split(" ").join("")}_${field.label
-                  .split(" ")
-                  .join("")}}}`,
+                label: `{{${stepLebel.split(" ").join("")}_${
+                  i + 1
+                }_${field.label.split(" ").join("")}}}`,
+                key: `${stepLebel}.${blockLabel}.${field.label}`,
               });
             }
           });
@@ -29,7 +31,7 @@ export const getVariableKeys = (data: ILegalDocument) => {
           block?.fields?.map((field) => {
             if (typeof field !== "string") {
               variableKeys.push({
-                label: `{{${lebel.split(" ").join("")}_[ ]_${field.label
+                label: `{{${stepLebel.split(" ").join("")}_[ ]_${field.label
                   .split(" ")
                   .join("")}}}`,
               });

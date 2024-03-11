@@ -35,7 +35,7 @@ const FieldBlockTable = ({ data }: { data: IFieldsBlock[] }) => {
       align: "center",
     },
     {
-      label: "Form Fields",
+      label: "Create Fields",
       align: "center",
     },
     {

@@ -19,6 +19,8 @@
     "dayjs": "^1.11.10",
     "dynamoose": "^4.0.0",
     "formik": "^2.4.5",
+    "handlebars": "^4.7.8",
+    "html2pdf.js": "^0.9.0",
     "http-status": "^1.7.4",
     "i": "^0.3.7",
     "lexical": "^0.13.1",

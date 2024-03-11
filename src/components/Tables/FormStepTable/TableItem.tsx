@@ -4,6 +4,7 @@ import {
   Stack,
   TableCell,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -74,10 +75,18 @@ const TableItem = ({ data, sl }: { data: IFormStep; sl: number }) => {
         <TableCell align="center">{sl}.</TableCell>
         <TableCell align="left">{label}</TableCell>
         <TableCell align="center">
-          <Typography variant="h5">{heading ? "Yes" : "No"}</Typography>
+          <Tooltip title={heading}>
+            <Typography variant="h5">
+              {heading ? `${heading.slice(0, 30)}...` : "No"}
+            </Typography>
+          </Tooltip>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="h5">{description ? "Yes" : "No"}</Typography>
+          <Tooltip title={description}>
+            <Typography variant="h5">
+              {description ? `${heading.slice(0, 30)}...` : "No"}
+            </Typography>
+          </Tooltip>
         </TableCell>
         <TableCell sx={{ display: "flex", justifyContent: "center" }}>
           <Link href={`/dashboard/legal-documents/blocks/${id}`}>

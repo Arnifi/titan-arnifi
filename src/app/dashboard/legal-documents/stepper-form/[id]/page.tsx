@@ -103,7 +103,7 @@ const StepperForm = ({ params }: { params: { id: string } }) => {
       </Box>
 
       <Box marginTop="50px" maxWidth={"1200px"} marginX={"auto"}>
-        <DynamicStepper data={steps as IFormStep[]} />
+        <DynamicStepper data={data?.data as ILegalDocument} />
       </Box>
     </Box>
   );

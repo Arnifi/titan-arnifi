@@ -51,7 +51,7 @@ const FieldBlockDrawer: React.FC<IFieldBlockDrawerProps> = ({
   const initialValues = {
     step: stepID,
     label: values?.label || "",
-    type: values?.type || "",
+    type: values?.type || "Single",
     isShow: values?.isShow || false,
     description: values?.description || "",
   };
@@ -148,7 +148,7 @@ const FieldBlockDrawer: React.FC<IFieldBlockDrawerProps> = ({
                   name="type"
                   label="Select Fields Block Type"
                   placeholder="Select"
-                  options={["Single", "Multiple"]}
+                  options={["Single"]}
                   required
                 />
               </Box>

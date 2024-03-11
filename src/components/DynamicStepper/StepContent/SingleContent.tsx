@@ -12,9 +12,11 @@ import React from "react";
 const SingleContent = ({
   data,
   step,
+  block,
 }: {
   data: IFieldsBlock;
   step: string;
+  block: string;
 }) => {
   return (
     <Box>
@@ -29,20 +31,23 @@ const SingleContent = ({
             isCountriesOption,
             width,
           } = field as IFormField;
+
+          const fieldName = `${step}.${block}.${label}`;
+
           return (
             <Grid item xs={width} key={i}>
               {type === IFieldType.TEXT ||
               type === IFieldType.EMAIL ||
               type === IFieldType.NUMBER ? (
                 <FormInputField
-                  name={`${step}.${label}`}
+                  name={`${step}.${block}.${label}`}
                   label={label}
                   placeholder={placeholder}
                   required={isRequired}
                 />
               ) : type === IFieldType.SELECT && !isCountriesOption ? (
                 <FormSelectField
-                  name={`${step}.${label}`}
+                  name={fieldName}
                   label={label}
                   placeholder={placeholder}
                   required={isRequired}
@@ -50,7 +55,7 @@ const SingleContent = ({
                 />
               ) : type === IFieldType.SELECT && isCountriesOption ? (
                 <FormCountrySelectField
-                  name={`${step}.${label}`}
+                  name={fieldName}
                   label={label}
                   required={isRequired}
                   placeholder={placeholder}
@@ -59,13 +64,13 @@ const SingleContent = ({
                 <FormCheckboxField name={`${step}.${label}`} label={label} />
               ) : type === IFieldType.RADIO ? (
                 <FormRadioField
-                  name={`${step}.${label}`}
+                  name={fieldName}
                   label={label}
                   options={options as string[]}
                 />
               ) : type === IFieldType.DATE ? (
                 <FormDateField
-                  name={`${step}.${label}`}
+                  name={fieldName}
                   label={label}
                   required={isRequired}
                 />

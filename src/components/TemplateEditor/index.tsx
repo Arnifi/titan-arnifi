@@ -3,34 +3,21 @@ import { useEffect } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { MuiContentEditable } from "./Styles/MuiContentEditable";
 import { Box } from "@mui/material";
 import "./Styles/LexicalThemeStyle.css";
 import editorConfig from "./config";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
-import {
-  $getRoot,
-  $getSelection,
-  $insertNodes,
-  EditorState,
-  LexicalEditor,
-} from "lexical";
+import { $getRoot, $insertNodes } from "lexical";
 import { BeautifulMentionNode } from "lexical-beautiful-mentions";
 import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin";
 import ListMaxIndentLevelPlugin from "./Plugins/ListMaxIndentLevelPlugin";
 import PlaygroundAutoLinkPlugin from "./Plugins/AutoLinkPlugin";
 import Toolsbar from "./Toolsbar";
-import {
-  FormikComputedProps,
-  FormikContextType,
-  FormikValues,
-  useFormikContext,
-} from "formik";
+import { FormikContextType, FormikValues, useFormikContext } from "formik";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 
 function MyCustomAutoFocusPlugin() {
@@ -62,6 +49,10 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
         $insertNodes(nodes);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
+
+  useEffect(() => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
     });
@@ -69,12 +60,6 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const tmp = $generateHtmlFromNodes(editor);
-        localStorage.setItem(
-          "templates",
-          JSON.stringify({
-            [docName]: tmp,
-          })
-        );
         return setFieldValue("htmlTemp", tmp);
       });
     });

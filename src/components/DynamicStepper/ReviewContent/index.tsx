@@ -33,13 +33,18 @@ const ReviewContent = ({ data }: { data: IFormStep[] }) => {
           </Typography>
 
           {step?.blocks?.map((block, i) => {
-            const { isShow, label, type, fields } = block as IFieldsBlock;
+            const {
+              isShow,
+              label: blockLabel,
+              type,
+              fields,
+            } = block as IFieldsBlock;
             return type === BlockType.SINGLE ? (
               <Box key={i}>
                 <Box sx={{ marginY: "16px" }}>
                   {isShow && (
                     <Typography variant="h5" sx={{ color: "black" }}>
-                      {label}
+                      {blockLabel}
                     </Typography>
                   )}
                 </Box>
@@ -56,7 +61,7 @@ const ReviewContent = ({ data }: { data: IFormStep[] }) => {
                         {label}:
                       </Typography>
                       <Typography sx={{ color: "black", fontWeight: 600 }}>
-                        {values[step?.label][label]}
+                        {values[step?.label][blockLabel][label]}
                       </Typography>
                     </Box>
                   );

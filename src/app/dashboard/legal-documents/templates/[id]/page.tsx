@@ -1,11 +1,18 @@
 "use client";
 
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
+import { ITemplate } from "@/app/api/templates/templates.model";
 import GlobalError from "@/components/Errors/GlobalError";
 import FormProvaider from "@/components/Form";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
 import ArnifiRichEditor from "@/components/TemplateEditor";
 import { useGetLegalDocumentQuery } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
+import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
+import {
+  useCreateNewTemplateMutation,
+  useUpdateTemplateMutation,
+} from "@/lib/Redux/features/template/templateApi";
+import { useAppDispatch } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { KeyboardReturn } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
@@ -14,15 +21,18 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const LegalTemplate = ({ params }: { params: { id: string } }) => {
-  const [storedTemplates, setStoredTemplates] = React.useState(() => {
-    const templates = localStorage.getItem("templates");
-    return templates ? JSON.parse(templates) : {};
-  });
-
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const { data, isLoading, isError } = useGetLegalDocumentQuery({
     id: params.id,
   });
+
+  const [createNewTemplate, { isLoading: createLoading }] =
+    useCreateNewTemplateMutation();
+
+  const [updateTemplate, { isLoading: updateLoading }] =
+    useUpdateTemplateMutation();
 
   if (isLoading) {
     return <GlobalLoader height={"70vh"} />;
@@ -37,11 +47,56 @@ const LegalTemplate = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const { title, type, country } = data?.data as ILegalDocument;
+  const {
+    id: documentID,
+    title,
+    type,
+    country,
+    template,
+  } = data?.data as ILegalDocument;
+  const { id: templateID, htmlTemp } = template as ITemplate;
 
-  const handleSubmit = (formValues: FormikValues) => {
-    console.log(formValues);
+  const handleSubmit = async (formValues: FormikValues) => {
+    try {
+      if (templateID) {
+        await updateTemplate({
+          id: templateID,
+          data: formValues,
+        })
+          .unwrap()
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res?.message,
+                type: res.success ? "success" : "error",
+              })
+            );
+          });
+      } else {
+        await createNewTemplate({ ...formValues, document: documentID })
+          .unwrap()
+          .then((res) => {
+            dispatch(
+              openSnackbar({
+                isOpen: true,
+                message: res?.message,
+                type: res.success ? "success" : "error",
+              })
+            );
+          });
+      }
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Something went wrong.",
+          type: "error",
+        })
+      );
+    }
   };
+
   return (
     <Box>
       <Box
@@ -110,8 +165,12 @@ const LegalTemplate = ({ params }: { params: { id: string } }) => {
         </Stack>
       </Box>
 
+      {/* <Box sx={{ padding: "50px", minHeight: "70vh", bgcolor: "#f5f5f5" }}>
+          <ArnifiRichEditor document={data?.data as ILegalDocument} />
+        </Box> */}
+
       <FormProvaider
-        initialValues={{ htmlTemp: storedTemplates[title] }}
+        initialValues={{ htmlTemp: htmlTemp || "" }}
         submitHandlar={handleSubmit}
       >
         <Box sx={{ padding: "50px", minHeight: "70vh", bgcolor: "#f5f5f5" }}>
@@ -131,7 +190,13 @@ const LegalTemplate = ({ params }: { params: { id: string } }) => {
             variant="contained"
             sx={{ textTransform: "none" }}
           >
-            Create Template
+            {templateID
+              ? updateLoading
+                ? "Updating..."
+                : "Update Template"
+              : createLoading
+              ? "Creating..."
+              : "Create Template"}
           </Button>
         </Stack>
       </FormProvaider>

@@ -1,8 +1,8 @@
 "use client";
 
 import theme from "@/theme";
-import SideNav from "@/shared/SideNav";
-import TopNav from "@/shared/TopNav";
+import SideNav from "@/components/SideNav";
+import TopNav from "@/components/TopNav";
 import { Box } from "@mui/material";
 import React from "react";
 
