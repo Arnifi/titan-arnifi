@@ -58,7 +58,7 @@ const LegalDocTable = ({ data }: { data: ILegalDocument[] }) => {
       align: "center",
     },
     {
-      label: "Status",
+      label: "Published",
       align: "center",
     },
     {

@@ -117,6 +117,46 @@ export const legalDocumentApi = baseApi.injectEndpoints({
         }
       },
     }),
+
+    documentStatusToggle: build.mutation({
+      query: ({ data }) => ({
+        url: `/legal-documents/toggle`,
+        method: "PATCH",
+        body: data,
+      }),
+      async onQueryStarted(
+        args,
+        {
+          queryFulfilled,
+          dispatch,
+        }: { queryFulfilled: any; dispatch: AppDispatch }
+      ) {
+        const updatedState = dispatch(
+          baseApi.util.updateQueryData(
+            "getAllDocuments" as never,
+            {} as never,
+            (draft: { data: ILegalDocument[] }) => {
+              const index = draft?.data?.findIndex(
+                (docuemnt: ILegalDocument) => docuemnt.id === args.data.id
+              );
+              if (index !== -1) {
+                const documents = draft?.data;
+                documents[index] = { ...args.data, status: !args.data.status };
+              }
+              return draft;
+            }
+          )
+        );
+        try {
+          const { data } = await queryFulfilled;
+          if (!data.success) {
+            updatedState.undo();
+          }
+        } catch (error) {
+          updatedState.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -126,4 +166,5 @@ export const {
   useUpdateDocumentMutation,
   useDeleteDocumentMutation,
   useGetLegalDocumentQuery,
+  useDocumentStatusToggleMutation,
 } = legalDocumentApi;
