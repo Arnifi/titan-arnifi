@@ -8,11 +8,7 @@ module.exports = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://www.arnifi.com",
-          },
-          {
-            key: "Access-Control-Allow-Origin",
-            value: "http://localhost:3001",
+            value: "*",
           },
           {
             key: "Access-Control-Allow-Methods",
