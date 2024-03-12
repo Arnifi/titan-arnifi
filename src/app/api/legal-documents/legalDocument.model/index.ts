@@ -4,11 +4,24 @@ import { IFormStep } from "../../form-steps/formStep.model";
 import { ITemplate } from "../../templates/templates.model";
 
 export enum LegalType {
-  Will = "Will",
-  Rental = "Rental",
-  Agreement = "Agreement",
+  LiabilityWaiver = "Liability Waiver",
+  WillGenerator = "Will Generator",
+  NonDisclosureAgreement = "Non Disclosure Agreement (NDA)",
+  EmploymentContract = "Employment Contract",
+  BusinessLicense = "Business License",
+  PurchaseAgreement = "Purchase Agreement",
   Other = "Other",
 }
+
+export const documentsTypes: string[] = [
+  "Liability Waiver",
+  "Will Generator",
+  "Non Disclosure Agreement (NDA)",
+  "Employment Contract",
+  "Business License",
+  "Purchase Agreement",
+  "Other",
+];
 
 export interface ILegalsFilters {
   [key: string]: string | undefined;

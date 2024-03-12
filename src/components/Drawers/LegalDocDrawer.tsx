@@ -16,7 +16,10 @@ import FormTextArea from "@/components/Form/ATextArea";
 import { FormikValues } from "formik";
 import * as Yup from "yup";
 import FormCountrySelectField from "@/components/Form/ACountrySelectField";
-import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
+import {
+  ILegalDocument,
+  documentsTypes,
+} from "@/app/api/legal-documents/legalDocument.model";
 import {
   useCreateNewDocumentMutation,
   useUpdateDocumentMutation,
@@ -47,6 +50,7 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
     title: Yup.string().required("Title is required"),
     type: Yup.string().required("Type is required"),
     country: Yup.string().required("Country is required"),
+    metaData: Yup.string().required("Description is required"),
   });
 
   const initialValues = {
@@ -156,6 +160,7 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
               <FormCountrySelectField
                 name="country"
                 label="Select Country"
+                placeholder="Select Country"
                 required
               />
             </Box>
@@ -165,7 +170,7 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
                 name="type"
                 label="Legal Document Type"
                 placeholder="Select Type"
-                options={["Will", "Rental", "Agreement", "Other"]}
+                options={documentsTypes}
                 required
               />
             </Box>
@@ -173,8 +178,8 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
             <Box paddingTop={2}>
               <FormTextArea
                 name="metaData"
-                label="Meta Data"
-                placeholder="Type Meta Data..."
+                label="Description"
+                placeholder="Type Description..."
               />
             </Box>
 
