@@ -124,7 +124,6 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
           </Link>
         </TableCell>
 
-
         <TableCell align="center">
           <Link href={`/dashboard/legal-documents/templates/${id}`}>
             <IconButton>
@@ -143,7 +142,11 @@ const TableItem = ({ data, sl }: { data: ILegalDocument; sl: number }) => {
 
         <TableCell align="center">
           <Box>
-            <Switch value={status} color="default" />
+            <Switch
+              onChange={handleToggleStatus}
+              checked={status}
+              color="primary"
+            />
           </Box>
         </TableCell>
 
