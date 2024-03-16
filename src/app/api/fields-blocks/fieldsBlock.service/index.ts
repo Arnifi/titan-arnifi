@@ -6,7 +6,7 @@ import Fields_Block, {
 } from "../fieldsBlock.model";
 import Form_Steps, { IFormStep } from "../../form-steps/formStep.model";
 import Form_Fields, { IFormField } from "../../form-fields/formField.model";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 import httpStatus from "http-status";
 
 const findAll = async (

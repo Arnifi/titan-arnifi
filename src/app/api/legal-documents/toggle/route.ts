@@ -1,10 +1,10 @@
-import catchAsync from "@/utils/server/helpers/catchAsync";
-import sendResponse from "@/utils/server/helpers/sendResponse";
+import catchAsync from "@/utils/helpers/catchAsync";
+import sendResponse from "@/utils/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import Legal_Documents, { ILegalDocument } from "../legalDocument.model";
 import Templates from "../../templates/templates.model";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 
 export const PATCH = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {

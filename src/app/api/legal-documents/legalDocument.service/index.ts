@@ -1,5 +1,5 @@
 import { ObjectType } from "dynamoose/dist/General";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 import httpStatus from "http-status";
 import Form_Steps from "../../form-steps/formStep.model";
 import Legal_Documents, {

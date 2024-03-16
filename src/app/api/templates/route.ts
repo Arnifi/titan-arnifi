@@ -1,5 +1,5 @@
-import catchAsync from "@/utils/server/helpers/catchAsync";
-import sendResponse from "@/utils/server/helpers/sendResponse";
+import catchAsync from "@/utils/helpers/catchAsync";
+import sendResponse from "@/utils/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { TemplateService } from "./templates.service";
