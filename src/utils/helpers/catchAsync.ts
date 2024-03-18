@@ -1,4 +1,4 @@
-import dbConnection from "../../../lib/dbConnection";
+import dbConnection from "../../lib/dbConnection";
 import errorHandler from "../ErrorHandelars";
 
 const catchAsync =

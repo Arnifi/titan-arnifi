@@ -17,8 +17,8 @@ import theme from "@/theme";
 import StepContent from "./StepContent";
 import ReviewContent from "./ReviewContent";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
-import generateTemplate from "@/utils/client/generateTemplate";
-import prientAsPDF from "@/utils/client/prientPDF";
+import generateTemplate from "@/utils/generateTemplate";
+import prientAsPDF from "@/utils/prientPDF";
 
 const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
   const [pdfLoading, setPdfLoading] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const DynamicStepper = ({ data }: { data: ILegalDocument }) => {
   const formSteps = data?.steps as IFormStep[];
 
   const [storedFormData] = useState<FormikValues>(() => {
-    const storedData = localStorage.getItem("form-data");
+    const storedData = localStorage.getItem("temp-data");
     return storedData !== null && storedData !== undefined
       ? JSON.parse(storedData)
       : {};

@@ -14,7 +14,7 @@ const StepContent = ({ data }: { data: IFormStep }) => {
   const { values } = useFormikContext();
 
   useEffect(() => {
-    localStorage.setItem("form-data", JSON.stringify(values));
+    localStorage.setItem("temp-data", JSON.stringify(values));
   }, [values]);
 
   return (

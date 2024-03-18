@@ -4,7 +4,7 @@ import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
 import dynamoose from "dynamoose";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 import httpStatus from "http-status";
 import Fields_Block, {
   IFieldsBlock,

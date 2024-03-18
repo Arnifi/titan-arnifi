@@ -1,5 +1,5 @@
-import catchAsync from "@/utils/server/helpers/catchAsync";
-import sendResponse from "@/utils/server/helpers/sendResponse";
+import catchAsync from "@/utils/helpers/catchAsync";
+import sendResponse from "@/utils/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { LegalDocumentService } from "./legalDocument.service";
@@ -8,8 +8,8 @@ import {
   ILegalsFilters,
   legalsFilterableFields,
 } from "./legalDocument.model";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
-import pick from "@/utils/server/Pick";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
+import pick from "@/utils/Pick";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
