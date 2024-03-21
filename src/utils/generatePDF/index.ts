@@ -1,21 +1,19 @@
 "use server";
 
-import puppeteer from "puppeteer";
+import axios from "axios";
 
 const generatePdfBuffer = async (htmlTemp: string) => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
+  const data = { template: htmlTemp };
+  const bufferResponse = await axios.post(
+    // "http://localhost:4000/api/generate-pdf",
+    "https://arnifi-pdf-generator.onrender.com/api/generate-pdf",
+    data,
+    {
+      responseType: "arraybuffer",
+    }
+  );
 
-  await page.setContent(htmlTemp);
-  const buffer = await page.pdf({
-    format: "A4",
-    margin: { top: "50px", right: "50px", bottom: "50px", left: "50px" },
-    printBackground: true,
-    preferCSSPageSize: true,
-    footerTemplate: "Page {{page}} of {{toPage}}",
-  });
-  await browser.close();
-  return buffer;
+  return bufferResponse.data;
 };
 
 export default generatePdfBuffer;
