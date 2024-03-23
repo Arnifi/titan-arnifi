@@ -1,3 +1,4 @@
+import theme from "@/theme";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { styled } from "@mui/material";
 
@@ -12,7 +13,7 @@ export const MuiContentEditable = styled(ContentEditable)({
   gutter: "0px",
   background: "white",
   margin: "5px auto",
-  color: "black",
+  color: theme.colorConstants.black,
 });
 
 export const placeHolderSx = {

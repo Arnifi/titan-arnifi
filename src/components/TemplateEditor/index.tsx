@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import "./Styles/LexicalThemeStyle.css";
 import editorConfig from "./config";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
 import { $getRoot, $insertNodes } from "lexical";
 import { BeautifulMentionNode } from "lexical-beautiful-mentions";
@@ -55,12 +56,38 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
   useEffect(() => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
+
+      const temp = $generateHtmlFromNodes(editor);
+
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(temp, "text/html");
+
+      const mentienElements = dom.querySelectorAll(
+        "[data-lexical-beautiful-mention]"
+      );
+
+      if (mentienElements.length) {
+        mentienElements?.forEach((element) => {
+          element.removeAttribute("data-lexical-beautiful-mention");
+          element.removeAttribute("data-lexical-beautiful-mention-value");
+          element.removeAttribute("data-lexical-beautiful-mention-trigger");
+          element.setAttribute("style", "white-space: pre-wrap;");
+        });
+
+        editor.update(() => {
+          const root = $getRoot();
+          if (!root.isEmpty()) {
+            root.clear();
+          }
+          $insertNodes($generateNodesFromDOM(editor, dom));
+        });
+      }
     });
 
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
-        const tmp = $generateHtmlFromNodes(editor);
-        return setFieldValue("htmlTemp", tmp);
+        const temp = $generateHtmlFromNodes(editor);
+        return setFieldValue("htmlTemp", temp);
       });
     });
   }, [editor, setFieldValue, values, docName]);
@@ -81,6 +108,7 @@ const ArnifiRichEditor = ({ document }: { document: ILegalDocument }) => {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <ListPlugin />
           <LinkPlugin />
           <MentionsPlugin data={document} />
           <PlaygroundAutoLinkPlugin />
