@@ -99,6 +99,19 @@ const BlockOptionsDropdownList: React.FC<BlockOptionsDropdownListProps> = ({
     setShowBlockOptionsDropDown(false);
   };
 
+  const formatExtraSmallHeading = () => {
+    if (blockType !== "h3") {
+      editor.update(() => {
+        const selection = $getSelection();
+
+        if ($isRangeSelection(selection)) {
+          $wrapNodes(selection, () => $createHeadingNode("h3"));
+        }
+      });
+    }
+    setShowBlockOptionsDropDown(false);
+  };
+
   const formatBulletList = () => {
     if (blockType !== "ul") {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
@@ -159,6 +172,11 @@ const BlockOptionsDropdownList: React.FC<BlockOptionsDropdownListProps> = ({
         <span className="icon small-heading" />
         <span className="text">Small Heading</span>
         {blockType === "h2" && <span className="active" />}
+      </button>
+      <button className="item" onClick={formatExtraSmallHeading}>
+        <span className="icon extra-small-heading" />
+        <span className="text">Extra Small Heading</span>
+        {blockType === "h3" && <span className="active" />}
       </button>
       <button className="item" onClick={formatBulletList}>
         <span className="icon bullet-list" />

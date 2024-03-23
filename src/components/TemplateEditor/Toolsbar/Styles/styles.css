@@ -160,6 +160,10 @@ i.chevron-down {
   background-image: url(../../../../assets/icons/type-h2.svg);
 }
 
+#block-controls span.block-type.h3 {
+  background-image: url(../../../../assets/icons/type-h3.svg);
+}
+
 #block-controls span.block-type.quote {
   background-image: url(../../../../assets/icons/chat-square-quote.svg);
 }
@@ -347,6 +351,11 @@ i.redo {
 .icon.small-heading,
 .icon.h2 {
   background-image: url(../../../../assets/icons/type-h2.svg);
+}
+
+.icon.extra-small-heading,
+.icon.h3 {
+  background-image: url(../../../../assets/icons/type-h3.svg);
 }
 
 .icon.bullet-list,
