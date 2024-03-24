@@ -1,5 +1,5 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -35,7 +35,7 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
   const { values, setFieldValue }: FormikContextType<FormikValues> =
     useFormikContext();
 
-  useEffect(() => {
+  useMemo(() => {
     if (values?.htmlTemp) {
       const parser = new DOMParser();
       editor.update(() => {
@@ -50,10 +50,9 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
         $insertNodes(nodes);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, [editor, values]);
 
-  useEffect(() => {
+  useMemo(() => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
 
@@ -90,7 +89,7 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
         return setFieldValue("htmlTemp", temp);
       });
     });
-  }, [editor, setFieldValue, values, docName]);
+  }, [editor, setFieldValue]);
 
   return null;
 };
