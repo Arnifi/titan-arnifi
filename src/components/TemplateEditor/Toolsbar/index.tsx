@@ -36,6 +36,7 @@ const supportedBlockTypes = new Set([
   "code",
   "h1",
   "h2",
+  "h3",
   "ul",
   "ol",
 ]);

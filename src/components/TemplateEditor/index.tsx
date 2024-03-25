@@ -1,5 +1,5 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import "./Styles/LexicalThemeStyle.css";
 import editorConfig from "./config";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
 import { $getRoot, $insertNodes } from "lexical";
 import { BeautifulMentionNode } from "lexical-beautiful-mentions";
@@ -34,7 +35,7 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
   const { values, setFieldValue }: FormikContextType<FormikValues> =
     useFormikContext();
 
-  useEffect(() => {
+  useMemo(() => {
     if (values?.htmlTemp) {
       const parser = new DOMParser();
       editor.update(() => {
@@ -49,21 +50,46 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
         $insertNodes(nodes);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, [editor, values]);
 
-  useEffect(() => {
+  useMemo(() => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
+
+      const temp = $generateHtmlFromNodes(editor);
+
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(temp, "text/html");
+
+      const mentienElements = dom.querySelectorAll(
+        "[data-lexical-beautiful-mention]"
+      );
+
+      if (mentienElements.length) {
+        mentienElements?.forEach((element) => {
+          element.removeAttribute("data-lexical-beautiful-mention");
+          element.removeAttribute("data-lexical-beautiful-mention-value");
+          element.removeAttribute("data-lexical-beautiful-mention-trigger");
+          element.setAttribute("style", "white-space: pre-wrap;");
+        });
+
+        editor.update(() => {
+          const root = $getRoot();
+          if (!root.isEmpty()) {
+            root.clear();
+          }
+          $insertNodes($generateNodesFromDOM(editor, dom));
+        });
+      }
     });
 
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
-        const tmp = $generateHtmlFromNodes(editor);
-        return setFieldValue("htmlTemp", tmp);
+        const temp = $generateHtmlFromNodes(editor);
+        return setFieldValue("htmlTemp", temp);
       });
     });
-  }, [editor, setFieldValue, values, docName]);
+  }, [editor, setFieldValue]);
 
   return null;
 };
@@ -81,6 +107,7 @@ const ArnifiRichEditor = ({ document }: { document: ILegalDocument }) => {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <ListPlugin />
           <LinkPlugin />
           <MentionsPlugin data={document} />
           <PlaygroundAutoLinkPlugin />

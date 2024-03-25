@@ -9,9 +9,7 @@ import generateTemplate from "@/utils/generateTemplate";
 import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
-import generatePdfBuffer from "@/utils/generatePDF";
 import ApiError from "@/utils/ErrorHandelars/ApiError";
-import generateDocBuffer from "@/utils/generateDoc";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {
@@ -56,27 +54,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     const htmlTemp = generateTemplate(document as ILegalDocument, values);
 
-    const pdfHeader = {
-      "content-type": "application/pdf",
-      "content-disposition": `attachment; filename="test.pdf"`,
-    };
-
-    const docxHeader = {
-      "content-type":
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "content-disposition": `attachment; filename="test.docx"`,
-    };
-
-    let fileBuffer = null;
-
-    if (formet === "pdf") {
-      fileBuffer = await generatePdfBuffer(htmlTemp);
-    } else if (formet === "docx") {
-      fileBuffer = await generateDocBuffer(htmlTemp);
-    } else {
-      fileBuffer = null;
-    }
-
     await Legal_Documents.update(
       { id },
       {
@@ -84,12 +61,40 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       }
     );
 
-    const response = new NextResponse(fileBuffer, {
-      status: 200,
-      headers: formet === "pdf" ? pdfHeader : docxHeader,
+    return await sendResponse({
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Document Template Generated Successfully",
+      data: htmlTemp,
     });
 
-    return response;
+    // const pdfHeader = {
+    //   "content-type": "application/pdf",
+    //   "content-disposition": `attachment; filename="test.pdf"`,
+    // };
+
+    // const docxHeader = {
+    //   "content-type":
+    //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    //   "content-disposition": `attachment; filename="test.docx"`,
+    // };
+
+    // let fileBuffer = null;
+
+    // if (formet === "pdf") {
+    //   fileBuffer = await generatePdfBuffer(htmlTemp);
+    // } else if (formet === "docx") {
+    //   fileBuffer = await generateDocBuffer(htmlTemp);
+    // } else {
+    //   fileBuffer = null;
+    // }
+
+    // const response = new NextResponse(fileBuffer, {
+    //   status: 200,
+    //   headers: formet === "pdf" ? pdfHeader : docxHeader,
+    // });
+
+    // return response;
   } catch (error) {
     console.log("error", error);
     throw new ApiError(

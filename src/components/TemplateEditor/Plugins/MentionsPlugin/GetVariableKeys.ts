@@ -42,33 +42,5 @@ export const getVariableKeys = (data: ILegalDocument) => {
     });
   });
 
-  // formSteps.forEach((step) => {
-  //   if (step.docId === docId) {
-  //     const stepFields = stepperFields.filter(
-  //       (field) => field.stepId === step.id && docId === step.docId
-  //     );
-
-  //     stepFields.forEach((field) => {
-  //       if (field.docId === docId && field.stepId === step.id) {
-  //         const fieldInputs = stepInputFields.filter(
-  //           (input) => input.fieldId === field.id
-  //         );
-
-  //         fieldInputs.map((input) => {
-  //           variableKeys.push({
-  //             label: `{{${step.label
-  //               .split(" ")
-  //               .join("")}_${input.name.toUpperCase()}}}`,
-  //             key: `${step.label
-  //               .split(" ")
-  //               .join("")}_${input.name.toUpperCase()}`,
-  //             value: { key: step.label, value: input.name },
-  //           });
-  //         });
-  //       }
-  //     });
-  //   }
-  // });
-
   return variableKeys;
 };

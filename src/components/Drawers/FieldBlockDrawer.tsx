@@ -52,7 +52,7 @@ const FieldBlockDrawer: React.FC<IFieldBlockDrawerProps> = ({
     step: stepID,
     label: values?.label || "",
     type: values?.type || "Single",
-    isShow: values?.isShow || false,
+    isShow: values?.isShow || true,
     description: values?.description || "",
   };
 
