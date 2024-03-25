@@ -13,6 +13,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
 import {
+  $createTextNode,
   $getRoot,
   $getSelection,
   $insertNodes,
@@ -63,65 +64,13 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
 
-      // const temp = $generateHtmlFromNodes(editor);
-      // const parser = new DOMParser();
-      // const dom = parser.parseFromString(temp, "text/html");
-      // const mentienElements = dom.querySelectorAll(
-      //   "[data-lexical-beautiful-mention]"
-      // );
-      // if (mentienElements.length) {
-      //   mentienElements?.forEach((element) => {
-      //     element.removeAttribute("data-lexical-beautiful-mention");
-      //     element.removeAttribute("data-lexical-beautiful-mention-value");
-      //     element.removeAttribute("data-lexical-beautiful-mention-trigger");
-      //     element.setAttribute("style", "white-space: pre-wrap;");
-      //   });
-
-      //   // const editorState = editor.parseEditorState(
-      //   //   JSON.stringify(editorNodes)
-      //   // );
-      //   // editor.setEditorState(editorNodes);
-
-      //   // editor.setEditorState(dom);
-
-      //   editor.update(() => {
-      //     const root = $getRoot();
-
-      //     if (!root.isEmpty()) {
-      //       root.clear();
-      //     }
-
-      //     $insertNodes($generateNodesFromDOM(editor, dom));
-      //   });
-      // }
+      const strongNode = $createTextNode(textNode.getTextContent());
+      textNode.replace(strongNode);
     });
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const temp = $generateHtmlFromNodes(editor);
-        const parser = new DOMParser();
-        const dom = parser.parseFromString(temp, "text/html");
-        const mentienElements = dom.querySelectorAll(
-          "[data-lexical-beautiful-mention]"
-        );
-
-        if (mentienElements.length) {
-          mentienElements.forEach((element) => {
-            element.removeAttribute("data-lexical-beautiful-mention");
-            element.removeAttribute("data-lexical-beautiful-mention-value");
-            element.removeAttribute("data-lexical-beautiful-mention-trigger");
-            element.setAttribute(
-              "style",
-              "white-space: pre-wrap; font-weight: bold;"
-            );
-
-            const strongElement = document.createElement("strong");
-            strongElement.setAttribute("class", "editor-text-bold");
-            strongElement.innerHTML = element.innerHTML;
-            element.replaceWith(strongElement);
-          });
-        }
-
-        return setFieldValue("htmlTemp", dom.body.innerHTML);
+        return setFieldValue("htmlTemp", temp);
       });
     });
   }, [editor, setFieldValue]);
