@@ -12,7 +12,13 @@ import editorConfig from "./config";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import MentionsPlugin from "./Plugins/MentionsPlugin";
-import { $getRoot, $insertNodes } from "lexical";
+import {
+  $getRoot,
+  $getSelection,
+  $insertNodes,
+  EditorState,
+  LexicalNode,
+} from "lexical";
 import { BeautifulMentionNode } from "lexical-beautiful-mentions";
 import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin";
 import ListMaxIndentLevelPlugin from "./Plugins/ListMaxIndentLevelPlugin";
@@ -50,43 +56,72 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
         $insertNodes(nodes);
       });
     }
-  }, [editor, values]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
 
   useMemo(() => {
     editor.registerNodeTransform(BeautifulMentionNode, (textNode) => {
       textNode.__trigger = "";
 
-      const temp = $generateHtmlFromNodes(editor);
+      // const temp = $generateHtmlFromNodes(editor);
+      // const parser = new DOMParser();
+      // const dom = parser.parseFromString(temp, "text/html");
+      // const mentienElements = dom.querySelectorAll(
+      //   "[data-lexical-beautiful-mention]"
+      // );
+      // if (mentienElements.length) {
+      //   mentienElements?.forEach((element) => {
+      //     element.removeAttribute("data-lexical-beautiful-mention");
+      //     element.removeAttribute("data-lexical-beautiful-mention-value");
+      //     element.removeAttribute("data-lexical-beautiful-mention-trigger");
+      //     element.setAttribute("style", "white-space: pre-wrap;");
+      //   });
 
-      const parser = new DOMParser();
-      const dom = parser.parseFromString(temp, "text/html");
+      //   // const editorState = editor.parseEditorState(
+      //   //   JSON.stringify(editorNodes)
+      //   // );
+      //   // editor.setEditorState(editorNodes);
 
-      const mentienElements = dom.querySelectorAll(
-        "[data-lexical-beautiful-mention]"
-      );
+      //   // editor.setEditorState(dom);
 
-      if (mentienElements.length) {
-        mentienElements?.forEach((element) => {
-          element.removeAttribute("data-lexical-beautiful-mention");
-          element.removeAttribute("data-lexical-beautiful-mention-value");
-          element.removeAttribute("data-lexical-beautiful-mention-trigger");
-          element.setAttribute("style", "white-space: pre-wrap;");
-        });
+      //   editor.update(() => {
+      //     const root = $getRoot();
 
-        editor.update(() => {
-          const root = $getRoot();
-          if (!root.isEmpty()) {
-            root.clear();
-          }
-          $insertNodes($generateNodesFromDOM(editor, dom));
-        });
-      }
+      //     if (!root.isEmpty()) {
+      //       root.clear();
+      //     }
+
+      //     $insertNodes($generateNodesFromDOM(editor, dom));
+      //   });
+      // }
     });
-
     editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const temp = $generateHtmlFromNodes(editor);
-        return setFieldValue("htmlTemp", temp);
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(temp, "text/html");
+        const mentienElements = dom.querySelectorAll(
+          "[data-lexical-beautiful-mention]"
+        );
+
+        if (mentienElements.length) {
+          mentienElements.forEach((element) => {
+            element.removeAttribute("data-lexical-beautiful-mention");
+            element.removeAttribute("data-lexical-beautiful-mention-value");
+            element.removeAttribute("data-lexical-beautiful-mention-trigger");
+            element.setAttribute(
+              "style",
+              "white-space: pre-wrap; font-weight: bold;"
+            );
+
+            const strongElement = document.createElement("strong");
+            strongElement.setAttribute("class", "editor-text-bold");
+            strongElement.innerHTML = element.innerHTML;
+            element.replaceWith(strongElement);
+          });
+        }
+
+        return setFieldValue("htmlTemp", dom.body.innerHTML);
       });
     });
   }, [editor, setFieldValue]);
