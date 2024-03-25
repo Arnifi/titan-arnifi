@@ -140,7 +140,6 @@ const Toolsbar = () => {
   const codeLanguges = useMemo(() => getCodeLanguages(), []);
   const onCodeLanguageSelect = useCallback(
     (e: { target: { value: string } }) => {
-      console.log(e);
       editor.update(() => {
         if (selectedElementKey !== null) {
           const node = $getNodeByKey(selectedElementKey);
