@@ -4,23 +4,21 @@ import { IFormStep } from "../../form-steps/formStep.model";
 import { ITemplate } from "../../templates/templates.model";
 
 export enum LegalType {
-  LiabilityWaiver = "Liability Waiver",
-  WillGenerator = "Will Generator",
-  NonDisclosureAgreement = "Non Disclosure Agreement (NDA)",
-  EmploymentContract = "Employment Contract",
-  BusinessLicense = "Business License",
-  PurchaseAgreement = "Purchase Agreement",
+  IndividualPersonal = "Individual/Personal",
+  Business = "Business",
+  RealEstate = "Real estate",
+  Tax = "Tax",
+  GovernmentForms = "Government forms",
   Other = "Other",
 }
 
 export const documentsTypes: string[] = [
-  "Liability Waiver",
-  "Will Generator",
-  "Non Disclosure Agreement (NDA)",
-  "Employment Contract",
-  "Business License",
-  "Purchase Agreement",
-  "Other",
+  LegalType.IndividualPersonal,
+  LegalType.Business,
+  LegalType.RealEstate,
+  LegalType.Tax,
+  LegalType.GovernmentForms,
+  LegalType.Other,
 ];
 
 export interface ILegalsFilters {
@@ -36,6 +34,7 @@ export interface ILegalDocument extends Document {
   type: LegalType;
   status: boolean;
   downloadCount: number;
+  requiredDocuments: string[];
   metaData: string;
   steps: IFormStep[] | string[];
   template: string | ITemplate;
@@ -65,6 +64,12 @@ const legalDocumentSchema = new dynamoose.Schema(
     status: {
       type: Boolean,
       default: false,
+    },
+
+    requiredDocuments: {
+      type: Array,
+      schema: [String],
+      default: [],
     },
     downloadCount: {
       type: Number,

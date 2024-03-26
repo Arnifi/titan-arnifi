@@ -1,5 +1,6 @@
 "use client";
 
+import { documentsTypes } from "@/app/api/legal-documents/legalDocument.model";
 import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import CountrySelect from "@/components/Form/ACountrySelect";
@@ -84,7 +85,7 @@ const LegalDocuments = () => {
                 value={legalType}
               >
                 <MenuItem value="All Type">All Type</MenuItem>
-                {["Will", "Rental", "Agreement", "Other"].map((type, i) => (
+                {documentsTypes.map((type, i) => (
                   <MenuItem key={i} value={type}>
                     {type}
                   </MenuItem>
