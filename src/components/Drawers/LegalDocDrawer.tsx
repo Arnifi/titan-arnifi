@@ -26,6 +26,7 @@ import {
 } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import { useAppDispatch } from "@/lib/Redux/store";
+import FormChipInputField from "../Form/AChipInputField";
 
 interface ILegalDocDrawerProps {
   open: boolean;
@@ -50,12 +51,16 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
     title: Yup.string().required("Title is required"),
     type: Yup.string().required("Type is required"),
     country: Yup.string().required("Country is required"),
+    requiredDocuments: Yup.array().of(
+      Yup.string().required("Required Document is required")
+    ),
     metaData: Yup.string().required("Description is required"),
   });
 
   const initialValues = {
     title: values?.title || "",
     type: values?.type || "",
+    requiredDocuments: values?.requiredDocuments || [],
     country: values?.country || "",
     metaData: values?.metaData || "",
   };
@@ -172,6 +177,14 @@ const LegalDocDrawer: React.FC<ILegalDocDrawerProps> = ({
                 placeholder="Select Type"
                 options={documentsTypes}
                 required
+              />
+            </Box>
+
+            <Box paddingTop={2}>
+              <FormChipInputField
+                name="requiredDocuments"
+                label="Required Documents"
+                placeholder="Enter Required Documents"
               />
             </Box>
 

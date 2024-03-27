@@ -44,12 +44,11 @@ const FormTextArea: React.FC<ITexArea> = ({
 
       <Field name={name}>
         {({ field, meta }: FieldProps) => (
-          <TextareaAutosize
+          <textarea
             {...field}
-            aria-label={label}
-            placeholder={placeholder}
-            minRows={4}
             style={{ resize: "none", padding: "10px" }}
+            placeholder={placeholder}
+            rows={6}
           />
         )}
       </Field>
