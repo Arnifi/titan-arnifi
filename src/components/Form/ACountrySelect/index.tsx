@@ -1,8 +1,15 @@
-import { Box, Autocomplete, TextField, MenuItem } from "@mui/material";
+import {
+  Box,
+  Autocomplete,
+  TextField,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import "react-phone-number-input/style.css";
 import { getCountries } from "react-phone-number-input/input";
 import en from "react-phone-number-input/locale/en";
+import theme from "@/theme";
 
 interface ISelectCountryProps {
   value: string;
@@ -10,23 +17,56 @@ interface ISelectCountryProps {
 }
 
 const CountrySelect: React.FC<ISelectCountryProps> = ({ value, setFn }) => {
-  const countryesOptions: string[] = Array.from(
-    new Set(getCountries()?.map((country) => en[country]))
+  const countryesOptions: Array<{ title: string; flagURL: string }> =
+    getCountries()?.map((countryCode) => {
+      return {
+        title: en[countryCode],
+        flagURL: `https://purecatamphetamine.github.io/country-flag-icons/3x2/${countryCode}.svg`,
+      };
+    });
+
+  countryesOptions.unshift({
+    title: "All Countries",
+    flagURL: "",
+  });
+
+  const selectedCountry = countryesOptions.find(
+    (country) => country.title === value
   );
-  countryesOptions.unshift("All Countries");
 
   return (
     <Box width="100%">
       <Autocomplete
         sx={{ width: "100%" }}
         options={countryesOptions}
+        getOptionLabel={(option) => option.title}
         renderOption={(props, option) => (
-          <MenuItem {...props}>{option}</MenuItem>
+          <MenuItem {...props}>
+            <Box display={"flex"} alignItems={"center"}>
+              {option.flagURL ? (
+                <Box
+                  component={"img"}
+                  src={option.flagURL}
+                  sx={{ width: "24px", height: "18px" }}
+                />
+              ) : null}
+
+              <Typography
+                sx={{
+                  marginLeft: "5px",
+                  color: theme.colorConstants.mediumGray,
+                  fontSize: "14px",
+                }}
+              >
+                {option.title}
+              </Typography>
+            </Box>
+          </MenuItem>
         )}
-        value={value}
+        value={selectedCountry}
         disableClearable
         onChange={(_, value) => {
-          setFn(value);
+          setFn(value.title);
         }}
         renderInput={(params) => {
           return (
