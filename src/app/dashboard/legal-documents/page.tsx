@@ -67,7 +67,10 @@ const LegalDocuments = () => {
               <TextField
                 sx={{
                   width: "100%",
+                  fontSize: "16px",
+                  color: theme.colorConstants.mediumGray,
                 }}
+                value={search}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearch(e.target.value)
                 }
@@ -87,7 +90,17 @@ const LegalDocuments = () => {
                 <MenuItem value="All Type">All Type</MenuItem>
                 {documentsTypes.map((type, i) => (
                   <MenuItem key={i} value={type}>
-                    {type}
+                    <Typography
+                      sx={{
+                        marginLeft: "5px",
+                        fontSize: "16px",
+                        color: theme.colorConstants.mediumGray,
+                        textTransform: "capitalize",
+                      }}
+                      variant="body1"
+                    >
+                      {type}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Select>
