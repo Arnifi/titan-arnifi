@@ -1,7 +1,7 @@
 {
-  "Legal_Documents": "Legal_Documents",
-  "Form_Steps": "Form_Steps",
-  "Fields_Block": "Fields_Block",
-  "Form_Fields": "Form_Fields",
-  "Templates": "Templates"
+  "Legal_Documents": "Legal_Documents_prod",
+  "Form_Steps": "Form_Steps_prod",
+  "Fields_Block": "Fields_Block_prod",
+  "Form_Fields": "Form_Fields_prod",
+  "Templates": "Templates_prod"
 }
