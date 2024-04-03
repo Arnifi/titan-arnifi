@@ -6,6 +6,7 @@ import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
 import { IFieldsBlock } from "../../fields-blocks/fieldsBlock.model";
+import config from "../../../../config/index.json";
 
 export const formStepsFilterableFields: string[] = ["documentId"];
 
@@ -55,7 +56,7 @@ export const formStepSchema = new dynamoose.Schema(
 );
 
 const Form_Steps: ModelType<AnyItem> = dynamoose.model(
-  "Form_Steps",
+  config.Form_Steps,
   formStepSchema
 );
 

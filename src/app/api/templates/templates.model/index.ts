@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";
+import config from "../../../../config/index.json";
 
 export interface ITemplate extends Document {
   id: string;
@@ -29,5 +30,5 @@ const templateSchema = new dynamoose.Schema(
   }
 );
 
-const Templates = dynamoose.model("Templates", templateSchema);
+const Templates = dynamoose.model(config.Templates, templateSchema);
 export default Templates;

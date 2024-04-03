@@ -2,6 +2,7 @@ import dynamoose from "dynamoose";
 import { v4 as uuidv4 } from "uuid";
 import { IFormStep } from "../../form-steps/formStep.model";
 import { ITemplate } from "../../templates/templates.model";
+import config from "../../../../config/index.json";
 
 export enum LegalType {
   IndividualPersonal = "Individual/Personal",
@@ -93,5 +94,8 @@ const legalDocumentSchema = new dynamoose.Schema(
   }
 );
 
-const Legal_Documents = dynamoose.model("Legal_Documents", legalDocumentSchema);
+const Legal_Documents = dynamoose.model(
+  config.Legal_Documents,
+  legalDocumentSchema
+);
 export default Legal_Documents;

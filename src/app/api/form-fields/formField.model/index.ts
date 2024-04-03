@@ -4,6 +4,8 @@ import Fields_Block, {
   IFieldsBlock,
 } from "../../fields-blocks/fieldsBlock.model";
 
+import config from "../../../../config/index.json";
+
 export const formFieldsFilterableFields: string[] = ["blockId"];
 
 export interface IFormFieldFilters {
@@ -97,6 +99,6 @@ export const formFieldsSchema = new dynamoose.Schema(
   }
 );
 
-const Form_Fields = dynamoose.model("Form_Fields", formFieldsSchema);
+const Form_Fields = dynamoose.model(config.Form_Fields, formFieldsSchema);
 
 export default Form_Fields;
