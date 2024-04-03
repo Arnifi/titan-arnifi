@@ -1,9 +1,9 @@
-import catchAsync from "@/utils/server/helpers/catchAsync";
-import sendResponse from "@/utils/server/helpers/sendResponse";
+import catchAsync from "@/utils/helpers/catchAsync";
+import sendResponse from "@/utils/helpers/sendResponse";
 import httpStatus from "http-status";
 import { NextResponse } from "next/server";
 import { LegalDocumentService } from "../../legal-documents/legalDocument.service";
-import generateTemplate from "@/utils/client/generateTemplate";
+import generateTemplate from "@/utils/generateTemplate";
 import Legal_Documents, {
   ILegalDocument,
 } from "../../legal-documents/legalDocument.model";

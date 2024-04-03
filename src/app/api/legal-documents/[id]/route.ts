@@ -1,10 +1,10 @@
-import catchAsync from "@/utils/server/helpers/catchAsync";
+import catchAsync from "@/utils/helpers/catchAsync";
 import { NextResponse } from "next/server";
 import httpStatus from "http-status";
-import sendResponse from "@/utils/server/helpers/sendResponse";
+import sendResponse from "@/utils/helpers/sendResponse";
 import { LegalDocumentService } from "../legalDocument.service";
 import { ILegalDocument } from "../legalDocument.model";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 
 export const GET = catchAsync(
   async (req: Request, res: Response): Promise<NextResponse> => {

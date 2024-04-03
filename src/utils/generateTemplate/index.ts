@@ -33,6 +33,8 @@ const generateTemplate = (
     {} as Record<string, any>
   );
 
+  // @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap")
+
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -40,6 +42,8 @@ const generateTemplate = (
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>${document?.title.toLocaleUpperCase()}</title>  
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" />
     </head>
     <body style="padding: 20px; height: 100%; width:8in; margin: 0 auto" >
       ${template(variablesObj)}

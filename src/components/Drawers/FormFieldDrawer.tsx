@@ -58,7 +58,7 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
   const validationSchema: Yup.Schema<FormikValues> = Yup.object().shape({
     type: Yup.string().required("Type is required"),
     label: Yup.string().required("Label is required"),
-    placeholder: Yup.string().required("Placeholder is required"),
+    placeholder: Yup.string(),
   });
 
   const initialValues = {
@@ -163,21 +163,23 @@ const FormFieldDrawer: React.FC<IFormFieldDrawerProps> = ({
           </Box>
         ) : null}
 
-        <Box paddingTop={2}>
-          <FormInputField
-            name="placeholder"
-            label="Field Placeholder"
-            placeholder="Enter Field Placeholder"
-            required
-          />
-        </Box>
+        {values?.type !== "radio" && values?.type !== "date" && (
+          <Box paddingTop={2}>
+            <FormInputField
+              name="placeholder"
+              label="Field Placeholder"
+              placeholder="Enter Field Placeholder"
+              required
+            />
+          </Box>
+        )}
 
         <Box paddingTop={2}>
           <FormSelectField
             name="width"
             label="Select Field Width"
             placeholder="Select With"
-            options={["3", "6", "9", "12"]}
+            options={["1", "2", "3", "4", "6", "8", "9", "12"]}
             required
           />
         </Box>

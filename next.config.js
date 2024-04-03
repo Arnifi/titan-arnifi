@@ -4,12 +4,11 @@ module.exports = {
   async headers() {
     return [
       {
-        // matching all API routes
         source: "/api/:path*",
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "http://localhost:3001",
+            value: "*",
           },
           {
             key: "Access-Control-Allow-Methods",
@@ -18,6 +17,14 @@ module.exports = {
           {
             key: "Access-Control-Allow-Headers",
             value: "Content-Type, Authorization",
+          },
+          {
+            key: "Access-Control-Allow-Credentials",
+            value: "true",
+          },
+          {
+            key: "Access-Control-Max-Age",
+            value: "86400",
           },
         ],
       },

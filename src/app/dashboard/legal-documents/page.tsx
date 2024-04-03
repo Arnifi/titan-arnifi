@@ -1,5 +1,6 @@
 "use client";
 
+import { documentsTypes } from "@/app/api/legal-documents/legalDocument.model";
 import LegalDocDrawer from "@/components/Drawers/LegalDocDrawer";
 import GlobalError from "@/components/Errors/GlobalError";
 import CountrySelect from "@/components/Form/ACountrySelect";
@@ -66,7 +67,10 @@ const LegalDocuments = () => {
               <TextField
                 sx={{
                   width: "100%",
+                  fontSize: "16px",
+                  color: theme.colorConstants.mediumGray,
                 }}
+                value={search}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setSearch(e.target.value)
                 }
@@ -84,9 +88,19 @@ const LegalDocuments = () => {
                 value={legalType}
               >
                 <MenuItem value="All Type">All Type</MenuItem>
-                {["Will", "Rental", "Agreement", "Other"].map((type, i) => (
+                {documentsTypes.map((type, i) => (
                   <MenuItem key={i} value={type}>
-                    {type}
+                    <Typography
+                      sx={{
+                        marginLeft: "5px",
+                        fontSize: "16px",
+                        color: theme.colorConstants.mediumGray,
+                        textTransform: "capitalize",
+                      }}
+                      variant="body1"
+                    >
+                      {type}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Select>

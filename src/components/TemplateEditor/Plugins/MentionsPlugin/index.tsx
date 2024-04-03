@@ -12,7 +12,7 @@ const MentionsVarible = ({ data }: { data: ILegalDocument }) => {
     <BeautifulMentionsPlugin
       items={mentionItems}
       allowSpaces
-      menuItemLimit={20}
+      menuItemLimit={500}
       menuComponent={Combobox}
       menuItemComponent={ComboboxItem}
     />

@@ -20,15 +20,19 @@ interface ICountrySelect {
   required: boolean;
 }
 
-const countryesOptions: string[] = Array.from(
-  new Set(getCountries()?.map((countryCode) => en[countryCode]))
-);
-
 const FormCountrySelectField: React.FC<ICountrySelect> = ({
   name,
   label,
   placeholder,
 }) => {
+  const countryesOptions: Array<{ title: string; flagURL: string }> =
+    getCountries()?.map((countryCode) => {
+      return {
+        title: en[countryCode],
+        flagURL: `https://purecatamphetamine.github.io/country-flag-icons/3x2/${countryCode}.svg`,
+      };
+    });
+
   return (
     <Box maxWidth={"500px"}>
       <Typography
@@ -45,19 +49,45 @@ const FormCountrySelectField: React.FC<ICountrySelect> = ({
 
       <Field name={name}>
         {({ field, meta, form }: FieldProps) => {
+          const defaultValue = countryesOptions?.find(
+            (option) => option.title === field.value
+          );
           return (
             <>
               <Autocomplete
                 aria-required
                 sx={{ width: "100%" }}
                 options={countryesOptions}
+                getOptionLabel={(option) => option.title}
                 renderOption={(props, option) => (
-                  <MenuItem {...props}>{option}</MenuItem>
+                  <MenuItem {...props}>
+                    <Box display="flex">
+                      <Box
+                        sx={{
+                          height: "18px",
+                          width: "24px",
+                        }}
+                        component={"img"}
+                        src={option.flagURL}
+                      />
+                      <Typography
+                        sx={{
+                          marginLeft: "5px",
+                          fontSize: "16px",
+                          color: theme.colorConstants.mediumGray,
+                        }}
+                        variant="body1"
+                      >
+                        {option?.title}
+                      </Typography>
+                    </Box>
+                  </MenuItem>
                 )}
-                value={field.value}
+                value={defaultValue}
                 disableClearable
                 onChange={(_, value) => {
-                  void form.setFieldValue(name, value);
+                  const selectedCountry: string = value.title;
+                  void form.setFieldValue(name, selectedCountry);
                 }}
                 renderInput={(params) => {
                   return (

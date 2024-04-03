@@ -36,6 +36,7 @@ const supportedBlockTypes = new Set([
   "code",
   "h1",
   "h2",
+  "h3",
   "ul",
   "ol",
 ]);
@@ -139,7 +140,6 @@ const Toolsbar = () => {
   const codeLanguges = useMemo(() => getCodeLanguages(), []);
   const onCodeLanguageSelect = useCallback(
     (e: { target: { value: string } }) => {
-      console.log(e);
       editor.update(() => {
         if (selectedElementKey !== null) {
           const node = $getNodeByKey(selectedElementKey);

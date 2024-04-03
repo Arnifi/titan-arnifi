@@ -1,5 +1,5 @@
 import { ObjectType } from "dynamoose/dist/General";
-import ApiError from "@/utils/server/ErrorHandelars/ApiError";
+import ApiError from "@/utils/ErrorHandelars/ApiError";
 import httpStatus from "http-status";
 import Form_Steps from "../../form-steps/formStep.model";
 import Legal_Documents, {
@@ -83,6 +83,8 @@ const create = async (data: ILegalDocument) => {
 
 const updateOne = async (id: string, data: ILegalDocument) => {
   const { status, ...other } = data;
+
+  console.log(other);
   const result = await Legal_Documents.update({ id }, other);
   return result;
 };
