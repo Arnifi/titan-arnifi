@@ -35,8 +35,10 @@ const BlockOptionsDropdownList: React.FC<BlockOptionsDropdownListProps> = ({
 
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left}px`;
+      // dropDown.style.top = `${top + 40}px`;
+      // dropDown.style.top = `${40}px`;
+      // dropDown.style.left = `${left}px`;
+      dropDown.style.padding = "5px 0px 5px 0px";
     }
   }, [dropDownRef, toolbarRef]);
 

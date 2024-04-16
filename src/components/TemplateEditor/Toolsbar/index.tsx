@@ -176,8 +176,9 @@ const Toolsbar = () => {
       </IconButton>
       <Divider />
       {supportedBlockTypes.has(blockType) && (
-        <>
+        <div style={{ position: "relative" }}>
           <button
+            type="button"
             className="toolbar-item block-controls"
             onClick={() =>
               setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
@@ -188,7 +189,7 @@ const Toolsbar = () => {
             <span className="text">{blockTypeToBlockName[blockType]}</span>
             <i className="chevron-down" />
           </button>
-          {showBlockOptionsDropDown &&
+          {/* {showBlockOptionsDropDown &&
             createPortal(
               <BlockOptionsDropdownList
                 editor={editor}
@@ -197,10 +198,22 @@ const Toolsbar = () => {
                 setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
               />,
               document.body
-            )}
-          <Divider />
-        </>
+            )} */}
+          {showBlockOptionsDropDown && (
+            <div
+              style={{ position: "absolute", top: "100%", left: 0, zIndex: 1 }}
+            >
+              <BlockOptionsDropdownList
+                editor={editor}
+                blockType={blockType}
+                toolbarRef={toolbarRef}
+                setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
+              />
+            </div>
+          )}
+        </div>
       )}
+      <Divider />
       {blockType === "code" ? (
         <>
           <Select
