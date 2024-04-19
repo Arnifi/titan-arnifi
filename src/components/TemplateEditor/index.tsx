@@ -1,5 +1,5 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -27,6 +27,7 @@ import PlaygroundAutoLinkPlugin from "./Plugins/AutoLinkPlugin";
 import Toolsbar from "./Toolsbar";
 import { FormikContextType, FormikValues, useFormikContext } from "formik";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
+import StickyToolsbar from "./Toolsbar/StickyToolsbar";
 
 function MyCustomAutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -80,27 +81,26 @@ const ConvertToHtmlPlugin: React.FC<{ docName: string }> = ({ docName }) => {
 
 const ArnifiRichEditor = ({ document }: { document: ILegalDocument }) => {
   return (
-    <Box>
-      <LexicalComposer initialConfig={editorConfig}>
-        <Toolsbar />
-        <MyCustomAutoFocusPlugin />
-        <Box sx={{ position: "relative" }}>
-          <RichTextPlugin
-            contentEditable={<MuiContentEditable />}
-            placeholder={<Box></Box>}
-            ErrorBoundary={LexicalErrorBoundary}
-          />
-          <HistoryPlugin />
-          <ListPlugin />
-          <LinkPlugin />
-          <MentionsPlugin data={document} />
-          <PlaygroundAutoLinkPlugin />
-          <CodeHighlightPlugin />
-          <ListMaxIndentLevelPlugin />
-          <ConvertToHtmlPlugin docName={document?.title} />
-        </Box>
-      </LexicalComposer>
-    </Box>
+    <LexicalComposer initialConfig={editorConfig}>
+      <StickyToolsbar />
+      <Toolsbar />
+      <MyCustomAutoFocusPlugin />
+      <Box sx={{ position: "relative" }}>
+        <RichTextPlugin
+          contentEditable={<MuiContentEditable />}
+          placeholder={<Box></Box>}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+        <HistoryPlugin />
+        <ListPlugin />
+        <LinkPlugin />
+        <MentionsPlugin data={document} />
+        <PlaygroundAutoLinkPlugin />
+        <CodeHighlightPlugin />
+        <ListMaxIndentLevelPlugin />
+        <ConvertToHtmlPlugin docName={document?.title} />
+      </Box>
+    </LexicalComposer>
   );
 };
 
