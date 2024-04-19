@@ -173,7 +173,14 @@ const LegalTemplate = ({ params }: { params: { id: string } }) => {
         initialValues={{ htmlTemp: htmlTemp || "" }}
         submitHandlar={handleSubmit}
       >
-        <Box sx={{ padding: "50px", minHeight: "70vh", bgcolor: "#f5f5f5" }}>
+        <Box
+          sx={{
+            position: "relative",
+            padding: "50px",
+            minHeight: "70vh",
+            bgcolor: "#f5f5f5",
+          }}
+        >
           <ArnifiRichEditor document={data?.data as ILegalDocument} />
         </Box>
 
