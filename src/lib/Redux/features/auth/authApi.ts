@@ -46,6 +46,19 @@ const authApi = backendBaseApi.injectEndpoints({
         method: "GET",
         providesTags: ["user"],
       }),
+      async onQueryStarted(
+        args,
+        {
+          queryFulfilled,
+          dispatch,
+        }: { queryFulfilled: any; dispatch: AppDispatch }
+      ) {
+        const { data: response } = await queryFulfilled;
+        const loginUser = response?.data as ILoginUser;
+        dispatch(setLoginUser(loginUser));
+      },
+
+      providesTags: ["user"],
     }),
   }),
 });
