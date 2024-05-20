@@ -11,8 +11,16 @@ import { imageUrls } from "@/assets/icons";
 import FormProvaider from "@/components/Form";
 import FormInputField, { IInputType } from "@/components/Form/AInputField";
 import { LockOpen } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { FormikValues } from "formik";
+import {
+  ILoginResponse,
+  useLoginMutation,
+} from "@/lib/Redux/features/auth/authApi";
+import { useAppDispatch } from "@/lib/Redux/store";
+import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
+import { useRouter } from "next/navigation";
+
 const ArnifiLogo =
   "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images/ArnifiLogo.png";
 
@@ -28,9 +36,43 @@ export default function LoginSide(): JSX.Element {
     email: "",
     password: "",
   });
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-  const handleLogin = (values: FormikValues): void => {
-    console.log(values, "submit");
+  const router = useRouter();
+
+  const handleLogin = async (values: FormikValues): Promise<void> => {
+    try {
+      const response: { data: ILoginResponse } = await login(values).unwrap();
+      if (!response?.data?.token) {
+        console.error(response);
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            message: "Email or Password is incorrect",
+            type: "error",
+          })
+        );
+      } else {
+        router.replace("/");
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            message: "Login Successful!",
+            type: "success",
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch(
+        openSnackbar({
+          isOpen: true,
+          message: "Email or Password is incorrect",
+          type: "error",
+        })
+      );
+    }
   };
   return (
     <Box>
@@ -142,6 +184,7 @@ export default function LoginSide(): JSX.Element {
                   }}
                 >
                   <Button
+                    disabled={isLoading}
                     type="submit"
                     variant="contained"
                     size="large"
@@ -150,7 +193,11 @@ export default function LoginSide(): JSX.Element {
                       textTransform: "none",
                     }}
                   >
-                    Login
+                    {isLoading ? (
+                      <CircularProgress size={30} color="inherit" />
+                    ) : (
+                      "Login"
+                    )}
                   </Button>
                 </Box>
               </FormProvaider>
