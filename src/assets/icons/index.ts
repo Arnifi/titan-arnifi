@@ -1,0 +1,32 @@
+export const imageUrls: { [key: string]: string } = {
+  UAESetupCircle:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/setup.svg",
+  IIfzaOfficeDetails:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/ifzaOfficeDetails.svg",
+  IAvatarGroup:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/avatarGroup.svg",
+  BannerImg:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/BannerImg.svg",
+  car_24:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/car_24.svg",
+  CryptoBackground:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/cryptoBackgorund.svg",
+  TypesOfCompanies:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/typesOfCompanies.svg",
+  Banner1:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/banner1.png",
+  Banner2:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/banner2.png",
+  GetInTouchImg:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/getInTouch.png",
+  Mobile_banner3:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/Mobile_banner3.png",
+  ServicesTexture:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/servicesTexture.png",
+  SignUpback:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/signUpBack.png",
+  ServiceMobileBG:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/serviceMobileBG.png",
+  ServiceDesktopBG:
+    "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images-160224/serviceDesktopBG.jpeg",
+};
