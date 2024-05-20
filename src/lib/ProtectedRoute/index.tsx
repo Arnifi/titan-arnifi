@@ -6,7 +6,7 @@ import {
   useGetLoginUserQuery,
 } from "../Redux/features/auth/authApi";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 interface Props {
   // Define any additional props that the HOC might need
@@ -26,7 +26,7 @@ const ProtectedRouteHOC = <P extends object>(
     }
 
     if (!loginUser?.isActive || loginUser?.blocked || !loginUser?.id) {
-      router.push("/login");
+      router.replace("/login");
       return null;
     }
 

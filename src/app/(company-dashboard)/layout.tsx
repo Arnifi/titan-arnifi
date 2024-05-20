@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const items = [
     {
       label: "Overview",
-      path: "/drafter-dashboard",
+      path: "/",
       icon: <BarChart />,
     },
     {

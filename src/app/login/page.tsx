@@ -19,7 +19,7 @@ import {
 } from "@/lib/Redux/features/auth/authApi";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const ArnifiLogo =
   "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images/ArnifiLogo.png";
@@ -40,8 +40,6 @@ export default function LoginSide(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const handleLogin = async (values: FormikValues): Promise<void> => {
     try {
@@ -56,7 +54,7 @@ export default function LoginSide(): JSX.Element {
           })
         );
       } else {
-        router.replace(callbackUrl);
+        router.replace("/");
         dispatch(
           openSnackbar({
             isOpen: true,

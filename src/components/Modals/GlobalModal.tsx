@@ -37,6 +37,7 @@ const GlobalModal: React.FC<IGlobalModalProps> = ({
       onClose={() => setOpen(false)}
       aria-labelledby="globel-dialog-title"
       aria-describedby="global-dialog-description"
+      disableScrollLock
     >
       {title && (
         <DialogTitle id="globel-dialog-title">
