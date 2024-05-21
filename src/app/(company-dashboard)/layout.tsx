@@ -5,7 +5,7 @@ import SideNav from "@/components/SideNav";
 import TopNav from "@/components/TopNav";
 import { Box, Button } from "@mui/material";
 import React from "react";
-import { BarChart, Description, Logout, Settings } from "@mui/icons-material";
+import { BarChart, Business, Description, Logout } from "@mui/icons-material";
 import Link from "next/link";
 import ProtectedRouteHOC from "@/lib/ProtectedRoute";
 
@@ -17,19 +17,23 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       icon: <BarChart />,
     },
     {
-      label: "Legal Documents",
-      path: "/drafter-dashboard/legal-documents",
-      icon: <Description />,
+      label: "Company Forms",
+      path: "/company-applications",
+      icon: <Business />,
     },
     {
-      label: "Settings",
-      path: "/drafter-dashboard/settings",
-      icon: <Settings />,
+      label: "Visa Applications",
+      path: "/visa-applications",
+      icon: <Description />,
     },
   ];
 
   return (
-    <Box display="flex">
+    <Box
+      display="flex"
+      minHeight={"100vh"}
+      sx={{ bgcolor: theme.colorConstants.whitishGray }}
+    >
       <Box width={"15%"} position={"fixed"}>
         <SideNav
           SwitchTo={
