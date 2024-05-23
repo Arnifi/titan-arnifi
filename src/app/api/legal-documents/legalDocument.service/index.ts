@@ -84,7 +84,6 @@ const create = async (data: ILegalDocument) => {
 const updateOne = async (id: string, data: ILegalDocument) => {
   const { status, ...other } = data;
 
-  console.log(other);
   const result = await Legal_Documents.update({ id }, other);
   return result;
 };

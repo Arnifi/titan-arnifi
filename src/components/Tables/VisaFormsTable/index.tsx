@@ -147,8 +147,6 @@ const VisaFormsTable = () => {
     },
   ];
 
-  console.log(tableData);
-
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>

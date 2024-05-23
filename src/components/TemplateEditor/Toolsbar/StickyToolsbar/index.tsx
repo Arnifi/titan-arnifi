@@ -7,7 +7,6 @@ const StickyToolsbar = () => {
 
   useMemo(() => {
     const handleScroll = () => {
-      console.log(window?.scrollY);
       if (window.scrollY > 220) {
         setShowStickyTools(true);
       } else {

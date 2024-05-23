@@ -2,41 +2,85 @@ import {
   Button,
   TableCell,
   TableRow,
+  Typography,
   styled,
   tableCellClasses,
 } from "@mui/material";
 import React from "react";
 import { ITableData } from ".";
+import {
+  CompanyStatusType,
+  ICompanyApplication,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.colorConstants.darkBlue,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: "16px",
+    fontSize: "12px",
     fontWeight: 600,
   },
 }));
 
-const TableItem = ({ data }: { data: ITableData }) => {
-  const { companyName, type, linkedTo, jurisdiction, currentStep, status } =
-    data;
+const TableItem = ({ data }: { data: ICompanyApplication }) => {
+  const {
+    companyDetails: { companyNames, licenseType },
+    linkto,
+    username,
+    company_status,
+  } = data;
+
+  const buttonBackground =
+    company_status?.currentStatus === CompanyStatusType?.OPEN ||
+    company_status?.currentStatus === CompanyStatusType?.INREVIEWARNIFI ||
+    company_status?.currentStatus === CompanyStatusType?.SUBMITTED
+      ? "#EBEEFB"
+      : company_status?.currentStatus === CompanyStatusType?.REJECTEDARNIFI ||
+        company_status?.currentStatus === CompanyStatusType?.REJECTEDGA
+      ? "#FBD2D2"
+      : company_status?.currentStatus === CompanyStatusType?.COMPLETED
+      ? "#FBD2D2"
+      : "#FDEBD8";
+
+  const buttonColor =
+    company_status?.currentStatus === CompanyStatusType?.OPEN ||
+    company_status?.currentStatus === CompanyStatusType?.INREVIEWARNIFI ||
+    company_status?.currentStatus === CompanyStatusType?.SUBMITTED
+      ? "#3955D9"
+      : company_status?.currentStatus === CompanyStatusType?.REJECTEDARNIFI ||
+        company_status?.currentStatus === CompanyStatusType?.REJECTEDGA
+      ? "#F15656"
+      : company_status?.currentStatus === CompanyStatusType?.COMPLETED
+      ? "#36A067"
+      : "#F7993B";
 
   return (
     <>
       <TableRow hover>
-        <StyledTableCell align="left">{companyName}</StyledTableCell>
-        <StyledTableCell align="left">{type}</StyledTableCell>
-        <StyledTableCell align="left">{linkedTo}</StyledTableCell>
-        <StyledTableCell align="left">{jurisdiction}</StyledTableCell>
-        <StyledTableCell align="left">{currentStep}</StyledTableCell>
+        <StyledTableCell align="left">{`${companyNames?.option1} ${companyNames?.option2} ${companyNames?.option3}`}</StyledTableCell>
+        <StyledTableCell align="left">{licenseType}</StyledTableCell>
+        <StyledTableCell align="left">{username}</StyledTableCell>
+        <StyledTableCell align="left">{"jurisdiction"}</StyledTableCell>
+        <StyledTableCell align="left">
+          {company_status?.currentStep ?? "None"}
+        </StyledTableCell>
         <TableCell align="left">
-          <Button
-            variant="contained"
-            sx={{ width: "100%", textTransform: "none" }}
+          <Typography
+            variant="body1"
+            sx={{
+              textAlign: "center",
+              padding: "5px",
+              borderRadius: "5px",
+              width: "150px",
+              bgcolor: buttonBackground,
+              color: buttonColor,
+            }}
           >
-            {status}
-          </Button>
+            {company_status?.currentStatus === CompanyStatusType?.WAITINGGA
+              ? "Waiting on GA"
+              : company_status?.currentStatus ?? "None"}
+          </Typography>
         </TableCell>
       </TableRow>
     </>

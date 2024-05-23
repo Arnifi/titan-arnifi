@@ -1,5 +1,7 @@
 "use client";
 
+import DashboardCard from "@/components/DashboardCard";
+import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Box, Typography, Grid } from "@mui/material";
 import Link from "next/link";
@@ -10,6 +12,7 @@ interface ICardProps {
   title: string;
   count: number;
 }
+
 const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
   return (
     <Box
@@ -47,6 +50,10 @@ const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
 };
 
 const Dashboard = () => {
+  const companyFormStatus = useAppSelector(
+    (state) => state.companyApplications?.status
+  );
+
   return (
     <Box>
       <Box>
@@ -88,7 +95,7 @@ const Dashboard = () => {
                 >
                   Company Applications
                 </Typography>
-                <Link href="/">
+                <Link href="/company-applications">
                   <Typography
                     variant="body1"
                     sx={{
@@ -101,8 +108,9 @@ const Dashboard = () => {
                   </Typography>
                 </Link>
               </Box>
+              <DashboardCard status={companyFormStatus} />
 
-              <Grid
+              {/* <Grid
                 container
                 spacing={2}
                 sx={{
@@ -129,7 +137,7 @@ const Dashboard = () => {
                 <Grid item xs={6}>
                   <CustomCard color="#FBD2D2" title="Reject" count={10} />
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Box>
           </Grid>
 
@@ -160,7 +168,7 @@ const Dashboard = () => {
                 >
                   Visa Applications
                 </Typography>
-                <Link href="/">
+                <Link href="/visa-applications">
                   <Typography
                     variant="body1"
                     sx={{

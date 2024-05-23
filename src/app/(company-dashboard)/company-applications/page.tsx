@@ -1,39 +1,95 @@
 "use client";
 
 import CompanyFormsTable from "@/components/Tables/CompanyFormsTable";
+import {
+  CompanyStatusType,
+  ICompanyApplication,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Search } from "@mui/icons-material";
 import {
   Box,
+  Grid,
   InputAdornment,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 const CompanyApplications: React.FC = () => {
-  const options = [
-    "Option - 1",
-    "Option - 2",
-    "Option - 3",
-    "Option - 4",
-    "Option - 5",
+  const [search, setSearch] = useState<string>("");
+
+  const allApplications = useAppSelector(
+    (state) => state.companyApplications?.applications
+  );
+
+  const [companyApplications, setCompanyApplications] =
+    useState<ICompanyApplication[]>(allApplications);
+
+  const searchAbleApplications: ICompanyApplication[] =
+    companyApplications?.filter((item) => {
+      const searchInLowerCase = search.toLocaleLowerCase();
+
+      const nameOption1 =
+        item.companyDetails?.companyNames?.option1?.toLocaleLowerCase() || "";
+      const nameOption2 =
+        item.companyDetails?.companyNames?.option2?.toLocaleLowerCase() || "";
+      const nameOption3 =
+        item.companyDetails?.companyNames?.option3?.toLocaleLowerCase() || "";
+
+      return (
+        nameOption1.includes(searchInLowerCase) ||
+        nameOption2.includes(searchInLowerCase) ||
+        nameOption3.includes(searchInLowerCase)
+      );
+    });
+
+  const allCompanyStatus = [
+    CompanyStatusType.OPEN,
+    CompanyStatusType.SUBMITTED,
+    CompanyStatusType.INREVIEWARNIFI,
+    CompanyStatusType.REJECTEDARNIFI,
+    CompanyStatusType.WAITINGGA,
+    CompanyStatusType.REJECTEDGA,
+    CompanyStatusType.RESOLUTIONSIGNED,
+    CompanyStatusType.MOAAOASIGNED,
+    CompanyStatusType.COMPLETED,
   ];
+
+  const statusWiseApplications = allCompanyStatus?.map((status) => {
+    const applications = allApplications?.filter(
+      (item) => item.company_status?.currentStatus === status
+    );
+    return {
+      leble: status,
+      applications,
+      count: applications.length,
+    };
+  });
+
   return (
     <Box>
-      <Typography
+      <Box
         sx={{
-          fontWeight: 600,
-          fontSize: "26px",
-          color: theme.colorConstants.darkBlue,
+          marginY: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        Company Applications
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: "26px",
+            color: theme.colorConstants.darkBlue,
+          }}
+        >
+          Company Applications
+        </Typography>
 
-      <Box marginTop={"50px"} marginBottom={"20px"}>
         <Box
           sx={{
             display: "flex",
@@ -42,9 +98,9 @@ const CompanyApplications: React.FC = () => {
         >
           <Typography
             sx={{
-              fontSize: "18px",
-              fontWeight: "400",
-              color: theme.colorConstants.mediumGray,
+              fontSize: "14px",
+              fontWeight: "500",
+              color: theme.colorConstants.darkGray,
             }}
           >
             Current Step
@@ -61,16 +117,54 @@ const CompanyApplications: React.FC = () => {
               textTransform: "capitalize",
             }}
             displayEmpty
-            renderValue={() => {
-              return "Option - 1";
+            renderValue={(e: unknown) => {
+              if (e === undefined || e === "all") {
+                return `All Applications (${allApplications?.length})`;
+              } else {
+                return String(e);
+              }
             }}
             inputProps={{ "aria-label": "Without label" }}
-            // onChange={field.onChange}
-            // onBlur={field.onBlur}
-            // error={meta.touched && Boolean(meta.error)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === "all") {
+                setCompanyApplications(allApplications);
+              } else {
+                const selectedStatus = statusWiseApplications?.find(
+                  (item) => item?.leble === e.target.value
+                );
+                setCompanyApplications(
+                  selectedStatus?.applications as ICompanyApplication[]
+                );
+              }
+            }}
+            onBlur={(e) => {
+              const value = e.target.value;
+              if (value === "all") {
+                setCompanyApplications(allApplications);
+              } else {
+                const selectedStatus = statusWiseApplications?.find(
+                  (item) => item?.leble === e.target.value
+                );
+                setCompanyApplications(
+                  selectedStatus?.applications as ICompanyApplication[]
+                );
+              }
+            }}
             MenuProps={{ disableScrollLock: true }}
           >
-            {options?.map((item) => (
+            <MenuItem
+              sx={{
+                color: theme.colorConstants.darkGray,
+                fontSize: "14px",
+                fontWeight: 500,
+                textTransform: "capitalize",
+              }}
+              value={`all`}
+            >
+              All Applications ({allApplications?.length})
+            </MenuItem>
+            {statusWiseApplications?.map((item, i) => (
               <MenuItem
                 sx={{
                   color: theme.colorConstants.darkGray,
@@ -78,15 +172,17 @@ const CompanyApplications: React.FC = () => {
                   fontWeight: 500,
                   textTransform: "capitalize",
                 }}
-                key={item}
-                value={item}
+                key={i}
+                value={item?.leble}
               >
-                {item}
+                {`${item?.leble} (${item?.count})`}
               </MenuItem>
             ))}
           </Select>
 
           <TextField
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
             type={"text"}
             InputProps={{
               startAdornment: (
@@ -109,10 +205,10 @@ const CompanyApplications: React.FC = () => {
 
       <Box
         sx={{
-          marginBottom: "50px",
+          marginBottom: "20px",
         }}
       >
-        <CompanyFormsTable />
+        <CompanyFormsTable data={searchAbleApplications} />
       </Box>
     </Box>
   );

@@ -4,12 +4,16 @@ import theme from "@/theme";
 import SideNav from "@/components/SideNav";
 import TopNav from "@/components/TopNav";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 import { BarChart, Business, Description, Logout } from "@mui/icons-material";
 import Link from "next/link";
 import ProtectedRouteHOC from "@/lib/ProtectedRoute";
+import GlobalLoader from "@/components/Loaders/GlobalLoader";
+import { useGetAllUserWithInfoQuery } from "@/lib/Redux/features/users/userApi";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const { isLoading: userWithInfoLoading } = useGetAllUserWithInfoQuery({});
+
   const items = [
     {
       label: "Overview",
@@ -67,7 +71,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           px={"5%"}
           sx={{ overflow: "hidden" }}
         >
-          {children}
+          {userWithInfoLoading ? (
+            <GlobalLoader height="70vh" />
+          ) : (
+            <Suspense fallback={<GlobalLoader height="70vh" />}>
+              {children}
+            </Suspense>
+          )}
         </Box>
       </Box>
     </Box>

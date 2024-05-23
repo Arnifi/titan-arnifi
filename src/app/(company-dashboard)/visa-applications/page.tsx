@@ -1,6 +1,8 @@
 "use client";
 
 import VisaFormsTable from "@/components/Tables/VisaFormsTable";
+import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
+import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Search } from "@mui/icons-material";
 import {
@@ -11,9 +13,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 const VisaApplications: React.FC = () => {
+  const [search, setSearch] = useState<string>("");
+
+  const allApplications = useAppSelector(
+    (state) => state.visaApplications?.applications
+  );
+
+  const [visaApplications, setVisaApplications] =
+    useState<IVisaApplication[]>(allApplications);
+
   const options = [
     "Option - 1",
     "Option - 2",
