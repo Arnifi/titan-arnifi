@@ -1,7 +1,3 @@
-import {
-  CompanyStatusType,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
@@ -17,9 +13,9 @@ export const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
     <Box
       sx={{
         bgcolor: color,
-        borderRadius: "10px",
-        paddingY: "40px",
-        paddingX: "30px",
+        borderRadius: "6px",
+        paddingY: "20px",
+        paddingX: "20px",
       }}
     >
       <Typography
@@ -36,7 +32,6 @@ export const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
       <Typography
         variant="h3"
         sx={{
-          marginTop: "10px",
           fontSize: "16px",
           fontWeight: 600,
           color: theme.colorConstants.mediumGray,
@@ -49,31 +44,9 @@ export const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
 };
 
 interface IProps {
-  status: ICompanyStatus[];
+  data: { leble: string; color: string; count: number }[];
 }
-const DashboardCard: React.FC<IProps> = ({ status }) => {
-  const rejectApplications = status.filter(
-    (item) =>
-      item?.currentStatus === CompanyStatusType.REJECTEDARNIFI ||
-      item?.currentStatus === CompanyStatusType.REJECTEDGA
-  ).length;
-
-  const reviewApplications = status.filter(
-    (item) => item?.currentStatus === CompanyStatusType.INREVIEWARNIFI
-  ).length;
-
-  const waitingAuthority = status.filter(
-    (item) => item?.currentStatus === CompanyStatusType.WAITINGGA
-  );
-
-  const inProgress = status?.filter(
-    (item) =>
-      item?.currentStatus !== CompanyStatusType.INREVIEWARNIFI &&
-      item?.currentStatus !== CompanyStatusType.WAITINGGA &&
-      item?.currentStatus !== CompanyStatusType.REJECTEDARNIFI &&
-      item?.currentStatus !== CompanyStatusType.REJECTEDGA
-  )?.length;
-
+const DashboardCard: React.FC<IProps> = ({ data }) => {
   return (
     <Grid
       container
@@ -83,37 +56,15 @@ const DashboardCard: React.FC<IProps> = ({ status }) => {
         paddingBottom: "40px",
       }}
     >
-      <Grid item xs={6}>
-        <CustomCard
-          color="#EBEEFB"
-          title="Review"
-          count={reviewApplications.toString().padStart(2, "0")}
-        />
-      </Grid>
-
-      <Grid item xs={6}>
-        <CustomCard
-          color="#EBEEFB"
-          title="Waiting on Authority"
-          count={waitingAuthority.toString().padStart(2, "0")}
-        />
-      </Grid>
-
-      <Grid item xs={6}>
-        <CustomCard
-          color="#EBEEFB"
-          title="In Progress"
-          count={inProgress.toString().padStart(2, "0")}
-        />
-      </Grid>
-
-      <Grid item xs={6}>
-        <CustomCard
-          color="#FBD2D2"
-          title="Reject"
-          count={rejectApplications.toString().padStart(2, "0")}
-        />
-      </Grid>
+      {data?.map((item, i) => (
+        <Grid item xs={4} key={i}>
+          <CustomCard
+            color={item?.color}
+            title={item?.leble}
+            count={item?.count.toString().padStart(2, "0")}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 };

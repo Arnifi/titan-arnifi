@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardCard from "@/components/DashboardCard";
+import { CompanyStatusType } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Box, Typography, Grid } from "@mui/material";
@@ -50,9 +51,68 @@ const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
 };
 
 const Dashboard = () => {
-  const companyFormStatus = useAppSelector(
-    (state) => state.companyApplications?.status
+  const allApplications = useAppSelector(
+    (state) => state.companyApplications?.applications
   );
+
+  const allCompanyStatus = [
+    CompanyStatusType.OPEN,
+    CompanyStatusType.SUBMITTED,
+    CompanyStatusType.INREVIEWARNIFI,
+    CompanyStatusType.REJECTEDARNIFI,
+    CompanyStatusType.WAITINGGA,
+    CompanyStatusType.REJECTEDGA,
+    CompanyStatusType.RESOLUTIONSIGNED,
+    CompanyStatusType.MOAAOASIGNED,
+    CompanyStatusType.COMPLETED,
+  ];
+
+  const statusWiseApplications = allCompanyStatus?.map((status) => {
+    const applications = allApplications?.filter(
+      (item) => item.company_status?.currentStatus === status
+    );
+    return {
+      leble:
+        status === CompanyStatusType?.OPEN
+          ? "Open"
+          : status === CompanyStatusType?.SUBMITTED
+          ? "Submitted"
+          : status === CompanyStatusType?.INREVIEWARNIFI
+          ? "Inreview"
+          : status === CompanyStatusType?.REJECTEDARNIFI
+          ? "Reject-A"
+          : status === CompanyStatusType?.REJECTEDGA
+          ? "Reject-GA"
+          : status === CompanyStatusType?.WAITINGGA
+          ? "Waiting-GA"
+          : status === CompanyStatusType?.MOAAOASIGNED
+          ? "MOA/AOA"
+          : status === CompanyStatusType?.RESOLUTIONSIGNED
+          ? "Resolution"
+          : "Completed",
+      color:
+        status === CompanyStatusType?.OPEN
+          ? "#EBEEFB"
+          : status === CompanyStatusType?.COMPLETED
+          ? "#D7ECE1"
+          : status === CompanyStatusType?.SUBMITTED
+          ? "#D7ECE1"
+          : status === CompanyStatusType.INREVIEWARNIFI
+          ? "#EBEEFB"
+          : status === CompanyStatusType.REJECTEDARNIFI
+          ? "#FBD2D2"
+          : status === CompanyStatusType.REJECTEDGA
+          ? "#FBD2D2"
+          : status === CompanyStatusType.WAITINGGA
+          ? "#FDEBD8"
+          : status === CompanyStatusType.MOAAOASIGNED
+          ? "#EBEEFB"
+          : status === CompanyStatusType.RESOLUTIONSIGNED
+          ? "#D7ECE1"
+          : "#FDEBD8",
+      count: applications.length,
+    };
+  });
 
   return (
     <Box>
@@ -108,36 +168,7 @@ const Dashboard = () => {
                   </Typography>
                 </Link>
               </Box>
-              <DashboardCard status={companyFormStatus} />
-
-              {/* <Grid
-                container
-                spacing={2}
-                sx={{
-                  paddingX: "40px",
-                  paddingBottom: "40px",
-                }}
-              >
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="Review" count={30} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard
-                    color="#EBEEFB"
-                    title="Waiting on Authority"
-                    count={24}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="In Progress" count={52} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#FBD2D2" title="Reject" count={10} />
-                </Grid>
-              </Grid> */}
+              <DashboardCard data={statusWiseApplications} />
             </Box>
           </Grid>
 

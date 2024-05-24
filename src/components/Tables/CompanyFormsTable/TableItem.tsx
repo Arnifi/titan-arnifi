@@ -1,5 +1,4 @@
 import {
-  Button,
   TableCell,
   TableRow,
   Typography,
@@ -7,11 +6,11 @@ import {
   tableCellClasses,
 } from "@mui/material";
 import React from "react";
-import { ITableData } from ".";
 import {
   CompanyStatusType,
   ICompanyApplication,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { useRouter } from "next/navigation";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,11 +24,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const TableItem = ({ data }: { data: ICompanyApplication }) => {
   const {
+    id,
     companyDetails: { companyNames, licenseType },
     linkto,
     username,
     company_status,
   } = data;
+
+  const router = useRouter();
 
   const buttonBackground =
     company_status?.currentStatus === CompanyStatusType?.OPEN ||
@@ -55,9 +57,17 @@ const TableItem = ({ data }: { data: ICompanyApplication }) => {
       ? "#36A067"
       : "#F7993B";
 
+  const navigationHandler = (to: string) => {
+    router.push(to);
+  };
+
   return (
     <>
-      <TableRow hover>
+      <TableRow
+        hover
+        onClick={() => navigationHandler(`/company-applications/${id}`)}
+        sx={{ cursor: "pointer" }}
+      >
         <StyledTableCell align="left">{`${companyNames?.option1} ${companyNames?.option2} ${companyNames?.option3}`}</StyledTableCell>
         <StyledTableCell align="left">{licenseType}</StyledTableCell>
         <StyledTableCell align="left">{username}</StyledTableCell>
