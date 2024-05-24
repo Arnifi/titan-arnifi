@@ -29,6 +29,7 @@ const TableItem = ({ data }: { data: ICompanyApplication }) => {
     linkto,
     username,
     company_status,
+    jurisdiction,
   } = data;
 
   const router = useRouter();
@@ -71,7 +72,7 @@ const TableItem = ({ data }: { data: ICompanyApplication }) => {
         <StyledTableCell align="left">{`${companyNames?.option1} ${companyNames?.option2} ${companyNames?.option3}`}</StyledTableCell>
         <StyledTableCell align="left">{licenseType}</StyledTableCell>
         <StyledTableCell align="left">{username}</StyledTableCell>
-        <StyledTableCell align="left">{"jurisdiction"}</StyledTableCell>
+        <StyledTableCell align="left">{jurisdiction}</StyledTableCell>
         <StyledTableCell align="left">
           {company_status?.currentStep ?? "None"}
         </StyledTableCell>

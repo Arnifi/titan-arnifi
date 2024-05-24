@@ -40,6 +40,9 @@ export interface IDateOfBirth {
 
 export interface IShareholder {
   id: number;
+  passportFont: IUploadImage;
+  passportBack: IUploadImage;
+  emiratesID: IUploadImage;
   shareholderDetails: {
     name: {
       title: string;
@@ -135,6 +138,7 @@ export interface ICompanyApplication {
   company_status: ICompanyStatus;
   linkto: number | null;
   username: string;
+  jurisdiction: string;
 }
 
 const initialState = {

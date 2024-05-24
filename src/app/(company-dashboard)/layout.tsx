@@ -67,7 +67,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </Box>
         <Box
           zIndex={5}
-          marginTop={"120px"}
+          marginTop={"100px"}
           px={"5%"}
           sx={{ overflow: "hidden" }}
         >

@@ -14,6 +14,9 @@ export interface IUser {
   user_form?: ICompanyApplication;
   cart: {
     visa_applicants: IVisaApplication[];
+    cart: {
+      freeZoneName: string;
+    };
   };
 }
 

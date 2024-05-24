@@ -73,6 +73,8 @@ const userApi = backendBaseApi.injectEndpoints({
             data: { results },
           } = await queryFulfilled;
 
+          console.log(results);
+
           const companyApplications = [] as ICompanyApplication[];
           const visaApplications = [] as IVisaApplication[];
 
@@ -82,6 +84,7 @@ const userApi = backendBaseApi.injectEndpoints({
                 ...user.user_form,
                 linkto: user.id,
                 username: user.username,
+                jurisdiction: user?.cart?.cart?.freeZoneName || "",
               });
             }
           });
