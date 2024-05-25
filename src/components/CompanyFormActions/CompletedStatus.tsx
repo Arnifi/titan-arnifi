@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 
-const WaitingOnGA = () => {
-  const [isApprove, setIsApproved] = useState<string>("Yes");
-  const [rejectMessage, setRejectMessage] = useState<string>("");
+const CompletedStatus = () => {
+  const [isSendEmail, setIsSendEmail] = useState<string>("Yes");
+  const [emailText, setEmailText] = useState<string>("");
   const handleSubmit = (): void => {
     console.log("values");
   };
@@ -27,24 +27,33 @@ const WaitingOnGA = () => {
     >
       <Box>
         <Typography
-          variant="body1"
-          gutterBottom
           sx={{
-            lineHeight: "25px",
-            fontSize: "18px",
+            fontSize: "16px",
             fontWeight: 600,
             color: theme.colorConstants?.mediumGray,
           }}
         >
-          Has the application been approved by the Government Authority?
+          This Company Create Successfully!
         </Typography>
 
         <Box sx={{ marginTop: "10px", display: "flex", alignItems: "center" }}>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "12px",
+              fontWeight: 500,
+              color: theme.colorConstants?.mediumGray,
+              marginRight: "16px",
+            }}
+          >
+            Want to send email to user?
+          </Typography>
+
           <RadioGroup
             row
-            value={isApprove}
+            value={isSendEmail}
             onChange={(e) => {
-              setIsApproved(e?.target?.value);
+              setIsSendEmail(e?.target?.value);
             }}
           >
             {["Yes", "No"].map((item) => (
@@ -68,39 +77,26 @@ const WaitingOnGA = () => {
           </RadioGroup>
         </Box>
 
-        {isApprove === "No" ? (
+        {isSendEmail === "Yes" && (
           <Box>
             <textarea
               style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
               rows={4}
               placeholder="Write something here.."
-              onChange={(e) => setRejectMessage(e.target.value)}
-              value={rejectMessage}
+              onChange={(e) => setEmailText(e.target.value)}
+              value={emailText}
             ></textarea>
             <Button
-              color="error"
               onClick={handleSubmit}
-              disabled={!rejectMessage}
+              disabled={!emailText}
               size="small"
               variant="contained"
               sx={{
-                paddingX: "30px",
                 textTransform: "none",
+                paddingX: "20px",
               }}
             >
-              Reject on GA
-            </Button>
-          </Box>
-        ) : (
-          <Box display={"flex"} justifyContent={"end"}>
-            <Button
-              variant="contained"
-              size="small"
-              sx={{
-                textTransform: "none",
-              }}
-            >
-              Approve and Next
+              Send Email
             </Button>
           </Box>
         )}
@@ -109,4 +105,4 @@ const WaitingOnGA = () => {
   );
 };
 
-export default WaitingOnGA;
+export default CompletedStatus;

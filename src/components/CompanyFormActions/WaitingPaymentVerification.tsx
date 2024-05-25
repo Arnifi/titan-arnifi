@@ -19,25 +19,31 @@ interface IProps {
   isLoading: boolean;
   statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
 }
-
-const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
-  const [isApprove, setIsApprove] = useState<string>("Yes");
+const WaitingPaymentVerification: React.FC<IProps> = ({
+  statusHandlar,
+  isLoading,
+}) => {
+  const [isVerified, setIsVerified] = useState<string>("Yes");
   const [rejectText, setRejectText] = useState<string>("");
 
-  const rejectHandler = () => {
+  const handleStatusChange = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDARNIFI,
-      currentStep: CompanyStepTypes.REJECTEDARNIFI,
-      message: `Your application has been rejected by Arnifi agent due to ${rejectText}. Resubmit the application form.`,
+      currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
+      currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
+      message:
+        "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
     };
+
     statusHandlar(data);
   };
 
-  const makePaymentHandler = () => {
+  const rejectHandler = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStep: CompanyStepTypes?.MAKEPAYMENT,
+      currentStatus: CompanyStatusType.REJECTEDGA,
+      currentStep: CompanyStepTypes.REJECTEDGA,
+      message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
+      commentsFormGA: rejectText,
     };
-
     statusHandlar(data);
   };
 
@@ -53,49 +59,31 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
         <Typography
           gutterBottom
           sx={{
-            fontSize: "20px",
+            fontSize: "18px",
             fontWeight: 600,
             color: theme.colorConstants?.darkGray,
           }}
         >
-          Application send on GAPortal
+          Waiting for Payment Verification on GA Response
         </Typography>
 
-        <Typography
-          sx={{
-            fontSize: "16px",
-            fontWeight: 600,
-            color: theme.colorConstants?.mediumGray,
-          }}
-        >
-          Wait for Goverment Approval from GAPortal response
-        </Typography>
-
-        <Box
-          sx={{
-            marginTop: "10px",
-            display: "flex",
-            alignItems: "left",
-            flexDirection: "column",
-          }}
-        >
+        <Box>
           <Typography
             variant="body1"
             sx={{
-              fontSize: "12px",
-              fontWeight: 500,
-              color: theme.colorConstants?.mediumGray,
-              marginRight: "16px",
+              fontSize: "14px",
+              fontWeight: 600,
+              color: theme.colorConstants.mediumGray,
             }}
           >
-            Approve for government approval?
+            GA Payment Verified?
           </Typography>
 
           <RadioGroup
             row
-            value={isApprove}
+            value={isVerified}
             onChange={(e) => {
-              setIsApprove(e?.target?.value);
+              setIsVerified(e?.target?.value);
             }}
           >
             {["Yes", "No"].map((item) => (
@@ -119,18 +107,19 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
           </RadioGroup>
         </Box>
 
-        {isApprove === "Yes" ? (
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
+        {isVerified === "Yes" ? (
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              onClick={makePaymentHandler}
+              onClick={handleStatusChange}
               disabled={isLoading}
-              size="small"
               variant="contained"
+              size="small"
               sx={{
                 textTransform: "none",
+                paddingX: "20px",
               }}
             >
-              {isLoading ? "Loading..." : "Make Payment and Next"}
+              {isLoading ? "Loading..." : "Process to Next"}
             </Button>
           </Box>
         ) : (
@@ -153,7 +142,7 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
                 paddingX: "30px",
               }}
             >
-              {isLoading ? "Loading..." : "Reject by Agent"}
+              {isLoading ? "Loading..." : "Reject GA"}
             </Button>
           </Box>
         )}
@@ -162,4 +151,4 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
   );
 };
 
-export default ApplyGAPortal;
+export default WaitingPaymentVerification;

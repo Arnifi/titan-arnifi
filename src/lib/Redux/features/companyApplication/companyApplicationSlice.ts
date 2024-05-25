@@ -163,8 +163,24 @@ const companyApplicationSlice = createSlice({
       state.applications = payload;
       state.status = status;
     },
+
+    setUpdatedCompanyApplicationInfo: (
+      state,
+      { payload }: { payload: ICompanyApplication }
+    ) => {
+      const updatedInfoId = payload?.id;
+
+      const findIndex = state.applications?.findIndex(
+        (application) => application?.id === updatedInfoId
+      );
+
+      if (findIndex !== -1) {
+        state.applications[findIndex] = payload;
+      }
+    },
   },
 });
 
-export const { setCompanyApplications } = companyApplicationSlice.actions;
+export const { setCompanyApplications, setUpdatedCompanyApplicationInfo } =
+  companyApplicationSlice.actions;
 export default companyApplicationSlice.reducer;

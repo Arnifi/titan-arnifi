@@ -1,11 +1,27 @@
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import { Box, Button, Paper, Typography } from "@mui/material";
-import { FormikValues } from "formik";
 import React from "react";
 
-const FormSubmitAction = () => {
-  const statusChangeHandler = (values: FormikValues): void => {
-    console.log("values", values);
+interface IProps {
+  isLoading: boolean;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+}
+
+const FormSubmitAction: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
+  const statusChangeHandler = (): void => {
+    const updateStatus = {
+      currentStatus: CompanyStatusType.INREVIEWARNIFI,
+      currentStep: CompanyStepTypes.INREVIEWARNIFI,
+      message:
+        "Your application has been picked up by agent for review. If rejected, you will have to resubmit form with the correct details",
+    };
+
+    statusHandlar(updateStatus);
   };
 
   return (
@@ -35,9 +51,10 @@ const FormSubmitAction = () => {
             sx={{
               marginTop: "10px",
               textTransform: "none",
+              paddingX: "20px",
             }}
           >
-            Move to Inreview
+            {isLoading ? "Loading..." : "Move to Review"}
           </Button>
         </Box>
       </Box>

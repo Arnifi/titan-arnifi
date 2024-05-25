@@ -1,3 +1,8 @@
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -8,14 +13,39 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import { FormikValues } from "formik";
 import React, { useState } from "react";
 
-const InreviewAction = () => {
+interface IProps {
+  isLoading: boolean;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  agentComment: string;
+}
+
+const InreviewAction: React.FC<IProps> = ({
+  isLoading,
+  statusHandlar,
+  agentComment,
+}) => {
   const [isReject, setIsReject] = useState("No");
   const [rejectText, setRejectText] = useState<string>("");
-  const statusRejectHandler = (values: FormikValues): void => {
-    console.log("values", values);
+
+  const rejectHandler = () => {
+    const data: Partial<ICompanyStatus> = {
+      currentStatus: CompanyStatusType.REJECTEDARNIFI,
+      currentStep: CompanyStepTypes.REJECTEDARNIFI,
+      message: `Your application has been rejected by Arnifi agent due to ${rejectText}. Resubmit the application form.
+      `,
+      agentComment: rejectText,
+    };
+    statusHandlar(data);
+  };
+
+  const approveHandler = () => {
+    const data: Partial<ICompanyStatus> = {
+      currentStep: CompanyStepTypes?.APPLYGA,
+    };
+
+    statusHandlar(data);
   };
 
   return (
@@ -36,7 +66,9 @@ const InreviewAction = () => {
             color: theme.colorConstants?.darkGray,
           }}
         >
-          Please review the application
+          {agentComment !== ""
+            ? "Resubmitted Application"
+            : "Please review the application"}
         </Typography>
 
         <Typography
@@ -115,6 +147,8 @@ const InreviewAction = () => {
             {isReject !== "Yes" ? (
               <Box sx={{ display: "flex", justifyContent: "end" }}>
                 <Button
+                  disabled={isLoading}
+                  onClick={approveHandler}
                   variant="contained"
                   size="small"
                   sx={{
@@ -122,7 +156,7 @@ const InreviewAction = () => {
                     paddingX: "20px",
                   }}
                 >
-                  Approve and Apply GA
+                  {isLoading ? "Loading..." : "Approve and Apply GA"}
                 </Button>
               </Box>
             ) : (
@@ -136,8 +170,8 @@ const InreviewAction = () => {
                 ></textarea>
                 <Button
                   color="error"
-                  onClick={statusRejectHandler}
-                  disabled={!rejectText}
+                  onClick={rejectHandler}
+                  disabled={!rejectText || isLoading}
                   size="small"
                   variant="contained"
                   sx={{
@@ -145,7 +179,7 @@ const InreviewAction = () => {
                     textTransform: "none",
                   }}
                 >
-                  Reject
+                  {isLoading ? "Loading..." : "Reject"}
                 </Button>
               </Box>
             )}

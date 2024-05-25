@@ -1,3 +1,8 @@
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import { CheckCircle, Filter } from "@mui/icons-material";
 import {
@@ -45,7 +50,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-const UploadPaymentProof = () => {
+interface IProps {
+  isLoading: boolean;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+}
+
+const UploadPaymentProof: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState<boolean>(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -54,6 +64,16 @@ const UploadPaymentProof = () => {
   const uploadHandelar = async (file: File): Promise<void> => {
     setUploadFile(file);
     setFileName(file.name);
+  };
+
+  const handleStatusChange = () => {
+    const data = {
+      currentStatus: CompanyStatusType.WAITINGGA,
+      currentStep: CompanyStepTypes.WAITINGPAYMENTVERIFICATION,
+      message:
+        "Your application has been sent to governemnt Authority for approval. The application will be reviewed and will be processed by the government Authority. Once approved by them, they will send company documents for E-signature to Shareholders and Authorised dignitaries",
+    };
+    statusHandlar(data);
   };
 
   return (
@@ -277,7 +297,8 @@ const UploadPaymentProof = () => {
 
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              disabled={fileName === ""}
+              onClick={handleStatusChange}
+              disabled={fileName === "" || isLoading}
               size="small"
               variant="contained"
               sx={{

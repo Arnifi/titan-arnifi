@@ -1,3 +1,8 @@
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -8,14 +13,22 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import { FormikValues } from "formik";
 import React, { useState } from "react";
 
-const OpenStatusAction = () => {
-  const [isSendEmail, setIsSendEmail] = useState<string>("No");
-  const [emailText, setEmailText] = useState<string>("");
-  const handleSubmit = (values: FormikValues): void => {
-    console.log("values", values);
+interface IProps {
+  isLoading: boolean;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+}
+const PaymentSuccessfull: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
+  const [isSigned, setIsSigned] = useState<string>("No");
+
+  const handleStatusChange = () => {
+    const data: Partial<ICompanyStatus> = {
+      currentStatus: CompanyStatusType.INREVIEWARNIFI,
+      currentStep: CompanyStepTypes.UPLOADPROOF,
+    };
+
+    statusHandlar(data);
   };
 
   return (
@@ -28,34 +41,33 @@ const OpenStatusAction = () => {
     >
       <Box>
         <Typography
+          gutterBottom
           sx={{
-            fontSize: "16px",
+            fontSize: "18px",
             fontWeight: 600,
-            color: theme.colorConstants?.mediumGray,
+            color: theme.colorConstants?.darkGray,
           }}
         >
-          Wait for the user to complete the form. You can go ahead and send
-          email to remind user about the form completion.
+          Make Payment
         </Typography>
 
-        <Box sx={{ marginTop: "10px", display: "flex", alignItems: "center" }}>
+        <Box>
           <Typography
             variant="body1"
             sx={{
-              fontSize: "12px",
-              fontWeight: 500,
-              color: theme.colorConstants?.mediumGray,
-              marginRight: "16px",
+              fontSize: "14px",
+              fontWeight: 600,
+              color: theme.colorConstants.mediumGray,
             }}
           >
-            Want to send email to user?
+            GA Payment Successfully?
           </Typography>
 
           <RadioGroup
             row
-            value={isSendEmail}
+            value={isSigned}
             onChange={(e) => {
-              setIsSendEmail(e?.target?.value);
+              setIsSigned(e?.target?.value);
             }}
           >
             {["Yes", "No"].map((item) => (
@@ -79,26 +91,19 @@ const OpenStatusAction = () => {
           </RadioGroup>
         </Box>
 
-        {isSendEmail === "Yes" && (
-          <Box>
-            <textarea
-              style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
-              rows={4}
-              placeholder="Write something here.."
-              onChange={(e) => setEmailText(e.target.value)}
-              value={emailText}
-            ></textarea>
+        {isSigned === "Yes" && (
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              onClick={handleSubmit}
-              disabled={!emailText}
-              size="small"
+              onClick={handleStatusChange}
+              disabled={isLoading}
               variant="contained"
+              size="small"
               sx={{
                 textTransform: "none",
                 paddingX: "20px",
               }}
             >
-              Send Email
+              {isLoading ? "Loading..." : "Process to Next"}
             </Button>
           </Box>
         )}
@@ -107,4 +112,4 @@ const OpenStatusAction = () => {
   );
 };
 
-export default OpenStatusAction;
+export default PaymentSuccessfull;

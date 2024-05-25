@@ -2,7 +2,10 @@
 
 import CompanyFormActions from "@/components/CompanyFormActions";
 import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import {
+  ICompanyApplication,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { KeyboardArrowLeft } from "@mui/icons-material";
@@ -192,7 +195,9 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
               </Box>
             </Paper>
 
-            <CompanyFormActions />
+            <CompanyFormActions
+              data={selectedApplication as ICompanyApplication}
+            />
           </Box>
         </Grid>
       </Grid>

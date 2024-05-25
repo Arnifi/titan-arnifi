@@ -12,7 +12,11 @@ import {
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 
-const RejectAgentAction = () => {
+interface IProps {
+  message: string;
+}
+
+const RejectAgentAction: React.FC<IProps> = ({ message }) => {
   const [isSendEmail, setIsSendEmail] = useState<string>("No");
   const [emailText, setEmailText] = useState<string>("");
   const handleSubmit = (values: FormikValues): void => {
@@ -65,7 +69,7 @@ const RejectAgentAction = () => {
                 color: theme.colorConstants?.darkGray,
               }}
             >
-              Your application has been rejected due to - `(Insert comment)`
+              {message}
             </Typography>
           </Card>
         </Box>
