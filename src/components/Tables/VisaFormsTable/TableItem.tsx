@@ -10,6 +10,7 @@ import {
   IVisaApplication,
   VisaStatusType,
 } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
+import { useRouter } from "next/navigation";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -22,7 +23,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const TableItem = ({ data }: { data: IVisaApplication }) => {
+  const router = useRouter();
+
   const {
+    id,
     companyName,
     personalDetails,
     visaType,
@@ -94,9 +98,19 @@ const TableItem = ({ data }: { data: IVisaApplication }) => {
       ? "Completed"
       : "None";
 
+  const navigationHandler = (to: string) => {
+    router.push(to);
+  };
+
   return (
     <>
-      <TableRow hover>
+      <TableRow
+        sx={{
+          cursor: "pointer",
+        }}
+        hover
+        onClick={() => navigationHandler(`/visa-applications/${id}`)}
+      >
         <StyledTableCell align="left">{companyName}</StyledTableCell>
         <StyledTableCell align="left">{applicantName}</StyledTableCell>
         <StyledTableCell align="left">{visaType ?? "None"}</StyledTableCell>
