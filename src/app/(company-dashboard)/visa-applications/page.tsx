@@ -20,15 +20,13 @@ import React, { useState } from "react";
 
 const VisaApplications: React.FC = () => {
   const [search, setSearch] = useState<string>("");
-  const [visaApplications, setVisaApplications] = useState<IVisaApplication[]>(
-    []
-  );
 
   const allVisaApplications = useAppSelector(
     (state) => state.visaApplications?.applications
   );
 
-  console.log(allVisaApplications);
+  const [visaApplications, setVisaApplications] =
+    useState<IVisaApplication[]>(allVisaApplications);
 
   const allVisaStatus = [
     VisaStatusType.OPEN,
@@ -43,6 +41,33 @@ const VisaApplications: React.FC = () => {
     VisaStatusType.EMIRATESIDAPPOINTMENT,
     VisaStatusType.COMPLETED,
   ];
+
+  const searchAbleApplications: IVisaApplication[] = visaApplications?.filter(
+    (item) => {
+      const searchInLowerCase = search.toLocaleLowerCase();
+
+      const companyName = item?.companyName?.toLocaleLowerCase() || "";
+
+      const firstName =
+        item?.personalDetails?.firstName.toLocaleLowerCase() || "";
+
+      const middleName =
+        item?.personalDetails?.middleName.toLocaleLowerCase() || "";
+
+      const lastName =
+        item?.personalDetails?.lastName.toLocaleLowerCase() || "";
+
+      const userName = item?.username?.toLocaleLowerCase() || "";
+
+      return (
+        companyName.includes(searchInLowerCase) ||
+        firstName.includes(searchInLowerCase) ||
+        middleName.includes(searchInLowerCase) ||
+        lastName.includes(searchInLowerCase) ||
+        userName.includes(searchInLowerCase)
+      );
+    }
+  );
 
   const statusWiseVisaApplications = allVisaStatus?.map((status) => {
     const applications = allVisaApplications?.filter(
@@ -175,7 +200,7 @@ const VisaApplications: React.FC = () => {
               ),
             }}
             sx={{
-              width: "300px",
+              width: "350px",
               fontSize: "14px",
               fontWeight: 500,
               "& .MuiOutlinedInput-root": {
@@ -183,7 +208,7 @@ const VisaApplications: React.FC = () => {
               },
             }}
             variant="outlined"
-            placeholder={"Search by Company Name"}
+            placeholder={"Search by Company or Applicant or User"}
           />
         </Box>
       </Box>
@@ -193,7 +218,7 @@ const VisaApplications: React.FC = () => {
           marginBottom: "50px",
         }}
       >
-        <VisaFormsTable />
+        <VisaFormsTable data={searchAbleApplications as IVisaApplication[]} />
       </Box>
     </Box>
   );

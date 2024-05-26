@@ -57,7 +57,7 @@ export enum VisaStepsTypes {
   COMPLETED = "Completed",
 }
 
-export interface IVisaApplicationtatus {
+export interface IVisaApplicationStatus {
   id: number;
   currentStatus: VisaStatusType;
   currentStep: VisaStepsTypes;
@@ -183,14 +183,15 @@ export interface IVisaApplication {
   isCurrentlyResidingCountry: string;
   isLegalResident: string;
   isOtherDocument: string;
-  visa_status: IVisaApplicationtatus;
+  visa_status: IVisaApplicationStatus;
   linkto: number;
   username: string;
+  companyName: string;
+  jurisdiction: string;
 }
 
 const initialState = {
   applications: [] as IVisaApplication[],
-  status: [] as IVisaApplicationtatus[],
 };
 
 const visaApplicationSlice = createSlice({
@@ -205,7 +206,6 @@ const visaApplicationSlice = createSlice({
         return application?.visa_status;
       });
       state.applications = payload;
-      state.status = status;
     },
   },
 });

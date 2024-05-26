@@ -11,6 +11,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TableItem from "./TableItem";
 import { TablePagination } from "@mui/material";
+import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
+import theme from "@/theme";
 
 export interface ITableData {
   companyName: string;
@@ -22,7 +24,14 @@ export interface ITableData {
   status: string;
 }
 
-const VisaFormsTable = () => {
+interface IProps {
+  data: IVisaApplication[];
+}
+
+const VisaFormsTable: React.FC<IProps> = ({ data }) => {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
   const tableHead = [
     {
       label: "Company Name",
@@ -54,108 +63,32 @@ const VisaFormsTable = () => {
     },
   ];
 
-  const tableData: ITableData[] = [
-    {
-      companyName: "Tech Innovators Ltd.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "John Doe",
-      jurisdiction: "Delaware, USA",
-      currentStep: "Incorporation",
-      status: "Pending",
-    },
-    {
-      companyName: "Green Solutions Inc.",
-      applicant: "Pranjal Aswal",
-      type: "Public",
-      linkedTo: "Jane Smith",
-      jurisdiction: "California, USA",
-      currentStep: "Regulatory Approval",
-      status: "Approved",
-    },
-    {
-      companyName: "HealthCare Services LLC",
-      applicant: "Pranjal Aswal",
-      type: "Non-Profit",
-      linkedTo: "Dr. Emily Johnson",
-      jurisdiction: "New York, USA",
-      currentStep: "Funding",
-      status: "In Progress",
-    },
-    {
-      companyName: "EcoFriendly Goods Ltd.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "Michael Brown",
-      jurisdiction: "Texas, USA",
-      currentStep: "Manufacturing",
-      status: "Pending",
-    },
-    {
-      companyName: "Financial Advisors Corp.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "Sarah Lee",
-      jurisdiction: "London, UK",
-      currentStep: "Licensing",
-      status: "In Progress",
-    },
-    {
-      companyName: "Tech Startups Co.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "David Wilson",
-      jurisdiction: "Berlin, Germany",
-      currentStep: "Incorporation",
-      status: "Approved",
-    },
-    {
-      companyName: "Global Exports LLC",
-      applicant: "Pranjal Aswal",
-      type: "Public",
-      linkedTo: "Maria Garcia",
-      jurisdiction: "Ontario, Canada",
-      currentStep: "Market Entry",
-      status: "Pending",
-    },
-    {
-      companyName: "Real Estate Holdings Inc.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "James Martin",
-      jurisdiction: "Dubai, UAE",
-      currentStep: "Property Acquisition",
-      status: "Approved",
-    },
-    {
-      companyName: "Logistics Solutions Ltd.",
-      applicant: "Pranjal Aswal",
-      type: "Private",
-      linkedTo: "Patricia Rodriguez",
-      jurisdiction: "Tokyo, Japan",
-      currentStep: "Operational Setup",
-      status: "In Progress",
-    },
-    {
-      companyName: "Creative Designs LLC",
-      applicant: "Pranjal Aswal",
-      type: "Non-Profit",
-      linkedTo: "Robert Moore",
-      jurisdiction: "Sydney, Australia",
-      currentStep: "Design Approval",
-      status: "Pending",
-    },
-  ];
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table aria-labelledby="legal-table">
+          <Table aria-labelledby="legal-table" size="small">
             <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
               <TableRow>
                 {tableHead?.map((item, i) => (
                   <TableCell
+                    sx={{
+                      fontSize: "12px",
+                      fontWeight: "700",
+                      color: "#333",
+                      textTransform: "capitalize",
+                    }}
                     key={i}
                     align={item?.align === "left" ? "left" : "center"}
                   >
@@ -166,21 +99,38 @@ const VisaFormsTable = () => {
             </TableHead>
 
             <TableBody>
-              {tableData.map((row: ITableData) => (
-                <TableItem key={row.companyName} data={row} />
-              ))}
+              {(data || [])
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: IVisaApplication, index: number) => (
+                  <TableItem key={index} data={row} />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
 
         <TablePagination
-          rowsPerPageOptions={[5, 8, 16, 24]}
+          sx={{
+            backgroundColor: "#f5f5f5",
+            "& .MuiTablePagination-selectLabel, & .MuiTablePagination-input, & .MuiTablePagination-selectIcon":
+              {
+                fontSize: "14px",
+                color: theme.colorConstants.darkGray,
+                textTransform: "capitalize",
+              },
+            "& .css-1l4bifm-MuiTablePagination-displayedRows": {
+              fontSize: "14px",
+              color: theme.colorConstants.darkGray,
+              textTransform: "capitalize",
+            },
+          }}
+          size="small"
+          rowsPerPageOptions={[5, 10, 20, 20]}
           component="div"
-          count={100}
-          rowsPerPage={10}
-          page={1}
-          onPageChange={() => {}}
-          onRowsPerPageChange={() => {}}
+          count={(data || []).length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </Box>

@@ -94,6 +94,10 @@ const userApi = backendBaseApi.injectEndpoints({
                   ...visaApplicant,
                   linkto: user.id,
                   username: user.username,
+                  companyName:
+                    user?.user_form?.companyDetails?.companyNames?.option1 ||
+                    "",
+                  jurisdiction: user?.cart?.cart?.freeZoneName || "",
                 });
               }
             });
