@@ -2,6 +2,7 @@
 
 import DashboardCard from "@/components/DashboardCard";
 import { CompanyStatusType } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { VisaStatusType } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Box, Typography, Grid } from "@mui/material";
@@ -14,45 +15,13 @@ interface ICardProps {
   count: number;
 }
 
-const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
-  return (
-    <Box
-      sx={{
-        bgcolor: color,
-        borderRadius: "10px",
-        paddingY: "40px",
-        paddingX: "30px",
-      }}
-    >
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: "32px",
-          fontWeight: 700,
-          color: theme.colorConstants.darkBlue,
-        }}
-      >
-        {count}
-      </Typography>
-
-      <Typography
-        variant="h3"
-        sx={{
-          marginTop: "10px",
-          fontSize: "16px",
-          fontWeight: 600,
-          color: theme.colorConstants.mediumGray,
-        }}
-      >
-        {title}
-      </Typography>
-    </Box>
-  );
-};
-
 const Dashboard = () => {
-  const allApplications = useAppSelector(
+  const allCompanyApplications = useAppSelector(
     (state) => state.companyApplications?.applications
+  );
+
+  const allVisaApplications = useAppSelector(
+    (state) => state.visaApplications?.applications
   );
 
   const allCompanyStatus = [
@@ -67,8 +36,8 @@ const Dashboard = () => {
     CompanyStatusType.COMPLETED,
   ];
 
-  const statusWiseApplications = allCompanyStatus?.map((status) => {
-    const applications = allApplications?.filter(
+  const statusWiseCompanyApplications = allCompanyStatus?.map((status) => {
+    const applications = allCompanyApplications?.filter(
       (item) => item.company_status?.currentStatus === status
     );
     return {
@@ -109,6 +78,75 @@ const Dashboard = () => {
           ? "#EBEEFB"
           : status === CompanyStatusType.RESOLUTIONSIGNED
           ? "#D7ECE1"
+          : "#FDEBD8",
+      count: applications.length,
+    };
+  });
+
+  const allVisaStatus = [
+    VisaStatusType.OPEN,
+    VisaStatusType.SUBMITTED,
+    VisaStatusType.REJECTEDARNIFI,
+    VisaStatusType.INREVIEWARNIFI,
+    VisaStatusType.WAITINGGA,
+    VisaStatusType.REJECTEDGA,
+    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
+    VisaStatusType.REJECTEDEVISA,
+    VisaStatusType.MEDICALAPPOINTMENT,
+    VisaStatusType.EMIRATESIDAPPOINTMENT,
+    VisaStatusType.COMPLETED,
+  ];
+
+  const statusWiseVisaApplications = allVisaStatus?.map((status) => {
+    const applications = allVisaApplications?.filter(
+      (item) => item.visa_status?.currentStatus === status
+    );
+    return {
+      leble:
+        status === VisaStatusType?.OPEN
+          ? "Open"
+          : status === VisaStatusType?.SUBMITTED
+          ? "Submitted"
+          : status === VisaStatusType?.INREVIEWARNIFI
+          ? "Inreview"
+          : status === VisaStatusType?.REJECTEDARNIFI
+          ? "Reject-Agent"
+          : status === VisaStatusType?.REJECTEDGA
+          ? "Reject-GA"
+          : status === VisaStatusType?.WAITINGGA
+          ? "Waiting-GA"
+          : status === VisaStatusType?.REJECTEDEMPLOYEEAGREEMENT
+          ? "Employee"
+          : status === VisaStatusType?.REJECTEDEVISA
+          ? "Evisa Issued"
+          : status === VisaStatusType?.MEDICALAPPOINTMENT
+          ? "Medical"
+          : status === VisaStatusType?.EMIRATESIDAPPOINTMENT
+          ? "Emirates id"
+          : "Completed",
+      color:
+        status === VisaStatusType?.OPEN
+          ? "#EBEEFB"
+          : status === VisaStatusType?.COMPLETED
+          ? "#D7ECE1"
+          : status === VisaStatusType?.SUBMITTED
+          ? "#D7ECE1"
+          : status === VisaStatusType.INREVIEWARNIFI
+          ? "#EBEEFB"
+          : status === VisaStatusType.REJECTEDARNIFI
+          ? "#FBD2D2"
+          : status === VisaStatusType.REJECTEDGA
+          ? "#FBD2D2"
+          : status === VisaStatusType.WAITINGGA
+          ? "#FDEBD8"
+          : status === VisaStatusType.REJECTEDEMPLOYEEAGREEMENT
+          ? "#EBEEFB"
+          : status === VisaStatusType.REJECTEDEVISA
+          ? "#D7ECE1"
+          : status === VisaStatusType.MEDICALAPPOINTMENT
+          ? "#FDEBD8"
+          : status === VisaStatusType.EMIRATESIDAPPOINTMENT
+          ? "#EBEEFB"
           : "#FDEBD8",
       count: applications.length,
     };
@@ -168,7 +206,7 @@ const Dashboard = () => {
                   </Typography>
                 </Link>
               </Box>
-              <DashboardCard data={statusWiseApplications} />
+              <DashboardCard data={statusWiseCompanyApplications} />
             </Box>
           </Grid>
 
@@ -213,34 +251,7 @@ const Dashboard = () => {
                 </Link>
               </Box>
 
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  paddingX: "40px",
-                  paddingBottom: "40px",
-                }}
-              >
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="Review" count={30} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard
-                    color="#EBEEFB"
-                    title="Waiting on Authority"
-                    count={24}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="In Progress" count={52} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#FBD2D2" title="Reject" count={10} />
-                </Grid>
-              </Grid>
+              <DashboardCard data={statusWiseVisaApplications} />
             </Box>
           </Grid>
         </Grid>

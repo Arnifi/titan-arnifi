@@ -1,7 +1,10 @@
 "use client";
 
 import VisaFormsTable from "@/components/Tables/VisaFormsTable";
-import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
+import {
+  IVisaApplication,
+  VisaStatusType,
+} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Search } from "@mui/icons-material";
@@ -17,34 +20,61 @@ import React, { useState } from "react";
 
 const VisaApplications: React.FC = () => {
   const [search, setSearch] = useState<string>("");
+  const [visaApplications, setVisaApplications] = useState<IVisaApplication[]>(
+    []
+  );
 
-  const allApplications = useAppSelector(
+  const allVisaApplications = useAppSelector(
     (state) => state.visaApplications?.applications
   );
 
-  const [visaApplications, setVisaApplications] =
-    useState<IVisaApplication[]>(allApplications);
+  console.log(allVisaApplications);
 
-  const options = [
-    "Option - 1",
-    "Option - 2",
-    "Option - 3",
-    "Option - 4",
-    "Option - 5",
+  const allVisaStatus = [
+    VisaStatusType.OPEN,
+    VisaStatusType.SUBMITTED,
+    VisaStatusType.REJECTEDARNIFI,
+    VisaStatusType.INREVIEWARNIFI,
+    VisaStatusType.WAITINGGA,
+    VisaStatusType.REJECTEDGA,
+    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
+    VisaStatusType.REJECTEDEVISA,
+    VisaStatusType.MEDICALAPPOINTMENT,
+    VisaStatusType.EMIRATESIDAPPOINTMENT,
+    VisaStatusType.COMPLETED,
   ];
+
+  const statusWiseVisaApplications = allVisaStatus?.map((status) => {
+    const applications = allVisaApplications?.filter(
+      (item) => item.visa_status?.currentStatus === status
+    );
+    return {
+      leble: status,
+      applications,
+      count: applications.length,
+    };
+  });
+
   return (
     <Box>
-      <Typography
+      <Box
         sx={{
-          fontWeight: 600,
-          fontSize: "26px",
-          color: theme.colorConstants.darkBlue,
+          marginY: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        Visa Applications
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: "26px",
+            color: theme.colorConstants.darkBlue,
+          }}
+        >
+          Visa Applications
+        </Typography>
 
-      <Box marginTop={"50px"} marginBottom={"20px"}>
         <Box
           sx={{
             display: "flex",
@@ -53,9 +83,9 @@ const VisaApplications: React.FC = () => {
         >
           <Typography
             sx={{
-              fontSize: "18px",
-              fontWeight: "400",
-              color: theme.colorConstants.mediumGray,
+              fontSize: "14px",
+              fontWeight: "500",
+              color: theme.colorConstants.darkGray,
             }}
           >
             Current Step
@@ -72,16 +102,54 @@ const VisaApplications: React.FC = () => {
               textTransform: "capitalize",
             }}
             displayEmpty
-            renderValue={() => {
-              return "Option - 1";
+            renderValue={(e: unknown) => {
+              if (e === undefined || e === "all") {
+                return `All Applications (${allVisaApplications?.length})`;
+              } else {
+                return String(e);
+              }
             }}
             inputProps={{ "aria-label": "Without label" }}
-            // onChange={field.onChange}
-            // onBlur={field.onBlur}
-            // error={meta.touched && Boolean(meta.error)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === "all") {
+                setVisaApplications(allVisaApplications);
+              } else {
+                const selectedStatus = statusWiseVisaApplications?.find(
+                  (item) => item?.leble === e.target.value
+                );
+                setVisaApplications(
+                  selectedStatus?.applications as IVisaApplication[]
+                );
+              }
+            }}
+            onBlur={(e) => {
+              const value = e.target.value;
+              if (value === "all") {
+                setVisaApplications(allVisaApplications);
+              } else {
+                const selectedStatus = statusWiseVisaApplications?.find(
+                  (item) => item?.leble === e.target.value
+                );
+                setVisaApplications(
+                  selectedStatus?.applications as IVisaApplication[]
+                );
+              }
+            }}
             MenuProps={{ disableScrollLock: true }}
           >
-            {options?.map((item) => (
+            <MenuItem
+              sx={{
+                color: theme.colorConstants.darkGray,
+                fontSize: "14px",
+                fontWeight: 500,
+                textTransform: "capitalize",
+              }}
+              value={`all`}
+            >
+              All Applications ({allVisaApplications?.length})
+            </MenuItem>
+            {statusWiseVisaApplications?.map((item, i) => (
               <MenuItem
                 sx={{
                   color: theme.colorConstants.darkGray,
@@ -89,15 +157,17 @@ const VisaApplications: React.FC = () => {
                   fontWeight: 500,
                   textTransform: "capitalize",
                 }}
-                key={item}
-                value={item}
+                key={i}
+                value={item?.leble}
               >
-                {item}
+                {`${item?.leble} (${item?.count})`}
               </MenuItem>
             ))}
           </Select>
 
           <TextField
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
             type={"text"}
             InputProps={{
               startAdornment: (
@@ -113,7 +183,7 @@ const VisaApplications: React.FC = () => {
               },
             }}
             variant="outlined"
-            placeholder={"Search by Applicant Name"}
+            placeholder={"Search by Company Name"}
           />
         </Box>
       </Box>
