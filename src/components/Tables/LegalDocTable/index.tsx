@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 import TableItem from "./TableItem";
 import { ILegalDocument } from "@/app/api/legal-documents/legalDocument.model";
 
-const LegalDocTable = ({ data }: { data: ILegalDocument[] }) => {
+const LegalDocTable = ({ data }: { data: ILegalDocument[] }): JSX.Element => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 

@@ -7,6 +7,9 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import snackbarReducer from "../features/snackbar/snackbarSlice";
 import backendBaseApi from "../features/backendBaseApi";
 import authReducer from "../features/auth/authSlice";
+import companyApplicationReducer from "../features/companyApplication/companyApplicationSlice";
+import userReducer from "../features/users/userSlice";
+import visaApplicationReducer from "../features/visaApplication/visaApplicationSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +17,9 @@ export const store = configureStore({
     [backendBaseApi.reducerPath]: backendBaseApi.reducer,
     authInfo: authReducer,
     snackbar: snackbarReducer,
+    companyApplications: companyApplicationReducer,
+    users: userReducer,
+    visaApplications: visaApplicationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

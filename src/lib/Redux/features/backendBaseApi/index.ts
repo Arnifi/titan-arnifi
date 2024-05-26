@@ -22,7 +22,7 @@ const backendBaseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["user"],
+  tagTypes: ["user", "company-applications"],
 });
 
 export default backendBaseApi;
