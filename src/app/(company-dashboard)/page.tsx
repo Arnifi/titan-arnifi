@@ -2,19 +2,11 @@
 
 import GlobalError from "@/components/Errors/GlobalError";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
-import OverViewItemsTable from "@/components/Tables/OverviewItemsTable";
 import { useGetAllDocumentsQuery } from "@/lib/Redux/features/legalDocument/legalDocumentApi";
 import theme from "@/theme";
-import {
-  Description,
-  PendingActions,
-  PictureAsPdf,
-  SaveAlt,
-} from "@mui/icons-material";
-import { Box, Typography, Grid, Card, styled } from "@mui/material";
+import { Box, Typography, Card, styled } from "@mui/material";
 import React from "react";
 import { ILegalDocument } from "../api/legal-documents/legalDocument.model";
-import OverviewPieChart from "@/components/Charts/PieChart";
 
 const CustomCard = styled(Card)(({ theme }) => ({
   color: theme.colorConstants.darkBlue,
@@ -81,151 +73,7 @@ const Dashboard = () => {
         </Typography>
       </Box>
 
-      <Box marginTop={5}>
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <CustomCard sx={{ bgcolor: theme.colorConstants.mediumGray }}>
-              <Typography
-                variant="h4"
-                sx={{ color: theme.colorConstants.white }}
-              >
-                Total Documents
-              </Typography>
-
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                sx={{ paddingTop: "20px" }}
-              >
-                <Description
-                  sx={{
-                    fontSize: "50px",
-                    color: theme.colorConstants.white,
-                  }}
-                />
-                <Typography
-                  sx={{ color: theme.colorConstants.white }}
-                  variant="h2"
-                >
-                  {total || 0}
-                </Typography>
-              </Box>
-            </CustomCard>
-          </Grid>
-
-          <Grid item xs={3}>
-            <CustomCard sx={{ bgcolor: theme.colorConstants.discountGreen }}>
-              <Typography
-                variant="h4"
-                sx={{ color: theme.colorConstants.white }}
-              >
-                Active Documents
-              </Typography>
-
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                sx={{ paddingTop: "20px" }}
-              >
-                <PictureAsPdf
-                  sx={{
-                    fontSize: "50px",
-                    color: theme.colorConstants.white,
-                  }}
-                />
-                <Typography
-                  sx={{ color: theme.colorConstants.white }}
-                  variant="h2"
-                >
-                  {active || 0}
-                </Typography>
-              </Box>
-            </CustomCard>
-          </Grid>
-
-          <Grid item xs={3}>
-            <CustomCard sx={{ bgcolor: theme.colorConstants.crossRed }}>
-              <Typography
-                variant="h4"
-                sx={{ color: theme.colorConstants.white }}
-              >
-                Pending Documents
-              </Typography>
-
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                sx={{ paddingTop: "20px" }}
-              >
-                <PendingActions
-                  sx={{
-                    fontSize: "50px",
-                    color: theme.colorConstants.white,
-                  }}
-                />
-                <Typography
-                  sx={{ color: theme.colorConstants.white }}
-                  variant="h2"
-                >
-                  {pending || 0}
-                </Typography>
-              </Box>
-            </CustomCard>
-          </Grid>
-
-          <Grid item xs={3}>
-            <CustomCard sx={{ bgcolor: theme.colorConstants.fadedBlue }}>
-              <Typography
-                variant="h4"
-                sx={{ color: theme.colorConstants.white }}
-              >
-                Total Download
-              </Typography>
-
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                sx={{ paddingTop: "20px" }}
-              >
-                <SaveAlt
-                  sx={{
-                    fontSize: "50px",
-                    color: theme.colorConstants.white,
-                  }}
-                />
-                <Typography
-                  sx={{ color: theme.colorConstants.white }}
-                  variant="h2"
-                >
-                  {download || 0}
-                </Typography>
-              </Box>
-            </CustomCard>
-          </Grid>
-
-          <Grid item xs={8}>
-            <Box>
-              <Typography
-                gutterBottom
-                variant="h4"
-                sx={{ color: theme.colorConstants.darkBlue }}
-              >
-                Top 10 Downloaded Documents
-              </Typography>
-
-              <OverViewItemsTable data={documents} />
-            </Box>
-          </Grid>
-
-          <Grid item xs={4}>
-            <OverviewPieChart data={pieChartData} />
-          </Grid>
-        </Grid>
-      </Box>
+      <Box marginTop={5}>Company Dashboard</Box>
     </Box>
   );
 };

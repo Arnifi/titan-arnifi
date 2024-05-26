@@ -31,6 +31,8 @@ interface IProps {
 const SideNav: React.FC<IProps> = ({ SwitchTo, navigateItems }) => {
   const pathname = usePathname();
 
+  console.log(pathname);
+
   const items = [
     {
       label: "Overview",
@@ -124,16 +126,6 @@ const SideNav: React.FC<IProps> = ({ SwitchTo, navigateItems }) => {
           </Typography>
 
           {SwitchTo}
-
-          {/* <Button
-            startIcon={<Logout />}
-            variant="contained"
-            fullWidth
-            size="large"
-            sx={{ textTransform: "none", borderRadius: 1 }}
-          >
-            Logout
-          </Button> */}
         </Box>
       </Box>
     </Box>
