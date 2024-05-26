@@ -45,7 +45,7 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
     <Paper
       variant="outlined"
       sx={{
-        marginTop: "20px",
+        marginY: "20px",
         padding: "20px",
       }}
     >
@@ -88,7 +88,7 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
               marginRight: "16px",
             }}
           >
-            Approve for government approval?
+            Application Approve for government?
           </Typography>
 
           <RadioGroup

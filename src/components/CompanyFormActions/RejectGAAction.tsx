@@ -105,36 +105,38 @@ const RejectGAAction: React.FC<IProps> = ({
           </Card>
         </Box>
 
-        <Box>
-          <Typography
-            variant="body1"
-            sx={{
-              fontSize: "12px",
-              color: theme.colorConstants?.mediumGray,
-            }}
-          >
-            Rejection comments (by User)
-          </Typography>
-
-          <Card
-            variant="outlined"
-            sx={{
-              marginBottom: "10px",
-              padding: "10px",
-            }}
-          >
+        {userComment && (
+          <Box>
             <Typography
               variant="body1"
               sx={{
-                fontSize: "14px",
-                fontWeight: 600,
-                color: theme.colorConstants?.darkGray,
+                fontSize: "12px",
+                color: theme.colorConstants?.mediumGray,
               }}
             >
-              {userComment}
+              Rejection comments (by User)
             </Typography>
-          </Card>
-        </Box>
+
+            <Card
+              variant="outlined"
+              sx={{
+                marginBottom: "10px",
+                padding: "10px",
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: theme.colorConstants?.darkGray,
+                }}
+              >
+                {userComment}
+              </Typography>
+            </Card>
+          </Box>
+        )}
 
         {!userComment ? (
           <Box

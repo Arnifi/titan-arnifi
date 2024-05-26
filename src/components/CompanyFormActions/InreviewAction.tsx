@@ -52,7 +52,7 @@ const InreviewAction: React.FC<IProps> = ({
     <Paper
       variant="outlined"
       sx={{
-        marginTop: "20px",
+        marginY: "20px",
         marginBottom: "10px",
         padding: "20px",
       }}

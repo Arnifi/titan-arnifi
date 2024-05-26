@@ -43,7 +43,7 @@ const TableItem = ({ data }: { data: ICompanyApplication }) => {
         company_status?.currentStatus === CompanyStatusType?.REJECTEDGA
       ? "#FBD2D2"
       : company_status?.currentStatus === CompanyStatusType?.COMPLETED
-      ? "#FBD2D2"
+      ? "#D7ECE1"
       : "#FDEBD8";
 
   const buttonColor =

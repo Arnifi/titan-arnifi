@@ -143,7 +143,6 @@ export interface ICompanyApplication {
 
 const initialState = {
   applications: [] as ICompanyApplication[],
-  status: [] as ICompanyStatus[],
 };
 
 const companyApplicationSlice = createSlice({
@@ -154,14 +153,7 @@ const companyApplicationSlice = createSlice({
       state,
       { payload }: { payload: ICompanyApplication[] }
     ) => {
-      const status = [] as ICompanyStatus[];
-      payload.forEach((application) => {
-        if (application?.company_status?.id) {
-          status.push(application?.company_status);
-        }
-      });
       state.applications = payload;
-      state.status = status;
     },
 
     setUpdatedCompanyApplicationInfo: (

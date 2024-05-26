@@ -307,7 +307,7 @@ const UploadPaymentProof: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
                 paddingX: "20px",
               }}
             >
-              Upload Proof and Next
+              {isLoading ? "Loading..." : "Upload Proof and Next"}
             </Button>
           </Box>
         </Box>

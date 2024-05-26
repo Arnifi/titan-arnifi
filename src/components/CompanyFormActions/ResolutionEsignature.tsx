@@ -43,7 +43,7 @@ const ResolutionEsignature: React.FC<IProps> = ({
     <Paper
       variant="outlined"
       sx={{
-        marginTop: "20px",
+        marginY: "20px",
         padding: "20px",
       }}
     >
