@@ -7,6 +7,7 @@ import {
   Divider,
   Stack,
   SvgIcon,
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,23 +17,34 @@ import Image from "next/image";
 import { BarChart, Description, Logout, Settings } from "@mui/icons-material";
 import Logo from "@/assets/images/logo.png";
 
-const SideNav = () => {
+export interface INavigateLink {
+  label: string;
+  path: string;
+  icon: React.ReactNode;
+}
+
+interface IProps {
+  SwitchTo: React.ReactElement;
+  navigateItems: INavigateLink[];
+}
+
+const SideNav: React.FC<IProps> = ({ SwitchTo, navigateItems }) => {
   const pathname = usePathname();
 
   const items = [
     {
       label: "Overview",
-      path: "/dashboard",
+      path: "/drafter-dashboard",
       icon: <BarChart />,
     },
     {
       label: "Legal Documents",
-      path: "/dashboard/legal-documents",
+      path: "/drafter-dashboard/legal-documents",
       icon: <Description />,
     },
     {
       label: "Settings",
-      path: "/dashboard/settings",
+      path: "/drafter-dashboard/settings",
       icon: <Settings />,
     },
   ];
@@ -56,14 +68,14 @@ const SideNav = () => {
       <Divider sx={{ mt: 1, mb: 2, bgcolor: "white" }} />
 
       <Box
-        height={"85vh"}
+        height={"80vh"}
         display={"flex"}
         justifyContent={"space-between"}
         flexDirection={"column"}
         gap={2}
       >
         <Stack width={"100%"} gap={1}>
-          {items.map((item, i) => (
+          {navigateItems.map((item, i) => (
             <Box key={i} width={"100%"} sx={{ color: "red" }}>
               <ButtonBase
                 sx={{
@@ -99,15 +111,30 @@ const SideNav = () => {
             </Box>
           ))}
         </Stack>
-        {/* <Button
-          startIcon={<Logout />}
-          variant="contained"
-          fullWidth
-          size="large"
-          sx={{ textTransform: "none", borderRadius: 1 }}
-        >
-          Logout
-        </Button> */}
+
+        <Box>
+          <Typography
+            variant="body1"
+            gutterBottom
+            sx={{
+              color: theme.colorConstants.whitishGray,
+            }}
+          >
+            Switch to
+          </Typography>
+
+          {SwitchTo}
+
+          {/* <Button
+            startIcon={<Logout />}
+            variant="contained"
+            fullWidth
+            size="large"
+            sx={{ textTransform: "none", borderRadius: 1 }}
+          >
+            Logout
+          </Button> */}
+        </Box>
       </Box>
     </Box>
   );
