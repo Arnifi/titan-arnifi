@@ -4,31 +4,40 @@ import theme from "@/theme";
 import SideNav from "@/components/SideNav";
 import TopNav from "@/components/TopNav";
 import { Box, Button } from "@mui/material";
-import React from "react";
-import { BarChart, Description, Logout, Settings } from "@mui/icons-material";
+import React, { Suspense } from "react";
+import { BarChart, Business, Description, Logout } from "@mui/icons-material";
 import Link from "next/link";
+import ProtectedRouteHOC from "@/lib/ProtectedRoute";
+import GlobalLoader from "@/components/Loaders/GlobalLoader";
+import { useGetAllUserWithInfoQuery } from "@/lib/Redux/features/users/userApi";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const { isLoading: userWithInfoLoading } = useGetAllUserWithInfoQuery({});
+
   const items = [
     {
       label: "Overview",
-      path: "/drafter-dashboard",
+      path: "/",
       icon: <BarChart />,
     },
     {
-      label: "Legal Documents",
-      path: "/drafter-dashboard/legal-documents",
-      icon: <Description />,
+      label: "Company Forms",
+      path: "/company-applications",
+      icon: <Business />,
     },
     {
-      label: "Settings",
-      path: "/drafter-dashboard/settings",
-      icon: <Settings />,
+      label: "Visa Applications",
+      path: "/visa-applications",
+      icon: <Description />,
     },
   ];
 
   return (
-    <Box display="flex">
+    <Box
+      display="flex"
+      minHeight={"100vh"}
+      sx={{ bgcolor: theme.colorConstants.whitishGray }}
+    >
       <Box width={"15%"} position={"fixed"}>
         <SideNav
           SwitchTo={
@@ -58,15 +67,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </Box>
         <Box
           zIndex={5}
-          marginTop={"120px"}
+          marginTop={"100px"}
           px={"5%"}
           sx={{ overflow: "hidden" }}
         >
-          {children}
+          {userWithInfoLoading ? (
+            <GlobalLoader height="70vh" />
+          ) : (
+            <Suspense fallback={<GlobalLoader height="70vh" />}>
+              {children}
+            </Suspense>
+          )}
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default DashboardLayout;
+export default ProtectedRouteHOC(DashboardLayout);

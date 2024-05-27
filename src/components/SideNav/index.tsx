@@ -31,24 +31,6 @@ interface IProps {
 const SideNav: React.FC<IProps> = ({ SwitchTo, navigateItems }) => {
   const pathname = usePathname();
 
-  const items = [
-    {
-      label: "Overview",
-      path: "/drafter-dashboard",
-      icon: <BarChart />,
-    },
-    {
-      label: "Legal Documents",
-      path: "/drafter-dashboard/legal-documents",
-      icon: <Description />,
-    },
-    {
-      label: "Settings",
-      path: "/drafter-dashboard/settings",
-      icon: <Settings />,
-    },
-  ];
-
   return (
     <Box
       sx={{ bgcolor: theme.colorConstants.darkGray, color: "white" }}
@@ -124,16 +106,6 @@ const SideNav: React.FC<IProps> = ({ SwitchTo, navigateItems }) => {
           </Typography>
 
           {SwitchTo}
-
-          {/* <Button
-            startIcon={<Logout />}
-            variant="contained"
-            fullWidth
-            size="large"
-            sx={{ textTransform: "none", borderRadius: 1 }}
-          >
-            Logout
-          </Button> */}
         </Box>
       </Box>
     </Box>

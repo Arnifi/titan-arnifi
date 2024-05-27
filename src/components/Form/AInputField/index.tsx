@@ -7,6 +7,7 @@ export enum IInputType {
   TEXT = "text",
   NUMBER = "number",
   EMAIL = "email",
+  PASSWORD = "password",
 }
 
 interface IInput {

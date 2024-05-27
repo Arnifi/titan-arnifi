@@ -7,6 +7,7 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import { BarChart, Description, Logout, Settings } from "@mui/icons-material";
 import Link from "next/link";
+import ProtectedRouteHOC from "@/lib/ProtectedRoute";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const items = [
@@ -69,4 +70,4 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default DashboardLayout;
+export default ProtectedRouteHOC(DashboardLayout);
