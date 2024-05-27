@@ -140,7 +140,7 @@ const CompanyApplications: React.FC = () => {
             }}
             onBlur={(e) => {
               const value = e.target.value;
-              if (value === "all") {
+              if (value === "all" || value === "") {
                 setCompanyApplications(allApplications);
               } else {
                 const selectedStatus = statusWiseApplications?.find(

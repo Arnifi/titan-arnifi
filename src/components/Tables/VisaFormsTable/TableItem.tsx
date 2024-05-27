@@ -111,8 +111,8 @@ const TableItem = ({ data }: { data: IVisaApplication }) => {
         hover
         onClick={() => navigationHandler(`/visa-applications/${id}`)}
       >
-        <StyledTableCell align="left">{companyName}</StyledTableCell>
         <StyledTableCell align="left">{applicantName}</StyledTableCell>
+        <StyledTableCell align="left">{companyName}</StyledTableCell>
         <StyledTableCell align="left">{visaType ?? "None"}</StyledTableCell>
         <StyledTableCell align="left">{username}</StyledTableCell>
         <StyledTableCell align="left">{jurisdiction}</StyledTableCell>

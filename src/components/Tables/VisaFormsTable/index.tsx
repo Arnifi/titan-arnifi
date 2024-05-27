@@ -34,11 +34,11 @@ const VisaFormsTable: React.FC<IProps> = ({ data }) => {
 
   const tableHead = [
     {
-      label: "Company Name",
+      label: "Applicant",
       align: "left",
     },
     {
-      label: "Name",
+      label: "Company",
       align: "left",
     },
     {

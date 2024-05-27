@@ -150,7 +150,7 @@ const VisaApplications: React.FC = () => {
             }}
             onBlur={(e) => {
               const value = e.target.value;
-              if (value === "all") {
+              if (value === "all" || value === "") {
                 setVisaApplications(allVisaApplications);
               } else {
                 const selectedStatus = statusWiseVisaApplications?.find(

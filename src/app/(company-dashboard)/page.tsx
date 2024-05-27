@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardCard from "@/components/DashboardCard";
+import VisaTabularForm from "@/components/VisaTabularForm";
 import { CompanyStatusType } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { VisaStatusType } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
@@ -8,12 +9,6 @@ import theme from "@/theme";
 import { Box, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-
-interface ICardProps {
-  color: string;
-  title: string;
-  count: number;
-}
 
 const Dashboard = () => {
   const allCompanyApplications = useAppSelector(
@@ -97,61 +92,6 @@ const Dashboard = () => {
     VisaStatusType.COMPLETED,
   ];
 
-  const statusWiseVisaApplications = allVisaStatus?.map((status) => {
-    const applications = allVisaApplications?.filter(
-      (item) => item.visa_status?.currentStatus === status
-    );
-    return {
-      leble:
-        status === VisaStatusType?.OPEN
-          ? "Open"
-          : status === VisaStatusType?.SUBMITTED
-          ? "Submitted"
-          : status === VisaStatusType?.INREVIEWARNIFI
-          ? "Inreview"
-          : status === VisaStatusType?.REJECTEDARNIFI
-          ? "Reject-Agent"
-          : status === VisaStatusType?.REJECTEDGA
-          ? "Reject-GA"
-          : status === VisaStatusType?.WAITINGGA
-          ? "Waiting-GA"
-          : status === VisaStatusType?.REJECTEDEMPLOYEEAGREEMENT
-          ? "Employee"
-          : status === VisaStatusType?.REJECTEDEVISA
-          ? "Evisa Issued"
-          : status === VisaStatusType?.MEDICALAPPOINTMENT
-          ? "Medical"
-          : status === VisaStatusType?.EMIRATESIDAPPOINTMENT
-          ? "Emirates id"
-          : "Completed",
-      color:
-        status === VisaStatusType?.OPEN
-          ? "#EBEEFB"
-          : status === VisaStatusType?.COMPLETED
-          ? "#D7ECE1"
-          : status === VisaStatusType?.SUBMITTED
-          ? "#D7ECE1"
-          : status === VisaStatusType.INREVIEWARNIFI
-          ? "#EBEEFB"
-          : status === VisaStatusType.REJECTEDARNIFI
-          ? "#FBD2D2"
-          : status === VisaStatusType.REJECTEDGA
-          ? "#FBD2D2"
-          : status === VisaStatusType.WAITINGGA
-          ? "#FDEBD8"
-          : status === VisaStatusType.REJECTEDEMPLOYEEAGREEMENT
-          ? "#EBEEFB"
-          : status === VisaStatusType.REJECTEDEVISA
-          ? "#D7ECE1"
-          : status === VisaStatusType.MEDICALAPPOINTMENT
-          ? "#FDEBD8"
-          : status === VisaStatusType.EMIRATESIDAPPOINTMENT
-          ? "#EBEEFB"
-          : "#FDEBD8",
-      count: applications.length,
-    };
-  });
-
   return (
     <Box>
       <Box>
@@ -162,7 +102,7 @@ const Dashboard = () => {
 
       <Box
         sx={{
-          marginY: "30px",
+          marginY: "20px",
         }}
       >
         <Grid container spacing={2}>
@@ -220,8 +160,8 @@ const Dashboard = () => {
             >
               <Box
                 sx={{
-                  paddingX: "40px",
-                  paddingY: "20px",
+                  paddingX: "20px",
+                  paddingY: "10px",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -230,7 +170,7 @@ const Dashboard = () => {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: "20px",
+                    fontSize: "18px",
                     fontWeight: 600,
                     color: theme.colorConstants.darkBlue,
                   }}
@@ -251,7 +191,9 @@ const Dashboard = () => {
                 </Link>
               </Box>
 
-              <DashboardCard data={statusWiseVisaApplications} />
+              <VisaTabularForm data={allVisaApplications} />
+
+              {/* <DashboardCard data={statusWiseVisaApplications} /> */}
             </Box>
           </Grid>
         </Grid>

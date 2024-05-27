@@ -1,11 +1,7 @@
 "use client";
 
-import CompanyFormActions from "@/components/CompanyFormActions";
-import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import {
-  ICompanyApplication,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import VisaFormReviewCard from "@/components/VisaFormReviewCard";
+import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { KeyboardArrowLeft } from "@mui/icons-material";
@@ -20,8 +16,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
     );
   });
 
-  console.log(params.id);
-
   return (
     <Box>
       <Box
@@ -31,7 +25,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
           alignItems: "center",
         }}
       >
-        <Link href="/company-applications">
+        <Link href="/visa-applications">
           <KeyboardArrowLeft
             sx={{
               fontSize: "30px",
@@ -53,10 +47,9 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box>
-            visa review card
-            {/* <CompanyFormReviewCard
-              data={selectedApplication as ICompanyApplication}
-            /> */}
+            <VisaFormReviewCard
+              data={selectedApplication as IVisaApplication}
+            />
           </Box>
         </Grid>
         <Grid item xs={4}>
@@ -147,30 +140,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                     </Typography>
                   </Grid>
 
-                  {/* <Grid item xs={7}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Number of Business Activity
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.activityDetails?.activities?.length}
-                    </Typography>
-                  </Grid> */}
-
                   <Grid item xs={6}>
                     <Typography
                       variant="body1"
@@ -221,10 +190,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                 </Grid>
               </Box>
             </Paper>
-
-            {/* <CompanyFormActions
-              data={selectedApplication as ICompanyApplication}
-            /> */}
           </Box>
         </Grid>
       </Grid>
