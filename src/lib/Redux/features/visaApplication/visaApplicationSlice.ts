@@ -202,13 +202,25 @@ const visaApplicationSlice = createSlice({
       state,
       { payload }: { payload: IVisaApplication[] }
     ) => {
-      const status = payload.map((application) => {
-        return application?.visa_status;
-      });
       state.applications = payload;
+    },
+    setUpdatedVisaApplicationInfo: (
+      state,
+      { payload }: { payload: IVisaApplication }
+    ) => {
+      const updatedInfoId = payload?.id;
+
+      const findIndex = state.applications?.findIndex(
+        (application) => application?.id === updatedInfoId
+      );
+
+      if (findIndex !== -1) {
+        state.applications[findIndex] = payload;
+      }
     },
   },
 });
 
-export const { setVisaApplications } = visaApplicationSlice.actions;
+export const { setVisaApplications, setUpdatedVisaApplicationInfo } =
+  visaApplicationSlice.actions;
 export default visaApplicationSlice.reducer;

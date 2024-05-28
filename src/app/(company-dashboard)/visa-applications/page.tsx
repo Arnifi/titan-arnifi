@@ -218,7 +218,22 @@ const VisaApplications: React.FC = () => {
           marginBottom: "50px",
         }}
       >
-        <VisaFormsTable data={searchAbleApplications as IVisaApplication[]} />
+        {searchAbleApplications?.length ? (
+          <VisaFormsTable data={searchAbleApplications as IVisaApplication[]} />
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{
+              paddingY: "50px",
+              textAlign: "center",
+              fontSize: "22px",
+              fontWeight: 600,
+              color: theme.colorConstants?.crossRed,
+            }}
+          >
+            No Applications Found!
+          </Typography>
+        )}
       </Box>
     </Box>
   );

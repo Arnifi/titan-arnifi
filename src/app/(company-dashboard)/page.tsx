@@ -192,8 +192,6 @@ const Dashboard = () => {
               </Box>
 
               <VisaTabularForm data={allVisaApplications} />
-
-              {/* <DashboardCard data={statusWiseVisaApplications} /> */}
             </Box>
           </Grid>
         </Grid>

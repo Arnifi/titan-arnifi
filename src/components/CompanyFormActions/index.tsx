@@ -37,7 +37,7 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
 
   const [updateCompanyStatus, { isLoading }] = useUpdateCompanyStatusMutation();
   const dispatch = useAppDispatch();
-  const handleStatusChande = (updateStatus: Partial<ICompanyStatus>): void => {
+  const handleStatusChange = (updateStatus: Partial<ICompanyStatus>): void => {
     const formData = new FormData();
 
     const {
@@ -97,7 +97,7 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
       ) : currentStatus === CompanyStatusType.SUBMITTED &&
         currentStep === CompanyStepTypes.FORMSUBMITTED ? (
         <FormSubmitAction
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : (currentStatus === CompanyStatusType.INREVIEWARNIFI &&
@@ -105,7 +105,7 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
         currentStep === CompanyStepTypes.FORMSUBMITTED ? (
         <InreviewAction
           agentComment={data?.company_status?.agentComment as string}
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.REJECTEDARNIFI &&
@@ -114,31 +114,31 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
       ) : currentStatus === CompanyStatusType.INREVIEWARNIFI &&
         currentStep === CompanyStepTypes.APPLYGA ? (
         <ApplyGAPortal
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.INREVIEWARNIFI &&
         currentStep === CompanyStepTypes.MAKEPAYMENT ? (
         <PaymentSuccessfull
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.INREVIEWARNIFI &&
         currentStep === CompanyStepTypes.UPLOADPROOF ? (
         <UploadPaymentProof
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.INREVIEWARNIFI &&
         currentStep === CompanyStepTypes.UPLOADPROOF ? (
         <WaitingPaymentResponse
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.WAITINGGA &&
         currentStep === CompanyStepTypes.WAITINGPAYMENTVERIFICATION ? (
         <WaitingPaymentVerification
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.REJECTEDGA &&
@@ -147,7 +147,7 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
         <RejectGAAction
           message={data?.company_status?.commentsFormGA as string}
           userComment={data?.company_status?.userComment as string}
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.REJECTEDGA &&
@@ -155,37 +155,37 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
         <WaitGARejection
           message={data?.company_status?.commentsFormGA as string}
           userComment={data?.company_status?.userComment as string}
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.RESOLUTIONSIGNED &&
         currentStep === CompanyStepTypes.RESOLUTIONSIGNED ? (
         <ResolutionEsignature
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.WAITINGGA &&
         currentStep === CompanyStepTypes.WAITINGLICENSEAPPROVAL ? (
         <WaitingLicenseApproval
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.MOAAOASIGNED &&
         currentStep === CompanyStepTypes.MOAAOASIGNED ? (
         <MOAEsignature
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.WAITINGGA &&
         currentStep === CompanyStepTypes.WAITINGLICENSE ? (
         <WaitingLicense
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.WAITINGGA &&
         currentStep === CompanyStepTypes.WAITINGFORESTABLISHMENTCARD ? (
         <WaitingEstablishmentCard
-          statusHandlar={handleStatusChande}
+          statusHandlar={handleStatusChange}
           isLoading={isLoading}
         />
       ) : currentStatus === CompanyStatusType.COMPLETED &&

@@ -2,11 +2,11 @@ import backendBaseApi from "../backendBaseApi";
 
 const adminCommonUrl = "/content-manager/collection-types";
 
-const companyStatusApi = backendBaseApi.injectEndpoints({
+const visaStatusApi = backendBaseApi.injectEndpoints({
   endpoints: (build) => ({
-    updateCompanyStatus: build.mutation({
+    updateVisaStatus: build.mutation({
       query: ({ id, data }: { id: number; data: any }) => ({
-        url: `${adminCommonUrl}/api::company-status.company-status/${id}`,
+        url: `${adminCommonUrl}/api::visa-status.visa-status/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -14,4 +14,4 @@ const companyStatusApi = backendBaseApi.injectEndpoints({
   }),
 });
 
-export const { useUpdateCompanyStatusMutation } = companyStatusApi;
+export const { useUpdateVisaStatusMutation } = visaStatusApi;

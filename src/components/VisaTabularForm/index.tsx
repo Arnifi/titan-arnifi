@@ -33,12 +33,8 @@ interface IProps {
 const VisaTabularForm: React.FC<IProps> = ({ data }) => {
   const tableHead = [
     {
-      label: "SL",
-      align: "left",
-    },
-    {
       label: "Status",
-      align: "center",
+      align: "left",
     },
     {
       label: "Count",
@@ -59,39 +55,17 @@ const VisaTabularForm: React.FC<IProps> = ({ data }) => {
     VisaStatusType.COMPLETED,
   ];
 
-  const statusWiseVisaApplications = allVisaStatus?.map((status) => {
-    const applications = data?.filter(
-      (item) => item.visa_status?.currentStatus === status
-    );
-    return {
-      leble: status,
-      color:
-        status === VisaStatusType?.OPEN
-          ? "#FDEBD8"
-          : status === VisaStatusType?.COMPLETED
-          ? "#D7ECE1"
-          : status === VisaStatusType?.SUBMITTED
-          ? "#D7ECE1"
-          : status === VisaStatusType.INREVIEWARNIFI
-          ? "#EBEEFB"
-          : status === VisaStatusType.REJECTEDARNIFI
-          ? "#FBD2D2"
-          : status === VisaStatusType.REJECTEDGA
-          ? "#FBD2D2"
-          : status === VisaStatusType.WAITINGGA
-          ? "#FDEBD8"
-          : status === VisaStatusType.REJECTEDEMPLOYEEAGREEMENT
-          ? "#EBEEFB"
-          : status === VisaStatusType.REJECTEDEVISA
-          ? "#D7ECE1"
-          : status === VisaStatusType.MEDICALAPPOINTMENT
-          ? "#FDEBD8"
-          : status === VisaStatusType.EMIRATESIDAPPOINTMENT
-          ? "#EBEEFB"
-          : "#FDEBD8",
-      count: applications.length,
-    };
-  });
+  const statusWiseVisaApplications = allVisaStatus
+    ?.map((status) => {
+      const applications = data?.filter(
+        (item) => item.visa_status?.currentStatus === status
+      );
+      return {
+        leble: status,
+        count: applications.length,
+      };
+    })
+    .sort((a, b) => b.count - a.count);
 
   return (
     <Box>
@@ -127,12 +101,8 @@ const VisaTabularForm: React.FC<IProps> = ({ data }) => {
           </TableHead>
           <TableBody>
             {statusWiseVisaApplications?.map((item, i) => (
-              <TableRow key={i} sx={{ bgcolor: item?.color }}>
-                <StyledTableCell>
-                  {(i + 1).toString().padStart(2, "0")}.
-                </StyledTableCell>
-
-                <StyledTableCell align="center" scope="row">
+              <TableRow key={i}>
+                <StyledTableCell align="left" scope="row">
                   {item?.leble}
                 </StyledTableCell>
 
