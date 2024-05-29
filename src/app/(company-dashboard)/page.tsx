@@ -78,20 +78,6 @@ const Dashboard = () => {
     };
   });
 
-  const allVisaStatus = [
-    VisaStatusType.OPEN,
-    VisaStatusType.SUBMITTED,
-    VisaStatusType.REJECTEDARNIFI,
-    VisaStatusType.INREVIEWARNIFI,
-    VisaStatusType.WAITINGGA,
-    VisaStatusType.REJECTEDGA,
-    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
-    VisaStatusType.REJECTEDEVISA,
-    VisaStatusType.MEDICALAPPOINTMENT,
-    VisaStatusType.EMIRATESIDAPPOINTMENT,
-    VisaStatusType.COMPLETED,
-  ];
-
   return (
     <Box>
       <Box>

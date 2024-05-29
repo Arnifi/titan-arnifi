@@ -263,7 +263,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
         <Grid item xs={4}>
           <Box>
-            <Paper sx={{ padding: "20px" }} variant="outlined">
+            {/* <Paper sx={{ padding: "20px" }} variant="outlined">
               <Typography
                 gutterBottom
                 variant="h4"
@@ -398,7 +398,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                   </Grid>
                 </Grid>
               </Box>
-            </Paper>
+            </Paper> */}
 
             <VisaFormActions data={selectedApplication as IVisaApplication} />
           </Box>
@@ -522,7 +522,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
 
         <Grid
           item
-          xs={4}
+          xs={8}
           sx={{
             marginBottom: "30px",
           }}
@@ -556,7 +556,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                         Step Name
                       </TableCell>
 
-                      <TableCell
+                      {/* <TableCell
                         align={"center"}
                         sx={{
                           fontSize: "12px",
@@ -566,7 +566,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                         }}
                       >
                         Time
-                      </TableCell>
+                      </TableCell> */}
 
                       <TableCell
                         align={"right"}
@@ -590,9 +590,9 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                             Step - {i + 1}
                           </StyledTableCell>
 
-                          <StyledTableCell align="center" scope="row">
+                          {/* <StyledTableCell align="center" scope="row">
                             12:00:00 AM
-                          </StyledTableCell>
+                          </StyledTableCell> */}
 
                           <StyledTableCell align="right" scope="row">
                             12/12/2022

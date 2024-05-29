@@ -41,7 +41,9 @@ const InreviewAction: React.FC<IProps> = ({
 
   const approveHandler = () => {
     const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.INREVIEWARNIFI,
       currentStep: VisaStepsTypes?.APPLYGA,
+      message: `Your application has been approved by Arnifi. You can now apply for a Visa.`,
     };
 
     statusHandlar(data);

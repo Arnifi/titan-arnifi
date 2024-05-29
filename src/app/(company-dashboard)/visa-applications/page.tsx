@@ -215,7 +215,7 @@ const VisaApplications: React.FC = () => {
 
       <Box
         sx={{
-          marginBottom: "50px",
+          marginBottom: "20px",
         }}
       >
         {searchAbleApplications?.length ? (
