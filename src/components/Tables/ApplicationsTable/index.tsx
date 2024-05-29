@@ -1,33 +1,27 @@
-"use client";
-
-import React from "react";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TableItem from "./TableItem";
-import { TablePagination } from "@mui/material";
-import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+import React from "react";
+import TableItem from "./TableItem";
 
-export interface ITableData {
-  companyName: string;
-  type: string;
-  linkedTo: string;
-  jurisdiction: string;
-  currentStep: string;
-  status: string;
+interface IApplicationTableProps {
+  tableHead: { label: string; align: string; value: string }[];
+  tableData: { [key: string]: string | any }[];
 }
 
-interface IProps {
-  data: ICompanyApplication[];
-}
-
-const CompanyFormsTable: React.FC<IProps> = ({ data }) => {
+const ApplicationsTable: React.FC<IApplicationTableProps> = ({
+  tableHead,
+  tableData,
+}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -42,35 +36,8 @@ const CompanyFormsTable: React.FC<IProps> = ({ data }) => {
     setPage(0);
   };
 
-  const tableHead = [
-    {
-      label: "Company Name",
-      align: "left",
-    },
-    {
-      label: "Type",
-      align: "left",
-    },
-    {
-      label: "Linked to",
-      align: "left",
-    },
-    {
-      label: "Jurisdiction",
-      align: "left",
-    },
-    {
-      label: "Current Step",
-      align: "left",
-    },
-    {
-      label: "Status",
-      align: "left",
-    },
-  ];
-
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box>
       <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table aria-labelledby="legal-table" size="small">
@@ -94,10 +61,10 @@ const CompanyFormsTable: React.FC<IProps> = ({ data }) => {
             </TableHead>
 
             <TableBody>
-              {(data || [])
+              {(tableData || [])
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: ICompanyApplication, index: number) => (
-                  <TableItem key={index} data={row} />
+                .map((row: { [key: string]: string | any }, index: number) => (
+                  <TableItem key={index} data={row} tableHead={tableHead} />
                 ))}
             </TableBody>
           </Table>
@@ -121,7 +88,7 @@ const CompanyFormsTable: React.FC<IProps> = ({ data }) => {
           size="small"
           rowsPerPageOptions={[5, 10, 20, 20]}
           component="div"
-          count={(data || []).length}
+          count={(tableData || []).length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -132,4 +99,4 @@ const CompanyFormsTable: React.FC<IProps> = ({ data }) => {
   );
 };
 
-export default CompanyFormsTable;
+export default ApplicationsTable;

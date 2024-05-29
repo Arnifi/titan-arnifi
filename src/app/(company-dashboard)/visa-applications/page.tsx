@@ -1,6 +1,6 @@
 "use client";
 
-import VisaFormsTable from "@/components/Tables/VisaFormsTable";
+import ApplicationsTable from "@/components/Tables/ApplicationsTable";
 import {
   IVisaApplication,
   VisaStatusType,
@@ -45,18 +45,13 @@ const VisaApplications: React.FC = () => {
   const searchAbleApplications: IVisaApplication[] = visaApplications?.filter(
     (item) => {
       const searchInLowerCase = search.toLocaleLowerCase();
-
       const companyName = item?.companyName?.toLocaleLowerCase() || "";
-
       const firstName =
         item?.personalDetails?.firstName.toLocaleLowerCase() || "";
-
       const middleName =
         item?.personalDetails?.middleName.toLocaleLowerCase() || "";
-
       const lastName =
         item?.personalDetails?.lastName.toLocaleLowerCase() || "";
-
       const userName = item?.username?.toLocaleLowerCase() || "";
 
       return (
@@ -77,6 +72,97 @@ const VisaApplications: React.FC = () => {
       leble: status,
       applications,
       count: applications.length,
+    };
+  });
+
+  const tableHead = [
+    {
+      label: "Applicant",
+      value: "applicantName",
+      align: "left",
+    },
+    {
+      label: "Company",
+      value: "companyName",
+      align: "left",
+    },
+    {
+      label: "Type",
+      value: "type",
+      align: "left",
+    },
+    {
+      label: "Linked to",
+      value: "linkedTo",
+      align: "left",
+    },
+    {
+      label: "Jurisdiction",
+      value: "jurisdiction",
+      align: "left",
+    },
+    {
+      label: "Current Step",
+      value: "currentStep",
+      align: "left",
+    },
+    {
+      label: "Status",
+      value: "status",
+      align: "left",
+    },
+  ];
+
+  const tableData = searchAbleApplications?.map((item) => {
+    return {
+      link: `/visa-applications/${item?.id}`,
+      applicantName: `${item?.personalDetails?.firstName} ${item?.personalDetails?.middleName} ${item?.personalDetails?.lastName}`,
+      companyName: item?.companyName,
+      type: item?.visaType,
+      linkedTo: item?.linkto,
+      username: item?.username,
+      currentStep: item?.visa_status?.currentStatus,
+      status: item?.visa_status?.currentStatus,
+      buttonBackground:
+        item?.visa_status?.currentStatus === VisaStatusType.OPEN ||
+        item?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI ||
+        item?.visa_status?.currentStatus === VisaStatusType.SUBMITTED
+          ? "#EBEEFB"
+          : item?.visa_status?.currentStatus ===
+              VisaStatusType.REJECTEDARNIFI ||
+            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDGA ||
+            item?.visa_status?.currentStatus ===
+              VisaStatusType.REJECTEDEMPLOYEEAGREEMENT ||
+            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDEVISA
+          ? "#FBD2D2"
+          : item?.visa_status?.currentStatus === VisaStatusType.COMPLETED
+          ? "#D7ECE1"
+          : item?.visa_status?.currentStatus ===
+              VisaStatusType.MEDICALAPPOINTMENT ||
+            item?.visa_status?.currentStatus ===
+              VisaStatusType.EMIRATESIDAPPOINTMENT
+          ? "#FDEBD8"
+          : "#FDEBD8",
+      buttonColor:
+        item?.visa_status?.currentStatus === VisaStatusType.OPEN ||
+        item?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI ||
+        item?.visa_status?.currentStatus === VisaStatusType.SUBMITTED
+          ? "#3955D9"
+          : item?.visa_status?.currentStatus ===
+              VisaStatusType.REJECTEDARNIFI ||
+            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDGA ||
+            item?.visa_status?.currentStatus ===
+              VisaStatusType.REJECTEDEMPLOYEEAGREEMENT ||
+            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDEVISA
+          ? "#F15656"
+          : item?.visa_status?.currentStatus === VisaStatusType.COMPLETED
+          ? "#36A067"
+          : item?.visa_status?.currentStatus ===
+              VisaStatusType.MEDICALAPPOINTMENT ||
+            item?.visa_status?.currentStatus ===
+              VisaStatusType.EMIRATESIDAPPOINTMENT
+          ? "#F7993B"
+          : "#F7993B",
     };
   });
 
@@ -219,7 +305,7 @@ const VisaApplications: React.FC = () => {
         }}
       >
         {searchAbleApplications?.length ? (
-          <VisaFormsTable data={searchAbleApplications as IVisaApplication[]} />
+          <ApplicationsTable tableData={tableData} tableHead={tableHead} />
         ) : (
           <Typography
             variant="body1"

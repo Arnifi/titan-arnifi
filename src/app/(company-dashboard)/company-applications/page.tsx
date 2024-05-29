@@ -1,6 +1,6 @@
 "use client";
 
-import CompanyFormsTable from "@/components/Tables/CompanyFormsTable";
+import ApplicationsTable from "@/components/Tables/ApplicationsTable";
 import {
   CompanyStatusType,
   ICompanyApplication,
@@ -10,7 +10,6 @@ import theme from "@/theme";
 import { Search } from "@mui/icons-material";
 import {
   Box,
-  Grid,
   InputAdornment,
   MenuItem,
   Select,
@@ -63,10 +62,85 @@ const CompanyApplications: React.FC = () => {
     const applications = allApplications?.filter(
       (item) => item.company_status?.currentStatus === status
     );
+
     return {
       leble: status,
       applications,
       count: applications.length,
+    };
+  });
+
+  const tableHead = [
+    {
+      label: "Company Name",
+      value: "companyName",
+      align: "left",
+    },
+    {
+      label: "Type",
+      value: "type",
+      align: "left",
+    },
+    {
+      label: "Linked to",
+      value: "linkedTo",
+      align: "left",
+    },
+    {
+      label: "Jurisdiction",
+      value: "jurisdiction",
+      align: "left",
+    },
+    {
+      label: "Current Step",
+      value: "currentStep",
+      align: "left",
+    },
+    {
+      label: "Status",
+      value: "status",
+      align: "left",
+    },
+  ];
+
+  const tableData = searchAbleApplications?.map((item) => {
+    return {
+      link: `/company-applications/${item?.id}`,
+      companyName: item?.companyDetails?.companyNames?.option1,
+      type: item.companyDetails?.licenseType,
+      linkedTo: item?.linkto,
+      username: item?.username,
+      jurisdiction: item?.jurisdiction,
+      currentStep: item.company_status?.currentStatus,
+      status: item.company_status?.currentStatus,
+      buttonBackground:
+        item?.company_status?.currentStatus === CompanyStatusType?.OPEN ||
+        item?.company_status?.currentStatus ===
+          CompanyStatusType?.INREVIEWARNIFI ||
+        item?.company_status?.currentStatus === CompanyStatusType?.SUBMITTED
+          ? "#EBEEFB"
+          : item?.company_status?.currentStatus ===
+              CompanyStatusType?.REJECTEDARNIFI ||
+            item?.company_status?.currentStatus ===
+              CompanyStatusType?.REJECTEDGA
+          ? "#FBD2D2"
+          : item?.company_status?.currentStatus === CompanyStatusType?.COMPLETED
+          ? "#D7ECE1"
+          : "#FDEBD8",
+      buttonColor:
+        item?.company_status?.currentStatus === CompanyStatusType?.OPEN ||
+        item?.company_status?.currentStatus ===
+          CompanyStatusType?.INREVIEWARNIFI ||
+        item?.company_status?.currentStatus === CompanyStatusType?.SUBMITTED
+          ? "#3955D9"
+          : item?.company_status?.currentStatus ===
+              CompanyStatusType?.REJECTEDARNIFI ||
+            item?.company_status?.currentStatus ===
+              CompanyStatusType?.REJECTEDGA
+          ? "#F15656"
+          : item?.company_status?.currentStatus === CompanyStatusType?.COMPLETED
+          ? "#36A067"
+          : "#F7993B",
     };
   });
 
@@ -208,7 +282,22 @@ const CompanyApplications: React.FC = () => {
           marginBottom: "20px",
         }}
       >
-        <CompanyFormsTable data={searchAbleApplications} />
+        {searchAbleApplications?.length ? (
+          <ApplicationsTable tableHead={tableHead} tableData={tableData} />
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{
+              paddingY: "50px",
+              textAlign: "center",
+              fontSize: "22px",
+              fontWeight: 600,
+              color: theme.colorConstants?.crossRed,
+            }}
+          >
+            No Applications Found!
+          </Typography>
+        )}
       </Box>
     </Box>
   );

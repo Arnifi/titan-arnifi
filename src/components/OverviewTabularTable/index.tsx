@@ -1,8 +1,4 @@
 import {
-  IVisaApplication,
-  VisaStatusType,
-} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
-import {
   Box,
   Table,
   TableBody,
@@ -27,10 +23,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 interface IProps {
-  data: IVisaApplication[];
+  data: {
+    label: string;
+    count: number;
+  }[];
 }
-
-const VisaTabularForm: React.FC<IProps> = ({ data }) => {
+const OverviewTabularTable: React.FC<IProps> = ({ data }) => {
   const tableHead = [
     {
       label: "Status",
@@ -41,31 +39,6 @@ const VisaTabularForm: React.FC<IProps> = ({ data }) => {
       align: "right",
     },
   ];
-
-  const allVisaStatus = [
-    VisaStatusType.OPEN,
-    VisaStatusType.REJECTEDARNIFI,
-    VisaStatusType.INREVIEWARNIFI,
-    VisaStatusType.WAITINGGA,
-    VisaStatusType.REJECTEDGA,
-    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
-    VisaStatusType.REJECTEDEVISA,
-    VisaStatusType.MEDICALAPPOINTMENT,
-    VisaStatusType.EMIRATESIDAPPOINTMENT,
-    VisaStatusType.COMPLETED,
-  ];
-
-  const statusWiseVisaApplications = allVisaStatus
-    ?.map((status) => {
-      const applications = data?.filter(
-        (item) => item.visa_status?.currentStatus === status
-      );
-      return {
-        leble: status,
-        count: applications.length,
-      };
-    })
-    .sort((a, b) => b.count - a.count);
 
   return (
     <Box>
@@ -100,10 +73,10 @@ const VisaTabularForm: React.FC<IProps> = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {statusWiseVisaApplications?.map((item, i) => (
+            {data?.map((item, i) => (
               <TableRow key={i}>
                 <StyledTableCell align="left" scope="row">
-                  {item?.leble}
+                  {item?.label}
                 </StyledTableCell>
 
                 <StyledTableCell align="right" scope="row">
@@ -118,4 +91,4 @@ const VisaTabularForm: React.FC<IProps> = ({ data }) => {
   );
 };
 
-export default VisaTabularForm;
+export default OverviewTabularTable;
