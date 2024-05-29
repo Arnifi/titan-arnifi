@@ -340,7 +340,7 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
               </Typography>
             </Box>
 
-            {passportFont?.url !== "" && passportFont !== null && (
+            {/* {passportFont?.url !== "" && passportFont !== null && (
               <Box marginTop={"16px"}>
                 <CustomeTypography sx={{ width: "200px" }}>
                   Passport Font
@@ -353,9 +353,9 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
                   }}
                 />
               </Box>
-            )}
+            )} */}
 
-            {passportBack?.url !== "" && passportBack !== null && (
+            {/* {passportBack?.url !== "" && passportBack !== null && (
               <Box marginTop={"16px"}>
                 <CustomeTypography sx={{ width: "200px" }}>
                   Passport Back
@@ -368,9 +368,9 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
                   }}
                 />
               </Box>
-            )}
+            )} */}
 
-            {emiratesID?.url !== "" && emiratesID !== null && (
+            {/* {emiratesID?.url !== "" && emiratesID !== null && (
               <Box marginTop={"16px"}>
                 <CustomeTypography sx={{ width: "200px" }}>
                   Emirates ID
@@ -383,7 +383,7 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
                   }}
                 />
               </Box>
-            )}
+            )} */}
           </Grid>
         </Grid>
         <Divider />

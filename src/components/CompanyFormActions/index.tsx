@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import React from "react";
 import OpenStatusAction from "./OpenStatusAction";
 import FormSubmitAction from "./FormSubmitAction";
@@ -90,8 +90,9 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
   };
 
   return (
-    <Box>
-      {currentStatus === CompanyStatusType.OPEN &&
+    <Paper variant="outlined" sx={{ padding: "20px", height: "70vh" }}>
+      company admin actions
+      {/* {currentStatus === CompanyStatusType.OPEN &&
       currentStep === CompanyStepTypes.OPEN ? (
         <OpenStatusAction />
       ) : currentStatus === CompanyStatusType.SUBMITTED &&
@@ -191,8 +192,8 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
       ) : currentStatus === CompanyStatusType.COMPLETED &&
         currentStep === CompanyStepTypes.COMPLETED ? (
         <CompletedStatus />
-      ) : null}
-    </Box>
+      ) : null} */}
+    </Paper>
   );
 };
 

@@ -20,7 +20,7 @@ const CompanyFormReviewCard: React.FC<IProps> = ({ data }) => {
         border: "1px solid #e5e5e5",
         padding: "40px",
         "@media (min-width: 600px)": {
-          height: "80vh",
+          height: "70vh",
           overflowY: "scroll",
           "&::-webkit-scrollbar": {
             width: "10px",
