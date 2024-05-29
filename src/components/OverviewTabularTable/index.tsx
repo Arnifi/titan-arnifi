@@ -74,7 +74,7 @@ const OverviewTabularTable: React.FC<IProps> = ({ data }) => {
           </TableHead>
           <TableBody>
             {data?.map((item, i) => (
-              <TableRow key={i}>
+              <TableRow key={i} hover>
                 <StyledTableCell align="left" scope="row">
                   {item?.label}
                 </StyledTableCell>

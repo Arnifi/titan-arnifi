@@ -1,16 +1,12 @@
 "use client";
 
+import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
 import CompanyFormActions from "@/components/CompanyFormActions";
 import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import {
-  ICompanyApplication,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
-import { KeyboardArrowLeft } from "@mui/icons-material";
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import Link from "next/link";
 import React from "react";
 
 const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
@@ -19,6 +15,34 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
       (item) => item?.id === Number(params.id)
     );
   });
+
+  const applicationData = [
+    {
+      label: "Linked To",
+      value: selectedApplication?.username as string,
+      weight: 12,
+    },
+    {
+      label: "Jurisdiction",
+      value: selectedApplication?.jurisdiction as string,
+      weight: 6,
+    },
+    {
+      label: "Number of Business Activity",
+      value: selectedApplication?.activityDetails?.activities?.length as number,
+      weight: 6,
+    },
+    {
+      label: "Current Step",
+      value: selectedApplication?.company_status?.currentStep as string,
+      weight: 6,
+    },
+    {
+      label: "Current Status",
+      value: selectedApplication?.company_status?.currentStatus as string,
+      weight: 6,
+    },
+  ];
 
   return (
     <Box>
@@ -29,14 +53,6 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
           alignItems: "center",
         }}
       >
-        <Link href="/company-applications">
-          <KeyboardArrowLeft
-            sx={{
-              fontSize: "30px",
-              color: theme.colorConstants.darkBlue,
-            }}
-          />
-        </Link>
         <Typography
           variant="body1"
           sx={{
@@ -48,7 +64,15 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
           Company Form
         </Typography>
       </Box>
-      <Grid container spacing={2}>
+
+      <Grid sx={{ marginTop: "10px" }} container spacing={2}>
+        <Grid item xs={12}>
+          <ApplicationsDetailsCard
+            title="Applications Details"
+            data={applicationData}
+          />
+        </Grid>
+
         <Grid item xs={8}>
           <Box>
             <CompanyFormReviewCard
