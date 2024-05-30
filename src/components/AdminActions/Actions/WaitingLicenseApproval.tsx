@@ -1,7 +1,11 @@
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+  ICompanyStatus,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
-  Button,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -11,30 +15,24 @@ import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
 
 interface IProps {
-  formStatus: string;
-  createHandler: (data: any) => void;
   loading: boolean;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
 }
-const StatusNotFound: React.FC<IProps> = ({
-  formStatus,
-  createHandler,
+const WaitingLicenseApproval: React.FC<IProps> = ({
+  statusHandlar,
   loading,
 }) => {
-  const [isCreated, setIsCreated] = useState("No");
+  const [isApproved, setIsApproved] = useState<string>("No");
 
-  const statusCreateHandelar = () => {
-    const data = {
-      currentStatus: "In review - Arnifi",
-      currentStep: "In review - Arnifi",
+  const handleStatusChange = () => {
+    const data: Partial<ICompanyStatus> = {
+      currentStatus: CompanyStatusType.MOAAOASIGNED,
+      currentStep: CompanyStepTypes.MOAAOASIGNED,
       message:
-        "Your company form is submitted. The application will be reviewed by Arnifi and then will be sent to government Authority for next steps",
+        "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
     };
 
-    if (formStatus === "done") {
-      createHandler(data);
-    } else {
-      createHandler(null);
-    }
+    statusHandlar(data);
   };
 
   return (
@@ -42,32 +40,31 @@ const StatusNotFound: React.FC<IProps> = ({
       <Typography
         gutterBottom
         sx={{
-          fontSize: "20px",
+          fontSize: "18px",
           fontWeight: 600,
           color: theme.colorConstants?.darkGray,
         }}
       >
-        Application Status Not Found!
+        Waiting for License Approval
       </Typography>
 
-      <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column" }}>
+      <Box>
         <Typography
           variant="body1"
           sx={{
-            fontSize: "12px",
-            fontWeight: 500,
-            color: theme.colorConstants?.mediumGray,
-            marginRight: "16px",
+            fontSize: "14px",
+            fontWeight: 600,
+            color: theme.colorConstants.mediumGray,
           }}
         >
-          Do you want to create a status flow?
+          License Approved?
         </Typography>
 
         <RadioGroup
           row
-          value={isCreated}
+          value={isApproved}
           onChange={(e) => {
-            setIsCreated(e?.target?.value);
+            setIsApproved(e?.target?.value);
           }}
         >
           {["Yes", "No"].map((item) => (
@@ -91,19 +88,12 @@ const StatusNotFound: React.FC<IProps> = ({
         </RadioGroup>
       </Box>
 
-      {isCreated === "Yes" && (
-        <Box
-          sx={{
-            marginTop: "10px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "end",
-          }}
-        >
+      {isApproved === "Yes" && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <GlobalButton
+            title="Process to Next"
             loading={loading}
-            onClick={statusCreateHandelar}
-            title="Create Status"
+            onClick={handleStatusChange}
           />
         </Box>
       )}
@@ -111,4 +101,4 @@ const StatusNotFound: React.FC<IProps> = ({
   );
 };
 
-export default StatusNotFound;
+export default WaitingLicenseApproval;
