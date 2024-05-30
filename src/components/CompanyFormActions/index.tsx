@@ -91,8 +91,8 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
 
   return (
     <Paper variant="outlined" sx={{ padding: "20px", height: "70vh" }}>
-      company admin actions
-      {/* {currentStatus === CompanyStatusType.OPEN &&
+      {/* company admin actions */}
+      {currentStatus === CompanyStatusType.OPEN &&
       currentStep === CompanyStepTypes.OPEN ? (
         <OpenStatusAction />
       ) : currentStatus === CompanyStatusType.SUBMITTED &&
@@ -192,7 +192,7 @@ const CompanyFormActions: React.FC<IProps> = ({ data }) => {
       ) : currentStatus === CompanyStatusType.COMPLETED &&
         currentStep === CompanyStepTypes.COMPLETED ? (
         <CompletedStatus />
-      ) : null} */}
+      ) : null}
     </Paper>
   );
 };

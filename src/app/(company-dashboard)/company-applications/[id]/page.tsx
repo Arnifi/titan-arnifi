@@ -10,6 +10,7 @@ import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
+import CompanyFormActions from "../../../../components/CompanyFormActions";
 
 const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
   const selectedApplication = useAppSelector((state) => {
@@ -142,7 +143,12 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
           />
         </Grid>
         <Grid item xs={4}>
-          <CompanyFormAdminActions />
+          <CompanyFormAdminActions
+            data={selectedApplication as ICompanyApplication}
+          />
+          {/* <CompanyFormActions
+            data={selectedApplication as ICompanyApplication}
+          /> */}
         </Grid>
 
         <Grid item xs={4}>
