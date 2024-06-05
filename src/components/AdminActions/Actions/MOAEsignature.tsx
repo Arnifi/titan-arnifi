@@ -23,8 +23,8 @@ const MOAEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
 
   const handleStatusChange = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGLICENSE,
+      currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+      currentStep: CompanyStepTypes.LicenseIssued,
       message:
         "Your company license documents are under process at governement Authority. Once the documents are issued, it will be available in the documents section.",
     };
@@ -33,28 +33,34 @@ const MOAEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
   };
 
   return (
-    <Box>
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "18px",
-          fontWeight: 600,
-          color: theme.colorConstants?.darkGray,
-        }}
-      >
-        Waiting for MOA/AOA E-signature
-      </Typography>
-
+    <Box
+      display="flex"
+      justifyContent={"space-between"}
+      flexDirection={"column"}
+      height={"100%"}
+    >
       <Box>
         <Typography
           variant="body1"
           sx={{
-            fontSize: "14px",
+            fontSize: "16px",
             fontWeight: 600,
             color: theme.colorConstants.mediumGray,
           }}
         >
-          MOA/AOA E-signature signed?
+          Waiting for all the parties to E-sign the MOA/AOA document.
+        </Typography>
+
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: theme.colorConstants.mediumGray,
+            marginTop: "16px",
+          }}
+        >
+          Have the MOA/AOA document signed?
         </Typography>
 
         <RadioGroup
@@ -85,15 +91,14 @@ const MOAEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
         </RadioGroup>
       </Box>
 
-      {isSigned === "Yes" && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <GlobalButton
-            title="Process to Next"
-            onClick={handleStatusChange}
-            loading={loading}
-          />
-        </Box>
-      )}
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <GlobalButton
+          disabled={isSigned !== "Yes"}
+          title="Move to next step"
+          onClick={handleStatusChange}
+          loading={loading}
+        />
+      </Box>
     </Box>
   );
 };

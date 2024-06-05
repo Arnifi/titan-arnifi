@@ -8,7 +8,9 @@ import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
 import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
-import { Box, Grid, Typography } from "@mui/material";
+import { ArrowBackIosNew } from "@mui/icons-material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
@@ -109,9 +111,15 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         sx={{
           paddingY: "16px",
           display: "flex",
+          justifyContent: "left",
           alignItems: "center",
         }}
       >
+        <Link href={"/company-applications"}>
+          <IconButton>
+            <ArrowBackIosNew />
+          </IconButton>
+        </Link>
         <Typography
           variant="body1"
           sx={{

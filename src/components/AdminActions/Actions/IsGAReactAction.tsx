@@ -1,8 +1,3 @@
-import {
-  CompanyStepTypes,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
-import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -19,9 +14,11 @@ interface IProps {
   message: string;
   userComment: string;
   loading: boolean;
-  statusHandlar: (
-    updateStatus: Partial<ICompanyStatus | IVisaApplication>
-  ) => void;
+  statusHandlar: (updateStatus: any) => void;
+  approve: {
+    step: string;
+    status: string;
+  };
 }
 
 const IsGAReactAction: React.FC<IProps> = ({
@@ -29,73 +26,102 @@ const IsGAReactAction: React.FC<IProps> = ({
   userComment,
   loading,
   statusHandlar,
+  approve,
 }) => {
-  const [isSendEmail, setIsSendEmail] = useState<string>("No");
-  const [emailText, setEmailText] = useState<string>("");
-  const [isUpdateGA, setUpdateGA] = useState<string>("No");
+  const [isUpdateOnPortal, setIsUpdateOnPortal] = useState<string>("No");
 
   const handleNext = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStep: CompanyStepTypes.WAITINGUPDATEREJECTION,
+    const data = {
+      currentStatus: approve?.status,
+      currentStep: approve?.step,
     };
     statusHandlar(data);
   };
 
   return (
-    <Box>
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "18px",
-          fontWeight: 600,
-          color: theme.colorConstants?.darkGray,
-        }}
-      >
-        Application Reject form GA
-      </Typography>
-
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "16px",
-          fontWeight: 600,
-          color: theme.colorConstants?.mediumGray,
-        }}
-      >
-        Please wait while the client respond back.
-      </Typography>
-
+    <Box
+      display="flex"
+      justifyContent={"space-between"}
+      flexDirection={"column"}
+      height={"100%"}
+    >
       <Box>
         <Typography
-          variant="body1"
+          gutterBottom
           sx={{
-            fontSize: "12px",
+            fontSize: "14px",
+            fontWeight: 600,
             color: theme.colorConstants?.mediumGray,
           }}
         >
-          Rejection comments (by GA)
+          Waiting for client to resong on the comments
         </Typography>
 
-        <Card
-          variant="outlined"
-          sx={{
-            marginBottom: "10px",
-            padding: "10px",
-          }}
-        >
+        <Box>
           <Typography
             variant="body1"
             sx={{
-              fontSize: "14px",
-              fontWeight: 600,
-              color: theme.colorConstants?.darkGray,
+              marginLeft: "10px",
+              fontSize: "12px",
+              color: theme.colorConstants?.mediumGray,
             }}
           >
-            {message}
+            Rejection reason
           </Typography>
-        </Card>
-      </Box>
 
+          <Card
+            variant="outlined"
+            sx={{
+              marginBottom: "10px",
+              padding: "10px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "14px",
+                fontWeight: 600,
+                color: theme.colorConstants?.darkGray,
+              }}
+            >
+              {message}
+            </Typography>
+          </Card>
+        </Box>
+
+        <Box>
+          <Typography
+            variant="body1"
+            sx={{
+              marginLeft: "10px",
+              fontSize: "12px",
+              color: theme.colorConstants?.mediumGray,
+            }}
+          >
+            Client&apos;s Comment
+          </Typography>
+
+          <Card
+            variant="outlined"
+            sx={{
+              marginBottom: "10px",
+              padding: "10px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: "14px",
+                fontWeight: 600,
+                color: theme.colorConstants?.darkGray,
+              }}
+            >
+              {/* {message} */}
+              Client comment
+            </Typography>
+          </Card>
+        </Box>
+        {/* 
       {userComment && (
         <Box>
           <Typography
@@ -127,119 +153,9 @@ const IsGAReactAction: React.FC<IProps> = ({
             </Typography>
           </Card>
         </Box>
-      )}
+      )} */}
 
-      {!userComment ? (
-        <Box sx={{ marginTop: "10px", display: "flex", alignItems: "center" }}>
-          <Typography
-            variant="body1"
-            sx={{
-              fontSize: "12px",
-              fontWeight: 500,
-              color: theme.colorConstants?.mediumGray,
-              marginRight: "16px",
-            }}
-          >
-            Want to send email to user?
-          </Typography>
-
-          <RadioGroup
-            row
-            value={isSendEmail}
-            onChange={(e) => {
-              setIsSendEmail(e?.target?.value);
-            }}
-          >
-            {["Yes", "No"].map((item) => (
-              <FormControlLabel
-                key={item}
-                value={item}
-                control={<Radio size="small" />}
-                label={
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 500,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {item}
-                  </Typography>
-                }
-              />
-            ))}
-          </RadioGroup>
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            marginTop: "10px",
-            display: "flex",
-            alignItems: "left",
-            flexDirection: "column",
-          }}
-        >
-          <Typography
-            variant="body1"
-            sx={{
-              fontSize: "16px",
-              fontWeight: 500,
-              color: theme.colorConstants?.mediumGray,
-              marginRight: "16px",
-            }}
-          >
-            Have you uploaded the client comments on Government portal?
-          </Typography>
-
-          <RadioGroup
-            row
-            value={isUpdateGA}
-            onChange={(e) => {
-              setUpdateGA(e?.target?.value);
-            }}
-          >
-            {["Yes", "No"].map((item) => (
-              <FormControlLabel
-                key={item}
-                value={item}
-                control={<Radio size="small" />}
-                label={
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 500,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {item}
-                  </Typography>
-                }
-              />
-            ))}
-          </RadioGroup>
-        </Box>
-      )}
-
-      {isSendEmail === "Yes" && (
-        <Box>
-          <textarea
-            style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
-            rows={4}
-            placeholder="Write something here.."
-            onChange={(e) => setEmailText(e.target.value)}
-            value={emailText}
-          ></textarea>
-
-          <GlobalButton
-            color="error"
-            title="Send Email"
-            onClick={() => {}}
-            loading={loading}
-          />
-        </Box>
-      )}
-
-      {isUpdateGA === "Yes" && (
+        {/* {isUpdateGA === "Yes" && (
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <GlobalButton
             title="Next step"
@@ -247,7 +163,60 @@ const IsGAReactAction: React.FC<IProps> = ({
             loading={loading}
           />
         </Box>
-      )}
+      )} */}
+      </Box>
+
+      <Box>
+        <Box>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: theme.colorConstants.mediumGray,
+            }}
+          >
+            Have you uploaded the comments on portal?
+          </Typography>
+
+          <RadioGroup
+            row
+            value={isUpdateOnPortal}
+            onChange={(e) => {
+              setIsUpdateOnPortal(e?.target?.value);
+            }}
+          >
+            {["Yes", "No"].map((item) => (
+              <FormControlLabel
+                // disabled={isPaymentSuccess === "Yes"}
+                key={item}
+                value={item}
+                control={<Radio size="small" />}
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: theme.colorConstants.darkGray,
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                }
+              />
+            ))}
+          </RadioGroup>
+        </Box>
+
+        <Box display={"flex"} justifyContent={"end"}>
+          <GlobalButton
+            title="Move to next step"
+            loading={loading}
+            onClick={handleNext}
+            disabled={isUpdateOnPortal === "No"}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

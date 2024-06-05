@@ -1,8 +1,3 @@
-import {
-  CompanyStatusType,
-  CompanyStepTypes,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -13,76 +8,53 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
-import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (data: Partial<ICompanyStatus | IVisaApplication>) => void;
+  statusHandlar: (data: any) => void;
+  approve: {
+    step: string;
+    status: string;
+  };
 }
 
-const IsApplyGA: React.FC<IProps> = ({ loading, statusHandlar }) => {
-  const [isApprove, setIsApprove] = useState<string>("Yes");
-  const [rejectText, setRejectText] = useState<string>("");
-
-  const rejectHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDARNIFI,
-      currentStep: CompanyStepTypes.REJECTEDARNIFI,
-      message: `Your application has been rejected by Arnifi agent due to ${rejectText}. Resubmit the application form.`,
-    };
-    statusHandlar(data);
-  };
+const IsApplyGA: React.FC<IProps> = ({ loading, statusHandlar, approve }) => {
+  const [isApprove, setIsApprove] = useState<string>("No");
 
   const makePaymentHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.INREVIEWARNIFI,
-      currentStep: CompanyStepTypes?.MAKEPAYMENT,
+    const data = {
+      currentStatus: approve?.status,
+      currentStep: approve?.step,
     };
 
     statusHandlar(data);
   };
 
   return (
-    <Box>
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "20px",
-          fontWeight: 600,
-          color: theme.colorConstants?.darkGray,
-        }}
-      >
-        Application send on GAPortal
-      </Typography>
-
-      <Typography
-        sx={{
-          fontSize: "16px",
-          fontWeight: 600,
-          color: theme.colorConstants?.mediumGray,
-        }}
-      >
-        Wait for Goverment Approval from GAPortal response
-      </Typography>
-
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}
+    >
       <Box
         sx={{
-          marginTop: "10px",
           display: "flex",
           alignItems: "left",
           flexDirection: "column",
         }}
       >
         <Typography
-          variant="body1"
+          gutterBottom
           sx={{
-            fontSize: "12px",
-            fontWeight: 500,
-            color: theme.colorConstants?.mediumGray,
-            marginRight: "16px",
+            fontSize: "20px",
+            fontWeight: 600,
+            color: theme.colorConstants?.darkGray,
           }}
         >
-          Application Approve for government?
+          Have you applied on the portal?
         </Typography>
 
         <RadioGroup
@@ -113,32 +85,16 @@ const IsApplyGA: React.FC<IProps> = ({ loading, statusHandlar }) => {
         </RadioGroup>
       </Box>
 
-      {isApprove === "Yes" ? (
+      <Box>
         <Box sx={{ display: "flex", justifyContent: "end" }}>
           <GlobalButton
-            title="Make Payment and Next"
+            disabled={isApprove === "No"}
+            title="Move to next step"
             onClick={makePaymentHandler}
             loading={loading}
           />
         </Box>
-      ) : (
-        <Box>
-          <textarea
-            style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
-            rows={4}
-            placeholder="Write something here.."
-            onChange={(e) => setRejectText(e.target.value)}
-            value={rejectText}
-          ></textarea>
-
-          <GlobalButton
-            title="Reject by Agent"
-            onClick={rejectHandler}
-            loading={loading}
-            color="error"
-          />
-        </Box>
-      )}
+      </Box>
     </Box>
   );
 };

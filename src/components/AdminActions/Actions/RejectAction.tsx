@@ -1,22 +1,12 @@
 import theme from "@/theme";
-import {
-  Box,
-  Card,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import GlobalButton from "../Buttons/GlobalButton";
+import { Box, Card, Typography } from "@mui/material";
+import React from "react";
 
 interface IProps {
   message: string;
 }
 
 const RejectAction: React.FC<IProps> = ({ message }) => {
-  const [isSendEmail, setIsSendEmail] = useState<string>("No");
-  const [emailText, setEmailText] = useState<string>("");
   return (
     <Box>
       <Typography
@@ -68,70 +58,8 @@ const RejectAction: React.FC<IProps> = ({ message }) => {
           color: theme.colorConstants?.mediumGray,
         }}
       >
-        Wait for the user to resubmit the form. You can go ahead and send email
-        to remind user about the form resubmit.
+        Wait for the user to resubmit the form.
       </Typography>
-
-      <Box sx={{ marginTop: "10px", display: "flex", alignItems: "center" }}>
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: "12px",
-            fontWeight: 500,
-            color: theme.colorConstants?.mediumGray,
-            marginRight: "16px",
-          }}
-        >
-          Want to send email to user?
-        </Typography>
-
-        <RadioGroup
-          row
-          value={isSendEmail}
-          onChange={(e) => {
-            setIsSendEmail(e?.target?.value);
-          }}
-        >
-          {["Yes", "No"].map((item) => (
-            <FormControlLabel
-              key={item}
-              value={item}
-              control={<Radio size="small" />}
-              label={
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: theme.colorConstants.darkGray,
-                  }}
-                >
-                  {item}
-                </Typography>
-              }
-            />
-          ))}
-        </RadioGroup>
-      </Box>
-
-      {isSendEmail === "Yes" && (
-        <Box>
-          <textarea
-            style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
-            rows={4}
-            placeholder="Write something here.."
-            onChange={(e) => setEmailText(e.target.value)}
-            value={emailText}
-          ></textarea>
-
-          <GlobalButton
-            disabled={!emailText}
-            title="Send Email"
-            loading={false}
-            onClick={() => {}}
-            color={"error"}
-          />
-        </Box>
-      )}
     </Box>
   );
 };

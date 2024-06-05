@@ -9,6 +9,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
+import {
+  CompanyStatusType,
+  CompanyStepTypes,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 
 interface IProps {
   formStatus: string;
@@ -24,8 +28,8 @@ const StatusNotFound: React.FC<IProps> = ({
 
   const statusCreateHandelar = () => {
     const data = {
-      currentStatus: "In review - Arnifi",
-      currentStep: "In review - Arnifi",
+      currentStatus: CompanyStatusType.ReviewAtArnifi,
+      currentStep: CompanyStepTypes.ReviewAtArnifi,
       message:
         "Your company form is submitted. The application will be reviewed by Arnifi and then will be sent to government Authority for next steps",
     };
@@ -38,75 +42,86 @@ const StatusNotFound: React.FC<IProps> = ({
   };
 
   return (
-    <Box>
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "20px",
-          fontWeight: 600,
-          color: theme.colorConstants?.darkGray,
-        }}
-      >
-        Application Status Not Found!
-      </Typography>
-
-      <Box sx={{ marginTop: "10px", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "",
+      }}
+    >
+      <Box>
         <Typography
-          variant="body1"
+          gutterBottom
           sx={{
-            fontSize: "12px",
-            fontWeight: 500,
-            color: theme.colorConstants?.mediumGray,
-            marginRight: "16px",
+            fontSize: "20px",
+            fontWeight: 600,
+            color: theme.colorConstants?.darkGray,
           }}
         >
-          Do you want to create a status flow?
+          Application Status Not Found!
         </Typography>
 
-        <RadioGroup
-          row
-          value={isCreated}
-          onChange={(e) => {
-            setIsCreated(e?.target?.value);
-          }}
+        <Box
+          sx={{ marginTop: "10px", display: "flex", flexDirection: "column" }}
         >
-          {["Yes", "No"].map((item) => (
-            <FormControlLabel
-              key={item}
-              value={item}
-              control={<Radio size="small" />}
-              label={
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                    fontWeight: 500,
-                    color: theme.colorConstants.darkGray,
-                  }}
-                >
-                  {item}
-                </Typography>
-              }
-            />
-          ))}
-        </RadioGroup>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "12px",
+              fontWeight: 500,
+              color: theme.colorConstants?.mediumGray,
+              marginRight: "16px",
+            }}
+          >
+            Do you want to create a status flow?
+          </Typography>
+
+          <RadioGroup
+            row
+            value={isCreated}
+            onChange={(e) => {
+              setIsCreated(e?.target?.value);
+            }}
+          >
+            {["Yes", "No"].map((item) => (
+              <FormControlLabel
+                key={item}
+                value={item}
+                control={<Radio size="small" />}
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: theme.colorConstants.darkGray,
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                }
+              />
+            ))}
+          </RadioGroup>
+        </Box>
       </Box>
 
-      {isCreated === "Yes" && (
-        <Box
-          sx={{
-            marginTop: "10px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "end",
-          }}
-        >
-          <GlobalButton
-            loading={loading}
-            onClick={statusCreateHandelar}
-            title="Create Status"
-          />
-        </Box>
-      )}
+      <Box
+        sx={{
+          marginTop: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+        }}
+      >
+        <GlobalButton
+          disabled={isCreated === "No"}
+          loading={loading}
+          onClick={statusCreateHandelar}
+          title="Create Status"
+        />
+      </Box>
     </Box>
   );
 };

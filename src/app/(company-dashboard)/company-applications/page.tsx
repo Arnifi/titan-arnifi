@@ -2,7 +2,7 @@
 
 import ApplicationsTable from "@/components/Tables/ApplicationsTable";
 import {
-  CompanyStatusType,
+  CompanyStepTypes,
   ICompanyApplication,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
@@ -46,25 +46,29 @@ const CompanyApplications: React.FC = () => {
       );
     });
 
-  const allCompanyStatus = [
-    CompanyStatusType.OPEN,
-    CompanyStatusType.SUBMITTED,
-    CompanyStatusType.INREVIEWARNIFI,
-    CompanyStatusType.REJECTEDARNIFI,
-    CompanyStatusType.WAITINGGA,
-    CompanyStatusType.REJECTEDGA,
-    CompanyStatusType.RESOLUTIONSIGNED,
-    CompanyStatusType.MOAAOASIGNED,
-    CompanyStatusType.COMPLETED,
+  const allCompanySteps = [
+    CompanyStepTypes.Open,
+    CompanyStepTypes.ReviewAtArnifi,
+    CompanyStepTypes.RejectedAtArnifi,
+    CompanyStepTypes.ApplyOnPortal,
+    CompanyStepTypes.MakePaymentToGA,
+    CompanyStepTypes.WaitingForUpdateFromGA,
+    CompanyStepTypes.RejectedByGA,
+    CompanyStepTypes.UploadRejectionComments,
+    CompanyStepTypes.ResolutionSigning,
+    CompanyStepTypes.MOAAOASigning,
+    CompanyStepTypes.LicenseIssued,
+    CompanyStepTypes.WaitingEstablishmentCard,
+    CompanyStepTypes.Completed,
   ];
 
-  const statusWiseApplications = allCompanyStatus?.map((status) => {
+  const stepWiseApplications = allCompanySteps?.map((step) => {
     const applications = allApplications?.filter(
-      (item) => item.company_status?.currentStatus === status
+      (item) => item.company_status?.currentStep === step
     );
 
     return {
-      leble: status,
+      leble: step,
       applications,
       count: applications.length,
     };
@@ -96,11 +100,6 @@ const CompanyApplications: React.FC = () => {
       value: "currentStep",
       align: "left",
     },
-    {
-      label: "Status",
-      value: "status",
-      align: "left",
-    },
   ];
 
   const tableData = searchAbleApplications?.map((item) => {
@@ -112,35 +111,6 @@ const CompanyApplications: React.FC = () => {
       username: item?.username,
       jurisdiction: item?.jurisdiction,
       currentStep: item.company_status?.currentStatus,
-      status: item.company_status?.currentStatus,
-      buttonBackground:
-        item?.company_status?.currentStatus === CompanyStatusType?.OPEN ||
-        item?.company_status?.currentStatus ===
-          CompanyStatusType?.INREVIEWARNIFI ||
-        item?.company_status?.currentStatus === CompanyStatusType?.SUBMITTED
-          ? "#EBEEFB"
-          : item?.company_status?.currentStatus ===
-              CompanyStatusType?.REJECTEDARNIFI ||
-            item?.company_status?.currentStatus ===
-              CompanyStatusType?.REJECTEDGA
-          ? "#FBD2D2"
-          : item?.company_status?.currentStatus === CompanyStatusType?.COMPLETED
-          ? "#D7ECE1"
-          : "#FDEBD8",
-      buttonColor:
-        item?.company_status?.currentStatus === CompanyStatusType?.OPEN ||
-        item?.company_status?.currentStatus ===
-          CompanyStatusType?.INREVIEWARNIFI ||
-        item?.company_status?.currentStatus === CompanyStatusType?.SUBMITTED
-          ? "#3955D9"
-          : item?.company_status?.currentStatus ===
-              CompanyStatusType?.REJECTEDARNIFI ||
-            item?.company_status?.currentStatus ===
-              CompanyStatusType?.REJECTEDGA
-          ? "#F15656"
-          : item?.company_status?.currentStatus === CompanyStatusType?.COMPLETED
-          ? "#36A067"
-          : "#F7993B",
     };
   });
 
@@ -204,7 +174,7 @@ const CompanyApplications: React.FC = () => {
               if (value === "all") {
                 setCompanyApplications(allApplications);
               } else {
-                const selectedStatus = statusWiseApplications?.find(
+                const selectedStatus = stepWiseApplications?.find(
                   (item) => item?.leble === e.target.value
                 );
                 setCompanyApplications(
@@ -217,7 +187,7 @@ const CompanyApplications: React.FC = () => {
               if (value === "all" || value === "") {
                 setCompanyApplications(allApplications);
               } else {
-                const selectedStatus = statusWiseApplications?.find(
+                const selectedStatus = stepWiseApplications?.find(
                   (item) => item?.leble === e.target.value
                 );
                 setCompanyApplications(
@@ -236,9 +206,9 @@ const CompanyApplications: React.FC = () => {
               }}
               value={`all`}
             >
-              All Applications ({allApplications?.length})
+              All Applications ({stepWiseApplications?.length})
             </MenuItem>
-            {statusWiseApplications?.map((item, i) => (
+            {stepWiseApplications?.map((item, i) => (
               <MenuItem
                 sx={{
                   color: theme.colorConstants.darkGray,

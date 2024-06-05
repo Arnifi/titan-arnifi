@@ -17,19 +17,37 @@ import GlobalButton from "../Buttons/GlobalButton";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (
-    updateStatus: Partial<ICompanyStatus | IVisaApplication>
-  ) => void;
+  statusHandlar: (data: any) => void;
+  approve: {
+    step: string;
+    status: string;
+  };
+  reject: {
+    step: string;
+    status: string;
+  };
 }
 
-const IsPaymentVerified: React.FC<IProps> = ({ loading, statusHandlar }) => {
+const IsPaymentVerified: React.FC<IProps> = ({
+  loading,
+  statusHandlar,
+  approve,
+  reject,
+}) => {
   const [isVerified, setIsVerified] = useState<string>("Yes");
   const [rejectText, setRejectText] = useState<string>("");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
-      currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
+    // const data: Partial<ICompanyStatus> = {
+    //   currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
+    //   currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
+    //   message:
+    //     "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
+    // };
+
+    const data = {
+      currentStatus: approve?.status,
+      currentStep: approve?.step,
       message:
         "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
     };
@@ -38,9 +56,9 @@ const IsPaymentVerified: React.FC<IProps> = ({ loading, statusHandlar }) => {
   };
 
   const rejectHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDGA,
-      currentStep: CompanyStepTypes.REJECTEDGA,
+    const data = {
+      currentStatus: reject.status,
+      currentStep: reject.step,
       message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
       commentsFormGA: rejectText,
     };

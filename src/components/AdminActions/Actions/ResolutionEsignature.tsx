@@ -23,8 +23,8 @@ const ResolutionEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
 
   const handleStatusChange = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGLICENSEAPPROVAL,
+      currentStatus: CompanyStatusType.MOAAOAEsignRequired,
+      currentStep: CompanyStepTypes.MOAAOASigning,
       message:
         "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
     };
@@ -33,28 +33,34 @@ const ResolutionEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
   };
 
   return (
-    <Box>
-      <Typography
-        gutterBottom
-        sx={{
-          fontSize: "18px",
-          fontWeight: 600,
-          color: theme.colorConstants?.darkGray,
-        }}
-      >
-        Waiting for Resolution E-signature
-      </Typography>
-
+    <Box
+      height={"100%"}
+      display={"flex"}
+      justifyContent={"space-between"}
+      flexDirection={"column"}
+    >
       <Box>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "16px",
+            fontWeight: 600,
+            color: theme.colorConstants.mediumGray,
+          }}
+        >
+          Waiting for all the parties to E-sign the resolution document.
+        </Typography>
+
         <Typography
           variant="body1"
           sx={{
             fontSize: "14px",
             fontWeight: 600,
             color: theme.colorConstants.mediumGray,
+            marginTop: "16px",
           }}
         >
-          Resolution E-signature signed?
+          Have the Resolution document signed?
         </Typography>
 
         <RadioGroup
@@ -85,15 +91,14 @@ const ResolutionEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
         </RadioGroup>
       </Box>
 
-      {isSigned === "Yes" && (
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <GlobalButton
-            loading={loading}
-            onClick={handleStatusChange}
-            title="Apply License Approved"
-          />
-        </Box>
-      )}
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <GlobalButton
+          disabled={isSigned === "No"}
+          loading={loading}
+          onClick={handleStatusChange}
+          title="Move to next step"
+        />
+      </Box>
     </Box>
   );
 };

@@ -26,7 +26,7 @@ import {
   VisaStepsTypes,
   setUpdatedVisaApplicationInfo,
 } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
-import { useUpdateVisaStatusMutation } from "@/lib/Redux/features/visaStatus/companyStatusApi";
+import { useUpdateVisaStatusMutation } from "@/lib/Redux/features/visaStatus/visaStatusApi";
 
 interface IProps {
   data: IVisaApplication;

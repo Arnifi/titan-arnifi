@@ -1,5 +1,6 @@
 "use client";
 
+import VisaFormAdminActions from "@/components/AdminActions/VisaFormAdminActions";
 import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
 import VisaFormActions from "@/components/VisaFormActions";
 import VisaFormReviewCard from "@/components/VisaFormReviewCard";
@@ -147,7 +148,10 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
         <Grid item xs={4}>
           <Box>
-            <VisaFormActions data={selectedApplication as IVisaApplication} />
+            <VisaFormAdminActions
+              data={selectedApplication as IVisaApplication}
+            />
+            {/* <VisaFormActions data={selectedApplication as IVisaApplication} /> */}
           </Box>
         </Grid>
 
