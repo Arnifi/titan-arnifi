@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import GlobalSnackbar from "@/components/Snackbars/GlobalSnackbar";
+import { Suspense } from "react";
+import { LinearProgress } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en">
         <body suppressHydrationWarning={true} className={inter.className}>
-          {children}
+          <Suspense fallback={<LinearProgress />}> {children} </Suspense>
           <GlobalSnackbar />
         </body>
       </html>

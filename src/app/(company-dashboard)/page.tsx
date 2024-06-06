@@ -1,63 +1,26 @@
 "use client";
 
-import DashboardCard from "@/components/DashboardCard";
+import OverviewTabularTable from "@/components/OverviewTabularTable";
 import { CompanyStatusType } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { VisaStatusType } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { Box, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
-interface ICardProps {
-  color: string;
-  title: string;
-  count: number;
-}
-
-const CustomCard: React.FC<ICardProps> = ({ color, title, count }) => {
-  return (
-    <Box
-      sx={{
-        bgcolor: color,
-        borderRadius: "10px",
-        paddingY: "40px",
-        paddingX: "30px",
-      }}
-    >
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: "32px",
-          fontWeight: 700,
-          color: theme.colorConstants.darkBlue,
-        }}
-      >
-        {count}
-      </Typography>
-
-      <Typography
-        variant="h3"
-        sx={{
-          marginTop: "10px",
-          fontSize: "16px",
-          fontWeight: 600,
-          color: theme.colorConstants.mediumGray,
-        }}
-      >
-        {title}
-      </Typography>
-    </Box>
-  );
-};
-
 const Dashboard = () => {
-  const allApplications = useAppSelector(
+  const allCompanyApplications = useAppSelector(
     (state) => state.companyApplications?.applications
+  );
+
+  const allVisaApplications = useAppSelector(
+    (state) => state.visaApplications?.applications
   );
 
   const allCompanyStatus = [
     CompanyStatusType.OPEN,
-    CompanyStatusType.SUBMITTED,
+    // CompanyStatusType.SUBMITTED,
     CompanyStatusType.INREVIEWARNIFI,
     CompanyStatusType.REJECTEDARNIFI,
     CompanyStatusType.WAITINGGA,
@@ -67,52 +30,42 @@ const Dashboard = () => {
     CompanyStatusType.COMPLETED,
   ];
 
-  const statusWiseApplications = allCompanyStatus?.map((status) => {
-    const applications = allApplications?.filter(
-      (item) => item.company_status?.currentStatus === status
-    );
-    return {
-      leble:
-        status === CompanyStatusType?.OPEN
-          ? "Open"
-          : status === CompanyStatusType?.SUBMITTED
-          ? "Submitted"
-          : status === CompanyStatusType?.INREVIEWARNIFI
-          ? "Inreview"
-          : status === CompanyStatusType?.REJECTEDARNIFI
-          ? "Reject-A"
-          : status === CompanyStatusType?.REJECTEDGA
-          ? "Reject-GA"
-          : status === CompanyStatusType?.WAITINGGA
-          ? "Waiting-GA"
-          : status === CompanyStatusType?.MOAAOASIGNED
-          ? "MOA/AOA"
-          : status === CompanyStatusType?.RESOLUTIONSIGNED
-          ? "Resolution"
-          : "Completed",
-      color:
-        status === CompanyStatusType?.OPEN
-          ? "#EBEEFB"
-          : status === CompanyStatusType?.COMPLETED
-          ? "#D7ECE1"
-          : status === CompanyStatusType?.SUBMITTED
-          ? "#D7ECE1"
-          : status === CompanyStatusType.INREVIEWARNIFI
-          ? "#EBEEFB"
-          : status === CompanyStatusType.REJECTEDARNIFI
-          ? "#FBD2D2"
-          : status === CompanyStatusType.REJECTEDGA
-          ? "#FBD2D2"
-          : status === CompanyStatusType.WAITINGGA
-          ? "#FDEBD8"
-          : status === CompanyStatusType.MOAAOASIGNED
-          ? "#EBEEFB"
-          : status === CompanyStatusType.RESOLUTIONSIGNED
-          ? "#D7ECE1"
-          : "#FDEBD8",
-      count: applications.length,
-    };
-  });
+  const allVisaStatus = [
+    VisaStatusType.OPEN,
+    VisaStatusType.REJECTEDARNIFI,
+    VisaStatusType.INREVIEWARNIFI,
+    VisaStatusType.WAITINGGA,
+    VisaStatusType.REJECTEDGA,
+    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
+    VisaStatusType.REJECTEDEVISA,
+    VisaStatusType.MEDICALAPPOINTMENT,
+    VisaStatusType.EMIRATESIDAPPOINTMENT,
+    VisaStatusType.COMPLETED,
+  ];
+
+  const statusWiseCompanyApplications = allCompanyStatus
+    ?.map((status) => {
+      const applications = allCompanyApplications?.filter(
+        (item) => item.company_status?.currentStatus === status
+      );
+      return {
+        label: status,
+        count: applications?.length,
+      };
+    })
+    .sort((a, b) => b.count - a.count);
+
+  const statusWiseVisaApplications = allVisaStatus
+    ?.map((status) => {
+      const applications = allVisaApplications?.filter(
+        (item) => item.visa_status?.currentStatus === status
+      );
+      return {
+        label: status,
+        count: applications.length,
+      };
+    })
+    .sort((a, b) => b.count - a.count);
 
   return (
     <Box>
@@ -124,7 +77,7 @@ const Dashboard = () => {
 
       <Box
         sx={{
-          marginY: "30px",
+          marginY: "20px",
         }}
       >
         <Grid container spacing={2}>
@@ -134,12 +87,13 @@ const Dashboard = () => {
                 bgcolor: "white",
                 borderRadius: "5px",
                 boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                height: "70vh",
               }}
             >
               <Box
                 sx={{
-                  paddingX: "40px",
-                  paddingY: "20px",
+                  paddingX: "20px",
+                  paddingY: "10px",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -148,7 +102,7 @@ const Dashboard = () => {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: "20px",
+                    fontSize: "18px",
                     fontWeight: 600,
                     color: theme.colorConstants.darkBlue,
                   }}
@@ -168,7 +122,7 @@ const Dashboard = () => {
                   </Typography>
                 </Link>
               </Box>
-              <DashboardCard data={statusWiseApplications} />
+              <OverviewTabularTable data={statusWiseCompanyApplications} />
             </Box>
           </Grid>
 
@@ -178,12 +132,13 @@ const Dashboard = () => {
                 bgcolor: "white",
                 borderRadius: "5px",
                 boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                height: "70vh",
               }}
             >
               <Box
                 sx={{
-                  paddingX: "40px",
-                  paddingY: "20px",
+                  paddingX: "20px",
+                  paddingY: "10px",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -192,7 +147,7 @@ const Dashboard = () => {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: "20px",
+                    fontSize: "18px",
                     fontWeight: 600,
                     color: theme.colorConstants.darkBlue,
                   }}
@@ -213,34 +168,7 @@ const Dashboard = () => {
                 </Link>
               </Box>
 
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  paddingX: "40px",
-                  paddingBottom: "40px",
-                }}
-              >
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="Review" count={30} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard
-                    color="#EBEEFB"
-                    title="Waiting on Authority"
-                    count={24}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#EBEEFB" title="In Progress" count={52} />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <CustomCard color="#FBD2D2" title="Reject" count={10} />
-                </Grid>
-              </Grid>
+              <OverviewTabularTable data={statusWiseVisaApplications} />
             </Box>
           </Grid>
         </Grid>

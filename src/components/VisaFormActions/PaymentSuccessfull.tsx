@@ -1,8 +1,8 @@
 import {
-  CompanyStatusType,
-  CompanyStepTypes,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+  IVisaApplicationStatus,
+  VisaStatusType,
+  VisaStepsTypes,
+} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -17,15 +17,15 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<IVisaApplicationStatus>) => void;
 }
 const PaymentSuccessfull: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.INREVIEWARNIFI,
-      currentStep: CompanyStepTypes.UPLOADPROOF,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.INREVIEWARNIFI,
+      currentStep: VisaStepsTypes.UPLOADPROOF,
     };
 
     statusHandlar(data);

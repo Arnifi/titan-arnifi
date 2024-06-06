@@ -16,42 +16,51 @@ export interface IDocument {
   };
 }
 
-export enum CompanyStatusType {
+export enum VisaStatusType {
   OPEN = "Open",
   SUBMITTED = "Form Submitted",
-  INREVIEWARNIFI = "In review - Arnifi",
   REJECTEDARNIFI = "Rejected - Arnifi",
+  INREVIEWARNIFI = "In review - Arnifi",
   WAITINGGA = "Waiting on Government Authority",
   REJECTEDGA = "Rejected - Government Authority",
-  RESOLUTIONSIGNED = "Resolution E-signature required",
-  MOAAOASIGNED = "MOA/AOA E-signature required",
+  REJECTEDEMPLOYEEAGREEMENT = "Rejected - Employee agreement signature required",
+  REJECTEDEVISA = "Rejected - Evisa issued",
+  MEDICALAPPOINTMENT = "Medical Appointment",
+  EMIRATESIDAPPOINTMENT = "Emirates id Appointment",
   COMPLETED = "Completed",
 }
 
-export enum CompanyStepTypes {
+export enum VisaStepsTypes {
   OPEN = "Open",
   FORMSUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",
+  REJECTEDARNIFI = "Rejected at Arnifi",
   APPLYGA = "Apply on GA portal",
-  MAKEPAYMENT = "Make Payment",
+  MAKEPAYMENTTOGA = "Make Payment to GA",
   UPLOADPROOF = "Upload Payment Proof",
-  REJECTEDARNIFI = "Rejected - Arnifi",
   WAITINGPAYMENTVERIFICATION = "Waiting for Payment Verification",
   REJECTEDGA = "Rejected at GA",
   UPLOADRESPONSES = "Upload Responses",
   WAITINGUPDATEREJECTION = "Waiting for update on Rejection",
-  RESOLUTIONSIGNED = "Resolution to be signed",
-  WAITINGLICENSEAPPROVAL = "Waiting for License Approval",
-  MOAAOASIGNED = "MOA/AOA to be signed",
-  WAITINGLICENSE = "Waiting on License",
-  WAITINGFORESTABLISHMENTCARD = "Waiting for Establishment Card",
+  EMPLOYMENTCONTRACTSIGNED = "Employment contract to be signed",
+  WAITINGFOREVISA = "Waiting for Evisa",
+  CLIENTVISITEDUAE = "Have client visited UAE",
+  INITIATECHANGESTATUS = "Initiate Change Status",
+  WAITINGCHANGESTATUSCONFIRM = "Waiting for Change status confirm",
+  MEDICALAPPOINTMENT = "Medical Appointment",
+  WAITINGMEDICALREPORT = "Waiting for Medical Report",
+  APPLYEMIRATESID = "Apply for Emirates ID",
+  EMIRATESIDAPPOINTMENT = "Emirates ID appointment",
+  APPLYVISASTAMPING = "Apply for visa stamping",
+  WAITRESIDENCEVISA = "Wait for Residence Visa",
+  WAITEMIRATESID = "Wait for emirates ID",
   COMPLETED = "Completed",
 }
 
-export interface IVisaApplicationtatus {
+export interface IVisaApplicationStatus {
   id: number;
-  currentStatus: CompanyStatusType;
-  currentStep: CompanyStepTypes;
+  currentStatus: VisaStatusType;
+  currentStep: VisaStepsTypes;
   message: string;
   userComment?: string;
   agentComment?: string;
@@ -174,14 +183,15 @@ export interface IVisaApplication {
   isCurrentlyResidingCountry: string;
   isLegalResident: string;
   isOtherDocument: string;
-  visa_status: IVisaApplicationtatus;
+  visa_status: IVisaApplicationStatus;
   linkto: number;
   username: string;
+  companyName: string;
+  jurisdiction: string;
 }
 
 const initialState = {
   applications: [] as IVisaApplication[],
-  status: [] as IVisaApplicationtatus[],
 };
 
 const visaApplicationSlice = createSlice({
@@ -192,14 +202,25 @@ const visaApplicationSlice = createSlice({
       state,
       { payload }: { payload: IVisaApplication[] }
     ) => {
-      const status = payload.map((application) => {
-        return application?.visa_status;
-      });
       state.applications = payload;
-      state.status = status;
+    },
+    setUpdatedVisaApplicationInfo: (
+      state,
+      { payload }: { payload: IVisaApplication }
+    ) => {
+      const updatedInfoId = payload?.id;
+
+      const findIndex = state.applications?.findIndex(
+        (application) => application?.id === updatedInfoId
+      );
+
+      if (findIndex !== -1) {
+        state.applications[findIndex] = payload;
+      }
     },
   },
 });
 
-export const { setVisaApplications } = visaApplicationSlice.actions;
+export const { setVisaApplications, setUpdatedVisaApplicationInfo } =
+  visaApplicationSlice.actions;
 export default visaApplicationSlice.reducer;

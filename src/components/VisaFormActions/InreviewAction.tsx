@@ -1,8 +1,8 @@
 import {
-  CompanyStatusType,
-  CompanyStepTypes,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+  IVisaApplicationStatus,
+  VisaStatusType,
+  VisaStepsTypes,
+} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<IVisaApplicationStatus>) => void;
   agentComment: string;
 }
 
@@ -30,19 +30,20 @@ const InreviewAction: React.FC<IProps> = ({
   const [rejectText, setRejectText] = useState<string>("");
 
   const rejectHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDARNIFI,
-      currentStep: CompanyStepTypes.REJECTEDARNIFI,
-      message: `Your application has been rejected by Arnifi agent due to ${rejectText}. Resubmit the application form.
-      `,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.REJECTEDARNIFI,
+      currentStep: VisaStepsTypes.REJECTEDARNIFI,
+      message: `Your application has been rejected by Arnifi due to ${rejectText}. Resubmit the application form.`,
       agentComment: rejectText,
     };
     statusHandlar(data);
   };
 
   const approveHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStep: CompanyStepTypes?.APPLYGA,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.INREVIEWARNIFI,
+      currentStep: VisaStepsTypes?.APPLYGA,
+      message: `Your application has been approved by Arnifi. You can now apply for a Visa.`,
     };
 
     statusHandlar(data);
@@ -66,7 +67,7 @@ const InreviewAction: React.FC<IProps> = ({
             color: theme.colorConstants?.darkGray,
           }}
         >
-          {agentComment !== ""
+          {agentComment
             ? "Resubmitted Application"
             : "Please review the application"}
         </Typography>

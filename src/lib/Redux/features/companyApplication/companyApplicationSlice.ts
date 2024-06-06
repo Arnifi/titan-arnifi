@@ -85,6 +85,17 @@ export interface IUboDecleration {
 }
 
 export enum CompanyStatusType {
+  Open = "Open",
+  ReviewAtArnifi = "Review at Arnifi",
+  RejectedAtArnifi = "Rejected at Arnifi",
+  WaitingOnGovernmentAuthority = "Waiting on Government Authority",
+  RejectedByGA = "Rejected by Government Authority",
+  ResolutionEsignRequired = "Resolution E-sign Required",
+  MOAAOAEsignRequired = "MOA/ AOA E-sign required",
+  LicenseIssued = "License Issued",
+  Completed = "Completed",
+
+  // olds
   OPEN = "Open",
   SUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",
@@ -97,6 +108,21 @@ export enum CompanyStatusType {
 }
 
 export enum CompanyStepTypes {
+  Open = "Open",
+  ReviewAtArnifi = "Review at Arnifi",
+  RejectedAtArnifi = "Rejected at Arnifi",
+  ApplyOnPortal = "Apply on portal",
+  MakePaymentToGA = "Make Payment to Government Authority",
+  WaitingForUpdateFromGA = "Waiting for update from Government Authority",
+  RejectedByGA = "Rejected by Government Authority",
+  UploadRejectionComments = "Upload Rejection comments",
+  ResolutionSigning = "Resolution signing",
+  MOAAOASigning = "MOA/ AOA signing",
+  LicenseIssued = "License Issued",
+  WaitingEstablishmentCard = "Waiting for Establishment Card",
+  Completed = "Completed",
+
+  // olds
   OPEN = "Open",
   FORMSUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",

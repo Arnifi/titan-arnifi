@@ -1,15 +1,15 @@
 "use client";
 
-import CompanyFormActions from "@/components/CompanyFormActions";
+import CompanyFormAdminActions from "@/components/AdminActions/CompanyFormAdminActions";
+import AdminDocumentActions from "@/components/AdminDocumentActions";
+import ApplicationHistoryCard from "@/components/ApplicationHistoryCard";
+import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
 import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import {
-  ICompanyApplication,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
-import { KeyboardArrowLeft } from "@mui/icons-material";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { ArrowBackIosNew } from "@mui/icons-material";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -20,22 +20,105 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     );
   });
 
+  const applicationData = [
+    {
+      label: "Linked To",
+      value: selectedApplication?.username as string,
+      weight: 12,
+    },
+    {
+      label: "Jurisdiction",
+      value: selectedApplication?.jurisdiction as string,
+      weight: 6,
+    },
+    {
+      label: "Number of Business Activity",
+      value: selectedApplication?.activityDetails?.activities?.length as number,
+      weight: 6,
+    },
+    {
+      label: "Current Step",
+      value: selectedApplication?.company_status?.currentStep as string,
+      weight: 6,
+    },
+    {
+      label: "Current Status",
+      value: selectedApplication?.company_status?.currentStatus as string,
+      weight: 6,
+    },
+  ];
+
+  const inputDocumentsData = [
+    {
+      label: "Shareholder - 1 Passport Font",
+      data: "link",
+    },
+    {
+      label: "Shareholder - 1 Passport Back",
+      data: "link",
+    },
+    {
+      label: "Shareholder - 2 Passport Font",
+      data: "link",
+    },
+    {
+      label: "Shareholder - 2 Passport Back",
+      data: "link",
+    },
+  ];
+
+  const outputDocumentsData = [
+    {
+      label: "Payment Slip",
+      data: null,
+    },
+    {
+      label: "Company License",
+      data: null,
+    },
+    {
+      label: "Emirates ID",
+      data: null,
+    },
+  ];
+
+  const historData = [
+    {
+      label: "Step - 1",
+      value: "12/04/2024",
+    },
+    {
+      label: "Step - 2",
+      value: "12/04/2024",
+    },
+    {
+      label: "Step - 3",
+      value: "12/04/2024",
+    },
+    {
+      label: "Step - 4",
+      value: "12/04/2024",
+    },
+    {
+      label: "Step - 5",
+      value: "12/04/2024",
+    },
+  ];
+
   return (
     <Box>
       <Box
         sx={{
           paddingY: "16px",
           display: "flex",
+          justifyContent: "left",
           alignItems: "center",
         }}
       >
-        <Link href="/company-applications">
-          <KeyboardArrowLeft
-            sx={{
-              fontSize: "30px",
-              color: theme.colorConstants.darkBlue,
-            }}
-          />
+        <Link href={"/company-applications"}>
+          <IconButton>
+            <ArrowBackIosNew />
+          </IconButton>
         </Link>
         <Typography
           variant="body1"
@@ -48,157 +131,46 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
           Company Form
         </Typography>
       </Box>
-      <Grid container spacing={2}>
+
+      <Grid
+        sx={{ marginBottom: "50px", paddingTop: "20px" }}
+        container
+        spacing={2}
+      >
+        <Grid item xs={12}>
+          <ApplicationsDetailsCard
+            title="Applications Details"
+            data={applicationData}
+          />
+        </Grid>
+
         <Grid item xs={8}>
-          <Box>
-            <CompanyFormReviewCard
-              data={selectedApplication as ICompanyApplication}
-            />
-          </Box>
+          <CompanyFormReviewCard
+            data={selectedApplication as ICompanyApplication}
+          />
         </Grid>
         <Grid item xs={4}>
-          <Box>
-            <Paper sx={{ padding: "20px" }} variant="outlined">
-              <Typography
-                gutterBottom
-                variant="h4"
-                sx={{
-                  fontSize: "16px",
-                  color: theme.colorConstants.black,
-                }}
-              >
-                Applications Details
-              </Typography>
+          <CompanyFormAdminActions
+            data={selectedApplication as ICompanyApplication}
+          />
+        </Grid>
 
-              <Box marginTop={"20px"}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Linked To
-                    </Typography>
+        <Grid item xs={4}>
+          <AdminDocumentActions
+            title="Input Documents"
+            data={inputDocumentsData}
+          />
+        </Grid>
 
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.username}
-                    </Typography>
-                  </Grid>
+        <Grid item xs={4}>
+          <AdminDocumentActions
+            title="Output Documents"
+            data={outputDocumentsData}
+          />
+        </Grid>
 
-                  <Grid item xs={5}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Jurisdiction
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.jurisdiction}
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={7}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Number of Business Activity
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.activityDetails?.activities?.length}
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={5}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Current Step
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.company_status?.currentStep}
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={7}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "12px",
-                        color: theme.colorConstants.lightPurple,
-                      }}
-                    >
-                      Current Status
-                    </Typography>
-
-                    <Typography
-                      gutterBottom
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {selectedApplication?.company_status?.currentStatus}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Paper>
-
-            <CompanyFormActions
-              data={selectedApplication as ICompanyApplication}
-            />
-          </Box>
+        <Grid item xs={8}>
+          <ApplicationHistoryCard data={historData} />
         </Grid>
       </Grid>
     </Box>

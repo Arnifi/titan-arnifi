@@ -1,8 +1,8 @@
 import {
-  CompanyStatusType,
-  CompanyStepTypes,
-  ICompanyStatus,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+  IVisaApplicationStatus,
+  VisaStatusType,
+  VisaStepsTypes,
+} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<IVisaApplicationStatus>) => void;
 }
 
 const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
@@ -25,17 +25,19 @@ const ApplyGAPortal: React.FC<IProps> = ({ isLoading, statusHandlar }) => {
   const [rejectText, setRejectText] = useState<string>("");
 
   const rejectHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDARNIFI,
-      currentStep: CompanyStepTypes.REJECTEDARNIFI,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.REJECTEDARNIFI,
+      currentStep: VisaStepsTypes.REJECTEDARNIFI,
       message: `Your application has been rejected by Arnifi agent due to ${rejectText}. Resubmit the application form.`,
     };
     statusHandlar(data);
   };
 
   const makePaymentHandler = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStep: CompanyStepTypes?.MAKEPAYMENT,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.INREVIEWARNIFI,
+      currentStep: VisaStepsTypes?.MAKEPAYMENTTOGA,
+      message: `Your Visa form is submitted. The application will be reviewed by Arnifi and then will be sent to government Authority for next steps`,
     };
 
     statusHandlar(data);
