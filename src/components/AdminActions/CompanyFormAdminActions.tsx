@@ -19,13 +19,10 @@ import { IVisaApplicationStatus } from "@/lib/Redux/features/visaApplication/vis
 import RejectAction from "./Actions/RejectAction";
 import IsApplyGA from "./Actions/IsApplyGA";
 import IsPaymentSuccess from "./Actions/IsPaymentSuccess";
-import IsPaymentVerified from "./Actions/IsPaymentVerified";
 import IsGAReactAction from "./Actions/IsGAReactAction";
-import WaitGARejection from "./Actions/WaitGARejection";
 import ResolutionEsignature from "./Actions/ResolutionEsignature";
 import WaitingLicenseApproval from "./Actions/WaitingLicenseApproval";
 import MOAEsignature from "./Actions/MOAEsignature";
-import WaitingLicense from "./Actions/WaitingLicense";
 import WaitingEstablishmentCard from "./Actions/WaitingEstablishmentCard";
 import CompletedStatus from "./Actions/CompletedStatus";
 import IsFormOpen from "./Actions/IsFormOpen";
@@ -181,25 +178,16 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
     data?.company_status?.currentStep === CompanyStepTypes.MakePaymentToGA;
 
   const isWaitingForUpdateGA =
-    data?.company_status?.currentStatus === CompanyStatusType.ReviewAtArnifi &&
+    data?.company_status?.currentStatus ===
+      CompanyStatusType.WaitingOnGovernmentAuthority &&
     data?.company_status?.currentStep ===
       CompanyStepTypes.WaitingForUpdateFromGA;
-
-  const isPaymentVerified =
-    data?.company_status?.currentStatus === CompanyStatusType.INREVIEWARNIFI &&
-    data?.company_status?.currentStep ===
-      CompanyStepTypes.WAITINGPAYMENTVERIFICATION;
 
   const isRejectGA =
     data?.company_status?.currentStatus === CompanyStatusType.RejectedByGA &&
     (data?.company_status?.currentStep === CompanyStepTypes.RejectedByGA ||
       data?.company_status?.currentStep ===
         CompanyStepTypes.UploadRejectionComments);
-
-  const isWaitRejectResponse =
-    data?.company_status?.currentStatus === CompanyStatusType.REJECTEDGA &&
-    data?.company_status?.currentStep ===
-      CompanyStepTypes.WAITINGUPDATEREJECTION;
 
   const isResolutionSigned =
     data?.company_status?.currentStatus ===
@@ -215,10 +203,6 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
     data?.company_status?.currentStatus ===
       CompanyStatusType.WaitingOnGovernmentAuthority &&
     data?.company_status?.currentStep === CompanyStepTypes.LicenseIssued;
-
-  const isWaitingLicense =
-    data?.company_status?.currentStatus === CompanyStatusType.WAITINGGA &&
-    data?.company_status?.currentStep === CompanyStepTypes.WAITINGLICENSE;
 
   const isWaitingEstablishmentCard =
     data?.company_status?.currentStatus ===
@@ -270,7 +254,7 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
-            status: CompanyStatusType.ReviewAtArnifi,
+            status: CompanyStatusType.WaitingOnGovernmentAuthority,
             step: CompanyStepTypes.WaitingForUpdateFromGA,
           }}
         />
@@ -294,19 +278,11 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
           userComment={data?.company_status?.userComment as string}
           statusHandlar={handleStatusChange}
           approve={{
-            status: CompanyStatusType?.ResolutionEsignRequired,
-            step: CompanyStepTypes?.ResolutionSigning,
+            status: CompanyStatusType?.WaitingOnGovernmentAuthority,
+            step: CompanyStepTypes?.WaitingForUpdateFromGA,
           }}
         />
-      ) : // : isWaitRejectResponse ? (
-      //   <WaitGARejection
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //     message={data?.company_status?.message as string}
-      //     userComment={data?.company_status?.userComment as string}
-      //   />
-      // )
-      isResolutionSigned ? (
+      ) : isResolutionSigned ? (
         <ResolutionEsignature
           loading={updateLoading}
           statusHandlar={handleStatusChange}
@@ -321,13 +297,7 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
           loading={updateLoading}
           statusHandlar={handleStatusChange}
         />
-      ) : // : isWaitingLicense ? (
-      //   <WaitingLicense
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // )
-      isWaitingEstablishmentCard ? (
+      ) : isWaitingEstablishmentCard ? (
         <WaitingEstablishmentCard
           loading={updateLoading}
           statusHandlar={handleStatusChange}

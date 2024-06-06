@@ -31,6 +31,7 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
   const [isApplicationReject, setIsApplicationReject] = useState<string>("");
   const [isEsigning, setIsEsigning] = useState<string>("");
   const [rejectText, setRejectText] = useState<string>("");
+  const [moveToReject, setMoveToReject] = useState<boolean>(false);
 
   const approveHandler = () => {
     const data = {
@@ -147,51 +148,58 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
         )}
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "end" }}>
-        {isApplicationReject === "Yes" ? (
-          <Box width={"100%"}>
-            <Typography
-              gutterBottom
-              variant="body1"
-              sx={{
-                fontSize: "14px",
-                fontWeight: 600,
-                color: theme.colorConstants.mediumGray,
-                marginLeft: "10px",
-              }}
-            >
-              Add the rejection reason
-            </Typography>
+      {moveToReject ? (
+        <Box width={"100%"}>
+          <Typography
+            gutterBottom
+            variant="body1"
+            sx={{
+              fontSize: "14px",
+              fontWeight: 600,
+              color: theme.colorConstants.mediumGray,
+              marginLeft: "10px",
+            }}
+          >
+            Add the rejection reason
+          </Typography>
 
-            <textarea
-              style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
-              rows={4}
-              placeholder="Write reason for reject"
-              onChange={(e) => setRejectText(e.target.value)}
-              value={rejectText}
-            ></textarea>
+          <textarea
+            style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
+            rows={4}
+            placeholder="Write reason for reject"
+            onChange={(e) => setRejectText(e.target.value)}
+            value={rejectText}
+          ></textarea>
 
-            <Box display={"flex"} justifyContent={"end"}>
-              <GlobalButton
-                loading={loading}
-                disabled={!rejectText}
-                title="Move to Reject"
-                color="error"
-                onClick={rejectHandler}
-              />
-            </Box>
+          <Box display={"flex"} justifyContent={"end"}>
+            <GlobalButton
+              loading={loading}
+              disabled={!rejectText}
+              title="Reject"
+              color="error"
+              onClick={rejectHandler}
+            />
           </Box>
-        ) : (
-          <Box>
+        </Box>
+      ) : (
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          {isApplicationReject === "Yes" ? (
+            <GlobalButton
+              color="error"
+              loading={false}
+              title="Move to Reject"
+              onClick={() => setMoveToReject(true)}
+            />
+          ) : (
             <GlobalButton
               loading={loading}
               disabled={loading || isEsigning !== "Yes"}
               title="Move to Next Step"
               onClick={approveHandler}
             />
-          </Box>
-        )}
-      </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

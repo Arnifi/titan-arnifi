@@ -54,7 +54,7 @@ const IsGAReactAction: React.FC<IProps> = ({
             color: theme.colorConstants?.mediumGray,
           }}
         >
-          Waiting for client to resong on the comments
+          Waiting for client to respond on the comments
         </Typography>
 
         <Box>

@@ -35,6 +35,7 @@ const AMLResponseTable = () => {
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
+            <TableCell sx={{ fontSize: "14px" }}>Name</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
@@ -42,8 +43,9 @@ const AMLResponseTable = () => {
 
         <TableBody>
           <TableRow>
-            <StyledTableCell>Action 1</StyledTableCell>
-            <StyledTableCell>Action 2</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>Action</StyledTableCell>
+            <StyledTableCell>Message</StyledTableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -149,7 +151,7 @@ const InreviewAction: React.FC<IProps> = ({
                   mr: "50px",
                 }}
               >
-                1. To check the AML hit
+                1. Check AML for Shareholders
               </Typography>
 
               <Button
@@ -248,6 +250,18 @@ const InreviewAction: React.FC<IProps> = ({
               />
             ) : (
               <Box sx={{ width: "100%" }}>
+                <Typography
+                  gutterBottom
+                  variant="body1"
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: theme.colorConstants?.mediumGray,
+                    marginLeft: "16px",
+                  }}
+                >
+                  Reason for reject
+                </Typography>
                 <textarea
                   style={{ width: "100%", padding: "5px", fontFamily: "Inter" }}
                   rows={4}
