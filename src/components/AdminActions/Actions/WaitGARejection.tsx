@@ -36,8 +36,8 @@ const WaitGARejection: React.FC<IProps> = ({
 
   const handleNext = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
-      currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
+      currentStatus: CompanyStatusType.ResolutionEsignRequired,
+      currentStep: CompanyStepTypes.ResolutionSigning,
       message:
         "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
     };
@@ -46,8 +46,8 @@ const WaitGARejection: React.FC<IProps> = ({
 
   const handleReject = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDGA,
-      currentStep: CompanyStepTypes.REJECTEDGA,
+      currentStatus: CompanyStatusType.RejectedByGA,
+      currentStep: CompanyStepTypes.RejectedByGA,
       userComment: "",
       message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
       commentsFormGA: rejectText,

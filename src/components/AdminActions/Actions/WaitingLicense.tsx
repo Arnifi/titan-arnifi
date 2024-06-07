@@ -25,8 +25,8 @@ const WaitingLicense: React.FC<IProps> = ({ statusHandlar, loading }) => {
 
   const handleStatusChange = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGFORESTABLISHMENTCARD,
+      currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+      currentStep: CompanyStepTypes.WaitingEstablishmentCard,
       message:
         "Your company Establishment card documents are under process at governement Authority. Once issued, it will be available in the documents section.",
     };

@@ -19,15 +19,25 @@ const Dashboard = () => {
   );
 
   const allCompanyStatus = [
-    CompanyStatusType.OPEN,
-    // CompanyStatusType.SUBMITTED,
-    CompanyStatusType.INREVIEWARNIFI,
-    CompanyStatusType.REJECTEDARNIFI,
-    CompanyStatusType.WAITINGGA,
-    CompanyStatusType.REJECTEDGA,
-    CompanyStatusType.RESOLUTIONSIGNED,
-    CompanyStatusType.MOAAOASIGNED,
-    CompanyStatusType.COMPLETED,
+    CompanyStatusType.Open,
+    CompanyStatusType.ReviewAtArnifi,
+    CompanyStatusType.RejectedAtArnifi,
+    CompanyStatusType.WaitingOnGovernmentAuthority,
+    CompanyStatusType.RejectedByGA,
+    CompanyStatusType.ResolutionEsignRequired,
+    CompanyStatusType.MOAAOAEsignRequired,
+    CompanyStatusType.LicenseIssued,
+    CompanyStatusType.Completed,
+
+    // CompanyStatusType.OPEN,
+    // // CompanyStatusType.SUBMITTED,
+    // CompanyStatusType.INREVIEWARNIFI,
+    // CompanyStatusType.REJECTEDARNIFI,
+    // CompanyStatusType.WAITINGGA,
+    // CompanyStatusType.REJECTEDGA,
+    // CompanyStatusType.RESOLUTIONSIGNED,
+    // CompanyStatusType.MOAAOASIGNED,
+    // CompanyStatusType.COMPLETED,
   ];
 
   const allVisaStatus = [

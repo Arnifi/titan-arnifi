@@ -95,7 +95,7 @@ export enum CompanyStatusType {
   LicenseIssued = "License Issued",
   Completed = "Completed",
 
-  // olds
+  // // olds
   OPEN = "Open",
   SUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",
@@ -122,7 +122,7 @@ export enum CompanyStepTypes {
   WaitingEstablishmentCard = "Waiting for Establishment Card",
   Completed = "Completed",
 
-  // olds
+  // // olds
   OPEN = "Open",
   FORMSUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",
