@@ -52,7 +52,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 
 const UploadPaymentProof: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
@@ -68,8 +68,8 @@ const UploadPaymentProof: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
 
   const handleStatusChange = () => {
     const data = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGPAYMENTVERIFICATION,
+      currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+      currentStep: CompanyStepTypes.WaitingEstablishmentCard,
       message:
         "Your application has been sent to governemnt Authority for approval. The application will be reviewed and will be processed by the government Authority. Once approved by them, they will send company documents for E-signature to Shareholders and Authorised dignitaries",
     };

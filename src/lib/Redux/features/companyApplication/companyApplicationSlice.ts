@@ -107,7 +107,7 @@ export enum CompanyStepTypes {
   UploadRejectionComments = "Upload Rejection comments",
   ResolutionSigning = "Resolution signing",
   MOAAOASigning = "MOA/ AOA signing",
-  LicenseIssued = "License Issued",
+  LicenseIssued = "License Issue",
   WaitingEstablishmentCard = "Waiting for Establishment Card",
   Completed = "Complete",
 }

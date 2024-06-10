@@ -9,16 +9,14 @@ import React from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 
 const FormSubmitAction: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
   const statusChangeHandler = (): void => {
     const updateStatus = {
-      currentStatus: CompanyStatusType.INREVIEWARNIFI,
-      currentStep: CompanyStepTypes.INREVIEWARNIFI,
-      message:
-        "Your application has been picked up by agent for review. If rejected, you will have to resubmit form with the correct details",
+      currentStatus: CompanyStatusType.ReviewAtArnifi,
+      currentStep: CompanyStepTypes.ReviewAtArnifi,
     };
 
     statusHandlar(updateStatus);

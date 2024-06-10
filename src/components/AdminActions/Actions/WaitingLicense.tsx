@@ -1,7 +1,6 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -17,18 +16,16 @@ import InputFile from "../InputFile/InputFile";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const WaitingLicense: React.FC<IProps> = ({ statusHandlar, loading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
       currentStep: CompanyStepTypes.WaitingEstablishmentCard,
-      message:
-        "Your company Establishment card documents are under process at governement Authority. Once issued, it will be available in the documents section.",
     };
 
     statusHandlar(data);

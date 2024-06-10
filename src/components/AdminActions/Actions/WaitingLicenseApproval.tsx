@@ -1,7 +1,6 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -17,7 +16,7 @@ import FileUploadContainer from "../FileUploadContainer";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const WaitingLicenseApproval: React.FC<IProps> = ({
   statusHandlar,
@@ -27,11 +26,9 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
   const [uploadedFiles, setUploadedFiles] = useState<File | null>(null);
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+    const data = {
+      currentStatus: CompanyStatusType.LicenseIssued,
       currentStep: CompanyStepTypes.WaitingEstablishmentCard,
-      message:
-        "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
     };
 
     statusHandlar(data);

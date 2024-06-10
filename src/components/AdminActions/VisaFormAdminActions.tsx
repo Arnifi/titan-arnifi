@@ -68,9 +68,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
 
   console.log(data);
 
-  const handleStatusChange = (
-    updateStatus: Partial<ICompanyStatus | IVisaApplicationStatus>
-  ): void => {
+  const handleStatusChange = (updateStatus: any): void => {
     const formData = new FormData();
 
     const {
@@ -190,7 +188,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
 
   return (
     <Paper variant="outlined" sx={{ padding: "20px", height: "70vh" }}>
-      {isStatusNotCreated ? (
+      {/* {isStatusNotCreated ? (
         <StatusNotFound
           loading={createLoading}
           formStatus={data?.status as string}
@@ -198,6 +196,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
         />
       ) : isReviewAction ? (
         <InreviewAction
+          data={data as IVisaApplication}
           agentComment={data?.visa_status?.agentComment as string}
           loading={updateLoading}
           statusHandlar={handleStatusChange}
@@ -254,43 +253,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
           userComment={data?.visa_status?.userComment as string}
           statusHandlar={handleStatusChange}
         />
-      ) : // isWaitRejectResponse ? (
-      //   <WaitGARejection
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //     message={data?.company_status?.message as string}
-      //     userComment={data?.company_status?.userComment as string}
-      //   />
-      // ) : isResolutionSigned ? (
-      //   <ResolutionEsignature
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // ) : isWaitingLicenseApproval ? (
-      //   <WaitingLicenseApproval
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // ) : isMOAEsignature ? (
-      //   <MOAEsignature
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // ) : isWaitingLicense ? (
-      //   <WaitingLicense
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // ) : isWaitingEstablishmentCard ? (
-      //   <WaitingEstablishmentCard
-      //     loading={updateLoading}
-      //     statusHandlar={handleStatusChange}
-      //   />
-      // ) : isCompanyCreated ? (
-      //   <CompletedStatus message="This Company Create Successfully!" />
-      // )
-
-      null}
+      ) : null} */}
     </Paper>
   );
 };

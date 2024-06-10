@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 const WaitingLicenseApproval: React.FC<IProps> = ({
   statusHandlar,
@@ -26,11 +26,11 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
   const [isApproved, setIsApproved] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.MOAAOASIGNED,
-      currentStep: CompanyStepTypes.MOAAOASIGNED,
-      message:
-        "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
+    const data = {
+      // currentStatus: CompanyStatusType.MOAAOASIGNED,
+      // currentStep: CompanyStepTypes.MOAAOASIGNED,
+      // message:
+      //   "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
     };
 
     statusHandlar(data);

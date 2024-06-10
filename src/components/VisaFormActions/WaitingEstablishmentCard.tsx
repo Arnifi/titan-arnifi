@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 const WaitingEstablishmentCard: React.FC<IProps> = ({
   statusHandlar,
@@ -26,9 +26,9 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
   const [isEstablishmentCard, setIsEstablishmentCard] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.COMPLETED,
-      currentStep: CompanyStepTypes.COMPLETED,
+    const data = {
+      currentStatus: CompanyStatusType.Completed,
+      currentStep: CompanyStepTypes.Completed,
       message:
         "Congratulations, your company has been incorporated. For associated documents, please refer to the document section on the dashboard.",
     };

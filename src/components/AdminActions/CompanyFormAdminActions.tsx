@@ -2,7 +2,6 @@ import {
   CompanyStatusType,
   CompanyStepTypes,
   ICompanyApplication,
-  ICompanyStatus,
   setUpdatedCompanyApplicationInfo,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { Paper } from "@mui/material";
@@ -11,7 +10,6 @@ import StatusNotFound from "./Actions/StatusNotFound";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import InreviewAction from "./Actions/InreviewAction";
-import { IVisaApplicationStatus } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import RejectAction from "./Actions/RejectAction";
 import IsApplyGA from "./Actions/IsApplyGA";
 import IsPaymentSuccess from "./Actions/IsPaymentSuccess";
@@ -42,6 +40,8 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
 
   const handleStatusChange = (updateStatus: any): void => {
     const formData = new FormData();
+
+    console.log(updateStatus);
 
     const { remarks, currentStatus, currentStep, paymentSlip, paymentInvoice } =
       updateStatus;

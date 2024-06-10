@@ -1,7 +1,6 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -16,17 +15,16 @@ import GlobalButton from "../Buttons/GlobalButton";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const MOAEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+      // currentStatus: CompanyStatusType.ReviewAtArnifi,
       currentStep: CompanyStepTypes.LicenseIssued,
-      message:
-        "Your company license documents are under process at governement Authority. Once the documents are issued, it will be available in the documents section.",
     };
 
     statusHandlar(data);

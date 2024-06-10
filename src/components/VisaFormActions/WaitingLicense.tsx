@@ -17,17 +17,17 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 const WaitingLicense: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGFORESTABLISHMENTCARD,
-      message:
-        "Your company Establishment card documents are under process at governement Authority. Once issued, it will be available in the documents section.",
+    const data = {
+      // currentStatus: CompanyStatusType.WAITINGGA,
+      // currentStep: CompanyStepTypes.WAITINGFORESTABLISHMENTCARD,
+      // message:
+      //   "Your company Establishment card documents are under process at governement Authority. Once issued, it will be available in the documents section.",
     };
 
     statusHandlar(data);

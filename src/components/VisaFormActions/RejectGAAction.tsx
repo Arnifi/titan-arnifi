@@ -19,7 +19,7 @@ interface IProps {
   message: string;
   userComment: string;
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 
 const RejectGAAction: React.FC<IProps> = ({
@@ -37,8 +37,8 @@ const RejectGAAction: React.FC<IProps> = ({
   };
 
   const handleNext = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStep: CompanyStepTypes.WAITINGUPDATEREJECTION,
+    const data = {
+      currentStep: CompanyStepTypes.WaitingForUpdateFromGA,
     };
     statusHandlar(data);
   };
