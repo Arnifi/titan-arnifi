@@ -1,3 +1,9 @@
+console.log(
+  "AWS_ACCESS_KEY_ID",
+  AWS_ACCESS_KEY_ID,
+  "AWS_SECRET_ACCESS_KEY",
+  AWS_SECRET_ACCESS_KEY
+);
 const envConfig = {
   environment: process.env.ENVIRONMENT,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
