@@ -8,10 +8,6 @@ import {
 import { Paper } from "@mui/material";
 import React from "react";
 import StatusNotFound from "./Actions/StatusNotFound";
-import {
-  useCreateCompanyStatusMutation,
-  useUpdateCompanyStatusMutation,
-} from "@/lib/Redux/features/companyStatus/companyStatusApi";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import InreviewAction from "./Actions/InreviewAction";

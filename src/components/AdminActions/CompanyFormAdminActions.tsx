@@ -8,10 +8,6 @@ import {
 import { Paper } from "@mui/material";
 import React from "react";
 import StatusNotFound from "./Actions/StatusNotFound";
-import {
-  useCreateCompanyStatusMutation,
-  useUpdateCompanyStatusMutation,
-} from "@/lib/Redux/features/companyStatus/companyStatusApi";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import InreviewAction from "./Actions/InreviewAction";
@@ -27,198 +23,132 @@ import WaitingEstablishmentCard from "./Actions/WaitingEstablishmentCard";
 import CompletedStatus from "./Actions/CompletedStatus";
 import IsFormOpen from "./Actions/IsFormOpen";
 import IsWaitingForUpdateFormGA from "./Actions/IsWaitingForUpdateFormGA";
+import { useUpdateCompanyStatusMutation } from "@/lib/Redux/features/companyApplication/companyApplicationApi";
+import envConfig from "@/Configs/envConfig";
 
 interface IProps {
   data: ICompanyApplication;
 }
 
 const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
-  const [createCompanyStatus, { isLoading: createLoading }] =
-    useCreateCompanyStatusMutation();
+  const { step, status } = data?.applicationStatus;
 
   const [updateCompanyStatus, { isLoading: updateLoading }] =
     useUpdateCompanyStatusMutation();
+
   const dispatch = useAppDispatch();
 
-  const statusCreateHandelar = (statusInfo: any) => {
-    console.log(statusInfo);
+  const statusCreateHandelar = (statusInfo: any) => {};
 
-    const updatedCompanyInfo = {
-      ...data,
-      company_status: { ...statusInfo },
-    };
-
-    dispatch(setUpdatedCompanyApplicationInfo(updatedCompanyInfo));
-    dispatch(
-      openSnackbar({
-        isOpen: true,
-        message: "Company Status Created",
-        type: "success",
-      })
-    );
-
-    // createCompanyStatus({ user_form: data?.id, ...statusInfo })
-    //   .unwrap()
-    //   .then((res) => {
-    //     console.log(res);
-
-    //     const updatedCompanyInfo = {
-    //       ...data,
-    //       company_status: { ...statusInfo },
-    //     };
-    // dispatch(setUpdatedCompanyApplicationInfo(updatedCompanyInfo));
-    // dispatch(
-    //   openSnackbar({
-    //     isOpen: true,
-    //     message: "Company Status Created",
-    //     type: "success",
-    //   })
-    // );
-    //   });
-  };
-
-  const handleStatusChange = (
-    updateStatus: Partial<ICompanyStatus | IVisaApplicationStatus>
-  ): void => {
+  const handleStatusChange = (updateStatus: any): void => {
     const formData = new FormData();
 
-    const {
-      agentComment,
-      commentsFormGA,
-      currentStatus,
-      currentStep,
-      message,
-    } = updateStatus;
+    const { remarks, currentStatus, currentStep, paymentSlip, paymentInvoice } =
+      updateStatus;
 
-    const updatedCompanyInfo = {
-      ...data,
-      company_status: { ...data?.company_status, ...updateStatus },
+    const applicationStatus = {
+      Remarks: remarks,
+      step: currentStep,
+      status: currentStatus,
+      // paymentInvoice: paymentInvoice,
+      // paymentProof: paymentSlip,
     };
-    dispatch(
-      setUpdatedCompanyApplicationInfo(
-        updatedCompanyInfo as ICompanyApplication
-      )
-    );
-    dispatch(
-      openSnackbar({
-        isOpen: true,
-        message: "Company Status Updated",
-        type: "success",
+
+    const updatedApplications = {
+      ...data,
+      applicationStatus: {
+        ...data?.applicationStatus,
+        ...applicationStatus,
+      },
+    };
+
+    formData.append("id", `${data?.id}`);
+    formData.append("custom_api_key", envConfig.custom_api_key as string);
+    formData.append(
+      "data",
+      JSON.stringify({
+        applicationStatus,
       })
     );
 
-    // formData.append(
-    //   "currentStatus",
-    //   currentStatus ?? data?.company_status?.currentStatus
-    // );
-    // formData.append(
-    //   "currentStep",
-    //   currentStep ?? data?.company_status?.currentStep
-    // );
+    formData.append("files.applicationStatus.paymentInvoice", paymentInvoice);
+    formData.append("files.applicationStatus.paymentProof", paymentSlip);
 
-    // formData.append("message", message ?? data?.company_status?.message);
-
-    // formData.append(
-    //   "agentComment",
-    //   agentComment ?? (data?.company_status?.agentComment as string)
-    // );
-
-    // formData.append(
-    //   "commentsFormGA",
-    //   commentsFormGA ?? (data?.company_status?.commentsFormGA as string)
-    // );
-
-    // updateCompanyStatus({ id: data?.company_status?.id, data: formData })
-    //   .then((res) => {
-    //     const updatedCompanyInfo = {
-    //       ...data,
-    //       company_status: { ...data?.company_status, ...updateStatus },
-    //     };
-    //     dispatch(
-    //       setUpdatedCompanyApplicationInfo(
-    //         updatedCompanyInfo as ICompanyApplication
-    //       )
-    //     );
-    //     dispatch(
-    //       openSnackbar({
-    //         isOpen: true,
-    //         message: "Company Status Updated",
-    //         type: "success",
-    //       })
-    //     );
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    updateCompanyStatus(formData)
+      .then(() => {
+        dispatch(setUpdatedCompanyApplicationInfo(updatedApplications));
+        dispatch(
+          openSnackbar({
+            isOpen: true,
+            message: "Company Status Updated",
+            type: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const isStatusNotCreated =
-    (data?.status === "done" || data?.status === "inProgress") &&
-    data?.company_status === null;
+  const isStatusNotCreated = "";
+  // const isStatusNotCreated =
+  //   (data?.status === "done" || data?.status === "inProgress") &&
+  //   data?.company_status === null;
 
   const isFormOpen =
-    data?.company_status?.currentStatus === CompanyStatusType.Open &&
-    data?.company_status?.currentStep === CompanyStepTypes.Open;
+    status === CompanyStatusType.Open && step === CompanyStepTypes.Open;
 
   const isReviewAction =
-    data?.company_status?.currentStatus === CompanyStatusType.ReviewAtArnifi &&
-    data?.company_status?.currentStep === CompanyStepTypes.ReviewAtArnifi;
+    status === CompanyStatusType.ReviewAtArnifi &&
+    step === CompanyStepTypes.ReviewAtArnifi;
 
   const isRejectAction =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.RejectedAtArnifi &&
-    data?.company_status?.currentStep === CompanyStepTypes.RejectedAtArnifi;
+    status === CompanyStatusType.RejectedAtArnifi &&
+    step === CompanyStepTypes.RejectedAtArnifi;
 
   const isApplyGA =
-    data?.company_status?.currentStatus === CompanyStatusType.ReviewAtArnifi &&
-    data?.company_status?.currentStep === CompanyStepTypes.ApplyOnPortal;
+    status === CompanyStatusType.ReviewAtArnifi &&
+    step === CompanyStepTypes.ApplyOnPortal;
 
   const isPaymentSuccess =
-    data?.company_status?.currentStatus === CompanyStatusType.ReviewAtArnifi &&
-    data?.company_status?.currentStep === CompanyStepTypes.MakePaymentToGA;
+    status === CompanyStatusType.ReviewAtArnifi &&
+    step === CompanyStepTypes.MakePaymentToGA;
 
   const isWaitingForUpdateGA =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.WaitingOnGovernmentAuthority &&
-    data?.company_status?.currentStep ===
-      CompanyStepTypes.WaitingForUpdateFromGA;
+    status === CompanyStatusType.WaitingOnGovernmentAuthority &&
+    step === CompanyStepTypes.WaitingForUpdateFromGA;
 
   const isRejectGA =
-    data?.company_status?.currentStatus === CompanyStatusType.RejectedByGA &&
-    (data?.company_status?.currentStep === CompanyStepTypes.RejectedByGA ||
-      data?.company_status?.currentStep ===
-        CompanyStepTypes.UploadRejectionComments);
+    (status === CompanyStatusType.RejectedByGA ||
+      status === CompanyStatusType.WaitingOnGovernmentAuthority) &&
+    (step === CompanyStepTypes.RejectedByGA ||
+      step === CompanyStepTypes.UploadRejectionComments);
 
   const isResolutionSigned =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.ResolutionEsignRequired &&
-    data?.company_status?.currentStep === CompanyStepTypes.ResolutionSigning;
+    status === CompanyStatusType.ResolutionEsignRequired &&
+    step === CompanyStepTypes.ResolutionSigning;
 
   const isMOAEsignature =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.MOAAOAEsignRequired &&
-    data?.company_status?.currentStep === CompanyStepTypes.MOAAOASigning;
+    status === CompanyStatusType.MOAAOAEsignRequired &&
+    step === CompanyStepTypes.MOAAOASigning;
 
   const isWaitingLicenseApproval =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.WaitingOnGovernmentAuthority &&
-    data?.company_status?.currentStep === CompanyStepTypes.LicenseIssued;
+    status === CompanyStatusType.WaitingOnGovernmentAuthority &&
+    step === CompanyStepTypes.LicenseIssued;
 
   const isWaitingEstablishmentCard =
-    data?.company_status?.currentStatus ===
-      CompanyStatusType.WaitingOnGovernmentAuthority &&
-    data?.company_status?.currentStep ===
-      CompanyStepTypes.WaitingEstablishmentCard;
+    status === CompanyStatusType.LicenseIssued &&
+    step === CompanyStepTypes.WaitingEstablishmentCard;
 
   const isCompanyCreated =
-    data?.company_status?.currentStatus === CompanyStatusType.Completed &&
-    data?.company_status?.currentStep === CompanyStepTypes.Completed;
+    status === CompanyStatusType.Completed &&
+    step === CompanyStepTypes.Completed;
 
   return (
     <Paper variant="outlined" sx={{ padding: "20px", height: "70vh" }}>
       {isStatusNotCreated ? (
         <StatusNotFound
-          loading={createLoading}
+          loading={false}
           formStatus={data?.status as string}
           createHandler={statusCreateHandelar}
         />
@@ -226,7 +156,8 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
         <IsFormOpen />
       ) : isReviewAction ? (
         <InreviewAction
-          agentComment={data?.company_status?.agentComment as string}
+          data={data}
+          agentComment={data?.applicationStatus?.Remarks}
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
@@ -239,7 +170,7 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
           }}
         />
       ) : isRejectAction ? (
-        <RejectAction message={data?.company_status?.message as string} />
+        <RejectAction message={data?.applicationStatus?.Remarks as string} />
       ) : isApplyGA ? (
         <IsApplyGA
           loading={updateLoading}
@@ -274,8 +205,8 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       ) : isRejectGA ? (
         <IsGAReactAction
           loading={updateLoading}
-          message={data?.company_status?.message as string}
-          userComment={data?.company_status?.userComment as string}
+          message={data?.applicationStatus?.Remarks as string}
+          userComment={data?.applicationStatus?.rejectionComments as string}
           statusHandlar={handleStatusChange}
           approve={{
             status: CompanyStatusType?.WaitingOnGovernmentAuthority,

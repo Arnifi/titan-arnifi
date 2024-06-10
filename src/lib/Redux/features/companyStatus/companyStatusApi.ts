@@ -11,6 +11,7 @@ const companyStatusApi = backendBaseApi.injectEndpoints({
         body: data,
       }),
     }),
+
     updateCompanyStatus: build.mutation({
       query: ({ id, data }: { id: number; data: any }) => ({
         url: `${adminCommonUrl}/api::company-status.company-status/${id}`,
@@ -18,10 +19,18 @@ const companyStatusApi = backendBaseApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    getCompanyFormById: build.query({
+      query: ({ id }) => ({
+        url: `${adminCommonUrl}/api::user-form.user-form/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const {
-  useUpdateCompanyStatusMutation,
-  useCreateCompanyStatusMutation,
+  // useUpdateCompanyStatusMutation,
+  // useCreateCompanyStatusMutation,
+  useGetCompanyFormByIdQuery,
 } = companyStatusApi;

@@ -28,16 +28,6 @@ const Dashboard = () => {
     CompanyStatusType.MOAAOAEsignRequired,
     CompanyStatusType.LicenseIssued,
     CompanyStatusType.Completed,
-
-    // CompanyStatusType.OPEN,
-    // // CompanyStatusType.SUBMITTED,
-    // CompanyStatusType.INREVIEWARNIFI,
-    // CompanyStatusType.REJECTEDARNIFI,
-    // CompanyStatusType.WAITINGGA,
-    // CompanyStatusType.REJECTEDGA,
-    // CompanyStatusType.RESOLUTIONSIGNED,
-    // CompanyStatusType.MOAAOASIGNED,
-    // CompanyStatusType.COMPLETED,
   ];
 
   const allVisaStatus = [
@@ -53,10 +43,12 @@ const Dashboard = () => {
     VisaStatusType.COMPLETED,
   ];
 
+  console.log(allCompanyApplications);
+
   const statusWiseCompanyApplications = allCompanyStatus
     ?.map((status) => {
       const applications = allCompanyApplications?.filter(
-        (item) => item.company_status?.currentStatus === status
+        (item) => item.applicationStatus?.status === status
       );
       return {
         label: status,

@@ -2,6 +2,7 @@ import theme from "@/theme";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -18,6 +19,9 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
+import { useGetAMLResponseMutation } from "@/lib/Redux/features/AML/AMLApi";
+import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import envConfig from "@/Configs/envConfig";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,6 +58,7 @@ const AMLResponseTable = () => {
 };
 
 interface IProps {
+  data: ICompanyApplication;
   agentComment: string;
   loading: boolean;
   statusHandlar: (updateStatus: any) => void;
@@ -68,6 +73,7 @@ interface IProps {
 }
 
 const InreviewAction: React.FC<IProps> = ({
+  data: applicationData,
   loading,
   statusHandlar,
   agentComment,
@@ -78,13 +84,14 @@ const InreviewAction: React.FC<IProps> = ({
   const [rejectText, setRejectText] = useState<string>("");
   const [isAMLChecked, setIsAMLChecked] = useState<boolean>(false);
 
+  const [getAMLResponse, { isLoading: amlLoading }] =
+    useGetAMLResponseMutation();
+
   const rejectHandler = () => {
     const data = {
       currentStatus: reject.status,
       currentStep: reject.step,
-      message: `Your application has been rejected by Arnifi agent due to '${rejectText}'. Resubmit the application form.
-      `,
-      agentComment: rejectText,
+      remarks: rejectText,
     };
     statusHandlar(data);
   };
@@ -96,6 +103,24 @@ const InreviewAction: React.FC<IProps> = ({
     };
 
     statusHandlar(data);
+  };
+
+  const amlResponseHandler = () => {
+    const amlInfoPromises = applicationData?.shareholders?.map(async (item) => {
+      return await getAMLResponse({
+        type: "share-holder",
+        id: item.id,
+        custom_api_key: `Bearer ${envConfig.custom_api_key}`,
+      }).unwrap();
+    });
+
+    Promise.all(amlInfoPromises)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -117,9 +142,9 @@ const InreviewAction: React.FC<IProps> = ({
               color: theme.colorConstants?.darkGray,
             }}
           >
-            {agentComment !== "" &&
-            agentComment !== null &&
-            agentComment !== undefined
+            {applicationData?.applicationStatus.Remarks !== "" &&
+            applicationData?.applicationStatus.Remarks !== null &&
+            applicationData?.applicationStatus.Remarks !== undefined
               ? "Resubmitted Application"
               : "Please review the application"}
           </Typography>
@@ -155,12 +180,13 @@ const InreviewAction: React.FC<IProps> = ({
               </Typography>
 
               <Button
-                onClick={() => setIsAMLChecked(true)}
+                onClick={amlResponseHandler}
                 size={"small"}
                 sx={{ textTransform: "none" }}
                 variant="contained"
+                disabled={amlLoading}
               >
-                Check
+                {amlLoading ? <CircularProgress size={20} /> : "Check"}
               </Button>
             </Box>
 

@@ -38,12 +38,12 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
     {
       label: "Current Step",
-      value: selectedApplication?.company_status?.currentStep as string,
+      value: selectedApplication?.applicationStatus?.step as string,
       weight: 6,
     },
     {
       label: "Current Status",
-      value: selectedApplication?.company_status?.currentStatus as string,
+      value: selectedApplication?.applicationStatus?.status as string,
       weight: 6,
     },
   ];
@@ -82,7 +82,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
-  const historData = [
+  const historyData = [
     {
       label: "Step - 1",
       value: "12/04/2024",
@@ -104,6 +104,35 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
       value: "12/04/2024",
     },
   ];
+
+  const applicationInputDocuments = selectedApplication?.shareholders?.map(
+    (shareholder, i) => {
+      console.log(shareholder);
+
+      const passportFont = shareholder?.passportFont;
+      const passportBack = shareholder?.passportBack;
+      const emiratesID = shareholder?.emiratesID;
+
+      const file1 = {
+        name: `Shareholder - ${i + 1} Passport Font`,
+        url: passportFont?.url,
+      };
+
+      const file2 = {
+        name: `Shareholder - ${i + 1} Passport Back`,
+        url: passportBack?.url,
+      };
+
+      const file3 = {
+        name: `Shareholder - ${i + 1} Emirates ID`,
+        url: emiratesID?.url,
+      };
+
+      return [file1?.url && file1, file2?.url && file2, file3?.url && file3];
+    }
+  );
+
+  console.log(applicationInputDocuments);
 
   return (
     <Box>
@@ -149,6 +178,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
             data={selectedApplication as ICompanyApplication}
           />
         </Grid>
+
         <Grid item xs={4}>
           <CompanyFormAdminActions
             data={selectedApplication as ICompanyApplication}
@@ -170,7 +200,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
 
         <Grid item xs={8}>
-          <ApplicationHistoryCard data={historData} />
+          <ApplicationHistoryCard data={historyData} />
         </Grid>
       </Grid>
     </Box>

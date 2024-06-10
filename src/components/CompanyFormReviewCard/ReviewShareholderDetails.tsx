@@ -19,9 +19,6 @@ interface Props {
 
 const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
   const {
-    passportFont,
-    passportBack,
-    emiratesID,
     shareholderDetails: {
       name,
       dateOfBirth,
@@ -38,8 +35,6 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
       },
     },
   } = data;
-
-  console.log(data);
 
   return (
     <>
@@ -73,31 +68,7 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {name.firstName}
-                </Typography>
-
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: 500,
-                    color: theme.colorConstants.darkGray,
-                    whiteSpace: "nowrap",
-                    marginLeft: "10px",
-                  }}
-                >
-                  {name.middleName}
-                </Typography>
-
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: 500,
-                    color: theme.colorConstants.darkGray,
-                    whiteSpace: "nowrap",
-                    marginLeft: "10px",
-                  }}
-                >
-                  {name.lastName}
+                  {`${name.firstName} ${name.middleName} ${name.lastName}`.trim()}
                 </Typography>
               </Box>
             </Box>
@@ -339,51 +310,6 @@ const ReviewShareholderDetails: React.FC<Props> = ({ data, index }) => {
                 })}
               </Typography>
             </Box>
-
-            {/* {passportFont?.url !== "" && passportFont !== null && (
-              <Box marginTop={"16px"}>
-                <CustomeTypography sx={{ width: "200px" }}>
-                  Passport Font
-                </CustomeTypography>
-                <Box
-                  component="img"
-                  src={passportFont?.url}
-                  sx={{
-                    width: "100%",
-                  }}
-                />
-              </Box>
-            )} */}
-
-            {/* {passportBack?.url !== "" && passportBack !== null && (
-              <Box marginTop={"16px"}>
-                <CustomeTypography sx={{ width: "200px" }}>
-                  Passport Back
-                </CustomeTypography>
-                <Box
-                  component="img"
-                  src={passportBack?.url}
-                  sx={{
-                    width: "100%",
-                  }}
-                />
-              </Box>
-            )} */}
-
-            {/* {emiratesID?.url !== "" && emiratesID !== null && (
-              <Box marginTop={"16px"}>
-                <CustomeTypography sx={{ width: "200px" }}>
-                  Emirates ID
-                </CustomeTypography>
-                <Box
-                  component="img"
-                  src={emiratesID?.url}
-                  sx={{
-                    width: "100%",
-                  }}
-                />
-              </Box>
-            )} */}
           </Grid>
         </Grid>
         <Divider />

@@ -1,3 +1,4 @@
+import { getAuthToken } from "../../helpers";
 import { AppDispatch } from "../../store";
 import backendBaseApi from "../backendBaseApi";
 import {
@@ -18,6 +19,9 @@ const userApi = backendBaseApi.injectEndpoints({
       query: (params) => ({
         url: `${adminCommonUrl}/plugin::users-permissions.user`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
         params: {
           ...params,
           "populate[cart][populate][cart]": "*",
@@ -56,7 +60,7 @@ const userApi = backendBaseApi.injectEndpoints({
             "*",
           "populate[user_form][populate][activityDetails][populate]": "*",
           "populate[user_form][populate][uboDecleration][populate]": "*",
-          "populate[user_form][populate][company_status][populate]": "*",
+          "populate[user_form][populate][applicationStatus][populate]": "*",
           pageSize: 1000,
         },
       }),
@@ -82,7 +86,7 @@ const userApi = backendBaseApi.injectEndpoints({
                 ...user.user_form,
                 linkto: user.id,
                 username: user.username,
-                jurisdiction: user?.cart?.cart?.freeZoneName || "",
+                // jurisdiction: user || "",
               });
             }
           });

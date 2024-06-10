@@ -35,6 +35,8 @@ const IsPaymentSuccess: React.FC<IProps> = ({
     const data = {
       currentStatus: approve?.status,
       currentStep: approve?.step,
+      paymentSlip,
+      paymentInvoice,
     };
 
     statusHandlar(data);

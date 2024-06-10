@@ -11,6 +11,7 @@ export interface IUser {
   blocked: boolean;
   createdAt: string;
   updatedAt: string;
+  // orders: IOrder[]
   user_form?: ICompanyApplication;
   cart: {
     visa_applicants: IVisaApplication[];
