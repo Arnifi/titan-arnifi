@@ -29,6 +29,7 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
     const data = {
       currentStatus: CompanyStatusType.Completed,
       currentStep: CompanyStepTypes.Completed,
+      establishmentCard: uploadedFile,
     };
 
     statusHandlar(data);

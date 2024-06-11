@@ -50,6 +50,7 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       paymentSlip,
       paymentInvoice,
       licenseFiles,
+      establishmentCard,
     } = updateStatus;
 
     const applicationStatus = {
@@ -84,6 +85,13 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
 
     if (paymentSlip) {
       formData.append("files.applicationStatus.paymentProof", paymentSlip);
+    }
+
+    if (establishmentCard) {
+      formData.append(
+        "files.applicationStatus.establishmentCard",
+        establishmentCard
+      );
     }
 
     if (licenseFiles?.length) {
