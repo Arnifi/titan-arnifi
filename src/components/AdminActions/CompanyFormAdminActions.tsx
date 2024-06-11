@@ -31,7 +31,8 @@ interface IProps {
 }
 
 const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
-  const { step, status } = data?.applicationStatus;
+  const step = data?.applicationStatus?.step ?? "";
+  const status = data?.applicationStatus?.status ?? "";
 
   const [updateCompanyStatus, { isLoading: updateLoading }] =
     useUpdateCompanyStatusMutation();

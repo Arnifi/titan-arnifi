@@ -1,3 +1,4 @@
+import { ILicenseFiles } from "@/components/AdminActions/Actions/WaitingLicenseApproval";
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface IUploadImage {
@@ -118,10 +119,10 @@ export interface ICompanyStatus {
   step: CompanyStepTypes;
   status: CompanyStatusType;
   location: null;
-  paymentInvoice: null;
-  paymentProof: null;
+  paymentInvoice: IUploadImage;
+  paymentProof: IUploadImage;
   rejectionFiles: IUploadImage[];
-  licenseDocuments: null;
+  licenseDocuments: ILicenseFiles[];
 }
 
 export interface ICompanyApplication {
