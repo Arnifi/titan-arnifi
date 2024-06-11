@@ -120,7 +120,7 @@ export interface ICompanyStatus {
   location: null;
   paymentInvoice: null;
   paymentProof: null;
-  rejectionFiles: null;
+  rejectionFiles: IUploadImage[];
   licenseDocuments: null;
 }
 

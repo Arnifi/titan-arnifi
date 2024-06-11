@@ -2,7 +2,7 @@
 
 export const setToken = (token: string) => {
   if (window) {
-    document.cookie = `token=${token}; path=/`;
+    document.cookie = `auth_token=${token}; path=/`;
   }
 };
 
@@ -15,7 +15,7 @@ export const getAuthToken = (): string => {
         acc[name] = value;
         return acc;
       }, {});
-    const token = cookies["token"];
+    const token = cookies["auth_token"];
     return token;
   }
 

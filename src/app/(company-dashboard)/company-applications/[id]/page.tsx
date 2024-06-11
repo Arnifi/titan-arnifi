@@ -5,7 +5,10 @@ import AdminDocumentActions from "@/components/AdminDocumentActions";
 import ApplicationHistoryCard from "@/components/ApplicationHistoryCard";
 import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
 import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import {
+  ICompanyApplication,
+  IUploadImage,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { ArrowBackIosNew } from "@mui/icons-material";
@@ -48,25 +51,6 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
-  const inputDocumentsData = [
-    {
-      label: "Shareholder - 1 Passport Font",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 1 Passport Back",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 2 Passport Font",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 2 Passport Back",
-      data: "link",
-    },
-  ];
-
   const outputDocumentsData = [
     {
       label: "Payment Slip",
@@ -105,34 +89,50 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
-  const applicationInputDocuments = selectedApplication?.shareholders?.map(
-    (shareholder, i) => {
-      console.log(shareholder);
+  const applicationDocuments = [] as { label: string; data: string }[];
 
-      const passportFont = shareholder?.passportFont;
-      const passportBack = shareholder?.passportBack;
-      const emiratesID = shareholder?.emiratesID;
+  selectedApplication?.shareholders?.forEach((shareholder, i) => {
+    const passportFont = shareholder?.passportFont;
+    const passportBack = shareholder?.passportBack;
+    const emiratesID = shareholder?.emiratesID;
 
-      const file1 = {
-        name: `Shareholder - ${i + 1} Passport Font`,
-        url: passportFont?.url,
+    const file1 = {
+      label: `Shareholder - ${i + 1} Passport Font`,
+      data: passportFont?.url,
+    };
+
+    const file2 = {
+      label: `Shareholder - ${i + 1} Passport Back`,
+      data: passportBack?.url,
+    };
+
+    const file3 = {
+      label: `Shareholder - ${i + 1} Emirates ID`,
+      data: emiratesID?.url,
+    };
+
+    if (file1?.data) {
+      applicationDocuments.push(file1);
+    }
+
+    if (file2?.data) {
+      applicationDocuments.push(file2);
+    }
+
+    if (file3?.data) {
+      applicationDocuments.push(file3);
+    }
+  });
+
+  selectedApplication?.applicationStatus?.rejectionFiles?.forEach(
+    (file: IUploadImage, i: number) => {
+      const commentFile = {
+        label: `Rejection File - ${i + 1}`,
+        data: file.url,
       };
-
-      const file2 = {
-        name: `Shareholder - ${i + 1} Passport Back`,
-        url: passportBack?.url,
-      };
-
-      const file3 = {
-        name: `Shareholder - ${i + 1} Emirates ID`,
-        url: emiratesID?.url,
-      };
-
-      return [file1?.url && file1, file2?.url && file2, file3?.url && file3];
+      applicationDocuments.push(commentFile);
     }
   );
-
-  console.log(applicationInputDocuments);
 
   return (
     <Box>
@@ -188,7 +188,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         <Grid item xs={4}>
           <AdminDocumentActions
             title="Input Documents"
-            data={inputDocumentsData}
+            data={applicationDocuments}
           />
         </Grid>
 

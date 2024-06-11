@@ -25,6 +25,7 @@ const MOAEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
       currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
       // currentStatus: CompanyStatusType.ReviewAtArnifi,
       currentStep: CompanyStepTypes.LicenseIssued,
+      // currentStep: CompanyStepTypes.ReviewAtArnifi,
     };
 
     statusHandlar(data);

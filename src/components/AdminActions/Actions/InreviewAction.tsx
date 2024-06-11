@@ -23,6 +23,15 @@ import { useGetAMLResponseMutation } from "@/lib/Redux/features/AML/AMLApi";
 import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import envConfig from "@/Configs/envConfig";
 
+interface IAMLResponse {
+  message: string;
+  data: {
+    summary: {
+      action: string;
+    };
+  };
+}
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.colorConstants.darkBlue,
@@ -30,27 +39,32 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: "12px",
     fontWeight: 500,
+    textTransform: "uppercase",
   },
 }));
 
-const AMLResponseTable = () => {
+const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
   return (
     <TableContainer sx={{ border: "1px solid #e0e0e0", marginY: "16px" }}>
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
-            <TableCell sx={{ fontSize: "14px" }}>Name</TableCell>
+            <TableCell sx={{ fontSize: "14px" }}>SL</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Action</StyledTableCell>
-            <StyledTableCell>Message</StyledTableCell>
-          </TableRow>
+          {data?.map((item, i) => {
+            return (
+              <TableRow key={i}>
+                <StyledTableCell>{i + 1}</StyledTableCell>
+                <StyledTableCell>{item?.data?.summary?.action}</StyledTableCell>
+                <StyledTableCell>{item?.message}</StyledTableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
@@ -82,7 +96,7 @@ const InreviewAction: React.FC<IProps> = ({
 }) => {
   const [isApprove, setIsApprove] = useState("approve");
   const [rejectText, setRejectText] = useState<string>("");
-  const [isAMLChecked, setIsAMLChecked] = useState<boolean>(false);
+  const [amlResponse, setAmlResponse] = useState<IAMLResponse[] | null>(null);
 
   const [getAMLResponse, { isLoading: amlLoading }] =
     useGetAMLResponseMutation();
@@ -116,6 +130,7 @@ const InreviewAction: React.FC<IProps> = ({
 
     Promise.all(amlInfoPromises)
       .then((res) => {
+        setAmlResponse(res);
         console.log(res);
       })
       .catch((err) => {
@@ -142,9 +157,9 @@ const InreviewAction: React.FC<IProps> = ({
               color: theme.colorConstants?.darkGray,
             }}
           >
-            {applicationData?.applicationStatus.Remarks !== "" &&
-            applicationData?.applicationStatus.Remarks !== null &&
-            applicationData?.applicationStatus.Remarks !== undefined
+            {agentComment !== "" &&
+            agentComment !== null &&
+            agentComment !== undefined
               ? "Resubmitted Application"
               : "Please review the application"}
           </Typography>
@@ -190,7 +205,9 @@ const InreviewAction: React.FC<IProps> = ({
               </Button>
             </Box>
 
-            {isAMLChecked && <AMLResponseTable />}
+            {/* {isAMLChecked && <AMLResponseTable />} */}
+
+            {amlResponse?.length && <AMLResponseTable data={amlResponse} />}
           </Box>
           {[
             "Documents",

@@ -2,6 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyApplication } from "../companyApplication/companyApplicationSlice";
 import { IVisaApplication } from "../visaApplication/visaApplicationSlice";
 
+interface IOrder {
+  id: number;
+  authority: {
+    AuthorityName: string;
+  };
+}
+
 export interface IUser {
   id: number;
   username: string;
@@ -11,7 +18,7 @@ export interface IUser {
   blocked: boolean;
   createdAt: string;
   updatedAt: string;
-  // orders: IOrder[]
+  orders: IOrder[];
   user_form?: ICompanyApplication;
   cart: {
     visa_applicants: IVisaApplication[];

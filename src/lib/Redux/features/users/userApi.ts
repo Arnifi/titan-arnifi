@@ -61,6 +61,7 @@ const userApi = backendBaseApi.injectEndpoints({
           "populate[user_form][populate][activityDetails][populate]": "*",
           "populate[user_form][populate][uboDecleration][populate]": "*",
           "populate[user_form][populate][applicationStatus][populate]": "*",
+          "populate[orders][populate]": "*",
           pageSize: 1000,
         },
       }),
@@ -86,7 +87,7 @@ const userApi = backendBaseApi.injectEndpoints({
                 ...user.user_form,
                 linkto: user.id,
                 username: user.username,
-                // jurisdiction: user || "",
+                jurisdiction: user?.orders[0]?.authority?.AuthorityName || "",
               });
             }
           });

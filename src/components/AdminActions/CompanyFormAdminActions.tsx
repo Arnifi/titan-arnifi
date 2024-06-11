@@ -15,7 +15,9 @@ import IsApplyGA from "./Actions/IsApplyGA";
 import IsPaymentSuccess from "./Actions/IsPaymentSuccess";
 import IsGAReactAction from "./Actions/IsGAReactAction";
 import ResolutionEsignature from "./Actions/ResolutionEsignature";
-import WaitingLicenseApproval from "./Actions/WaitingLicenseApproval";
+import WaitingLicenseApproval, {
+  ILicenseFiles,
+} from "./Actions/WaitingLicenseApproval";
 import MOAEsignature from "./Actions/MOAEsignature";
 import WaitingEstablishmentCard from "./Actions/WaitingEstablishmentCard";
 import CompletedStatus from "./Actions/CompletedStatus";
@@ -41,17 +43,22 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
   const handleStatusChange = (updateStatus: any): void => {
     const formData = new FormData();
 
-    console.log(updateStatus);
-
-    const { remarks, currentStatus, currentStep, paymentSlip, paymentInvoice } =
-      updateStatus;
+    const {
+      remarks,
+      currentStatus,
+      currentStep,
+      paymentSlip,
+      paymentInvoice,
+      licenseFiles,
+    } = updateStatus;
 
     const applicationStatus = {
       Remarks: remarks,
       step: currentStep,
       status: currentStatus,
-      // paymentInvoice: paymentInvoice,
-      // paymentProof: paymentSlip,
+      licenseDocuments: licenseFiles?.map((item: ILicenseFiles) => ({
+        name: item.name,
+      })),
     };
 
     const updatedApplications = {
@@ -71,8 +78,23 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       })
     );
 
-    formData.append("files.applicationStatus.paymentInvoice", paymentInvoice);
-    formData.append("files.applicationStatus.paymentProof", paymentSlip);
+    if (paymentInvoice) {
+      formData.append("files.applicationStatus.paymentInvoice", paymentInvoice);
+    }
+
+    if (paymentSlip) {
+      formData.append("files.applicationStatus.paymentProof", paymentSlip);
+    }
+
+    if (licenseFiles?.length) {
+      console.log("file append");
+      licenseFiles?.map((item: ILicenseFiles, i: number) => {
+        formData.append(
+          `files.applicationStatus.licenseDocuments.${i}`,
+          item?.document
+        );
+      });
+    }
 
     updateCompanyStatus(formData)
       .then(() => {
