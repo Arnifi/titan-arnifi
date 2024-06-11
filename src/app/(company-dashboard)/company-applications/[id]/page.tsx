@@ -90,7 +90,6 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
   ];
 
   const applicationDocuments = [] as { label: string; data: string }[];
-
   selectedApplication?.shareholders?.forEach((shareholder, i) => {
     const passportFont = shareholder?.passportFont;
     const passportBack = shareholder?.passportBack;

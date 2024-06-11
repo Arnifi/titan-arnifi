@@ -99,7 +99,7 @@ const LicenseUploadContainer: React.FC<IProps> = ({ setFiles, files }) => {
         }}
       >
         <GlobalButton
-          title={"Uplaod Documents"}
+          title={"Upload Documents"}
           loading={false}
           onClick={() => setModalOpen(true)}
         />
