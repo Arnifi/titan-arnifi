@@ -1,6 +1,7 @@
 // next.config.js
 
 module.exports = {
+
   async headers() {
     return [
       {
@@ -29,5 +30,13 @@ module.exports = {
         ],
       },
     ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*",
+      },
+    ],
   },
 };

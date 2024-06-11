@@ -2,7 +2,7 @@ import envConfig from "../../Configs/envConfig";
 import dynamoose from "dynamoose";
 
 const dbConnection = async () => {
-  console.log("Initializing database connection...");
+  console.log("Initializing database connection... ", envConfig);
   try {
     const ddb = new dynamoose.aws.ddb.DynamoDB({
       credentials: {
