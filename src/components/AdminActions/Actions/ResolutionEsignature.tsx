@@ -16,17 +16,15 @@ import GlobalButton from "../Buttons/GlobalButton";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const ResolutionEsignature: React.FC<IProps> = ({ statusHandlar, loading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.MOAAOAEsignRequired,
       currentStep: CompanyStepTypes.MOAAOASigning,
-      message:
-        "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
     };
 
     statusHandlar(data);

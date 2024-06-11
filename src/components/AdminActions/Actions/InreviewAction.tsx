@@ -2,6 +2,7 @@ import theme from "@/theme";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -18,6 +19,18 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
+import { useGetAMLResponseMutation } from "@/lib/Redux/features/AML/AMLApi";
+import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import envConfig from "@/Configs/envConfig";
+
+interface IAMLResponse {
+  message: string;
+  data: {
+    summary: {
+      action: string;
+    };
+  };
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,27 +39,32 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: "12px",
     fontWeight: 500,
+    textTransform: "uppercase",
   },
 }));
 
-const AMLResponseTable = () => {
+const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
   return (
     <TableContainer sx={{ border: "1px solid #e0e0e0", marginY: "16px" }}>
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
-            <TableCell sx={{ fontSize: "14px" }}>Name</TableCell>
+            <TableCell sx={{ fontSize: "14px" }}>SL</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell>Action</StyledTableCell>
-            <StyledTableCell>Message</StyledTableCell>
-          </TableRow>
+          {data?.map((item, i) => {
+            return (
+              <TableRow key={i}>
+                <StyledTableCell>{i + 1}</StyledTableCell>
+                <StyledTableCell>{item?.data?.summary?.action}</StyledTableCell>
+                <StyledTableCell>{item?.message}</StyledTableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
@@ -54,6 +72,7 @@ const AMLResponseTable = () => {
 };
 
 interface IProps {
+  data: ICompanyApplication;
   agentComment: string;
   loading: boolean;
   statusHandlar: (updateStatus: any) => void;
@@ -68,6 +87,7 @@ interface IProps {
 }
 
 const InreviewAction: React.FC<IProps> = ({
+  data: applicationData,
   loading,
   statusHandlar,
   agentComment,
@@ -76,15 +96,16 @@ const InreviewAction: React.FC<IProps> = ({
 }) => {
   const [isApprove, setIsApprove] = useState("approve");
   const [rejectText, setRejectText] = useState<string>("");
-  const [isAMLChecked, setIsAMLChecked] = useState<boolean>(false);
+  const [amlResponse, setAmlResponse] = useState<IAMLResponse[] | null>(null);
+
+  const [getAMLResponse, { isLoading: amlLoading }] =
+    useGetAMLResponseMutation();
 
   const rejectHandler = () => {
     const data = {
       currentStatus: reject.status,
       currentStep: reject.step,
-      message: `Your application has been rejected by Arnifi agent due to '${rejectText}'. Resubmit the application form.
-      `,
-      agentComment: rejectText,
+      remarks: rejectText,
     };
     statusHandlar(data);
   };
@@ -96,6 +117,25 @@ const InreviewAction: React.FC<IProps> = ({
     };
 
     statusHandlar(data);
+  };
+
+  const amlResponseHandler = () => {
+    const amlInfoPromises = applicationData?.shareholders?.map(async (item) => {
+      return await getAMLResponse({
+        type: "share-holder",
+        id: item.id,
+        custom_api_key: `Bearer ${envConfig.custom_api_key}`,
+      }).unwrap();
+    });
+
+    Promise.all(amlInfoPromises)
+      .then((res) => {
+        setAmlResponse(res);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -155,16 +195,19 @@ const InreviewAction: React.FC<IProps> = ({
               </Typography>
 
               <Button
-                onClick={() => setIsAMLChecked(true)}
+                onClick={amlResponseHandler}
                 size={"small"}
                 sx={{ textTransform: "none" }}
                 variant="contained"
+                disabled={amlLoading}
               >
-                Check
+                {amlLoading ? <CircularProgress size={20} /> : "Check"}
               </Button>
             </Box>
 
-            {isAMLChecked && <AMLResponseTable />}
+            {/* {isAMLChecked && <AMLResponseTable />} */}
+
+            {amlResponse?.length && <AMLResponseTable data={amlResponse} />}
           </Box>
           {[
             "Documents",

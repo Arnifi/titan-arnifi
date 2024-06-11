@@ -40,12 +40,7 @@ export default function LoginSide(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
-  console.log(
-    "AWS_ACCESS_KEY_ID",
-    process.env.AWS_ACCESS_KEY_ID,
-    "AWS_SECRET_ACCESS_KEY",
-    process.env.AWS_SECRET_ACCESS_KEY
-  );
+
   const handleLogin = async (values: FormikValues): Promise<void> => {
     try {
       const response: { data: ILoginResponse } = await login(values).unwrap();

@@ -64,7 +64,7 @@ const CompanyApplications: React.FC = () => {
 
   const stepWiseApplications = allCompanySteps?.map((step) => {
     const applications = allApplications?.filter(
-      (item) => item.company_status?.currentStep === step
+      (item) => item.applicationStatus?.step === step
     );
 
     return {
@@ -110,7 +110,7 @@ const CompanyApplications: React.FC = () => {
       linkedTo: item?.linkto,
       username: item?.username,
       jurisdiction: item?.jurisdiction,
-      currentStep: item.company_status?.currentStatus,
+      currentStep: item.applicationStatus?.step,
     };
   });
 

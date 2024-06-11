@@ -45,9 +45,7 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
     const data = {
       currentStatus: reject.status,
       currentStep: reject.step,
-      message: `Your application has been rejected by Arnifi agent due to '${rejectText}'. Resubmit the application form.
-      `,
-      agentComment: rejectText,
+      remarks: rejectText,
     };
     statusHandlar(data);
   };

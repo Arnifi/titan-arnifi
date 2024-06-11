@@ -1,9 +1,7 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
-import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -20,9 +18,7 @@ interface IProps {
   message: string;
   userComment: string;
   loading: boolean;
-  statusHandlar: (
-    updateStatus: Partial<ICompanyStatus | IVisaApplication>
-  ) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 
 const WaitGARejection: React.FC<IProps> = ({
@@ -35,22 +31,17 @@ const WaitGARejection: React.FC<IProps> = ({
   const [rejectText, setRejectText] = useState<string>("");
 
   const handleNext = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.ResolutionEsignRequired,
       currentStep: CompanyStepTypes.ResolutionSigning,
-      message:
-        "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
     };
     statusHandlar(data);
   };
 
   const handleReject = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.RejectedByGA,
       currentStep: CompanyStepTypes.RejectedByGA,
-      userComment: "",
-      message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
-      commentsFormGA: rejectText,
     };
     statusHandlar(data);
   };

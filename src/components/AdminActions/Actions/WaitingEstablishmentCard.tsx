@@ -1,7 +1,6 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -13,12 +12,11 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
-import InputFile from "../InputFile/InputFile";
 import FileUploadContainer from "../FileUploadContainer";
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const WaitingEstablishmentCard: React.FC<IProps> = ({
   statusHandlar,
@@ -28,11 +26,10 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
+    const data = {
       currentStatus: CompanyStatusType.Completed,
       currentStep: CompanyStepTypes.Completed,
-      message:
-        "Congratulations, your company has been incorporated. For associated documents, please refer to the document section on the dashboard.",
+      establishmentCard: uploadedFile,
     };
 
     statusHandlar(data);

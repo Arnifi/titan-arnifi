@@ -3,6 +3,11 @@ import {
   CompanyStepTypes,
   ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import {
+  IVisaApplicationStatus,
+  VisaStatusType,
+  VisaStepsTypes,
+} from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
@@ -17,15 +22,15 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<IVisaApplicationStatus>) => void;
 }
 const MOAEsignature: React.FC<IProps> = ({ statusHandlar, isLoading }) => {
   const [isSigned, setIsSigned] = useState<string>("No");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WAITINGGA,
-      currentStep: CompanyStepTypes.WAITINGLICENSE,
+    const data: Partial<IVisaApplicationStatus> = {
+      currentStatus: VisaStatusType.WAITINGGA,
+      currentStep: VisaStepsTypes.APPLYEMIRATESID,
       message:
         "Your company license documents are under process at governement Authority. Once the documents are issued, it will be available in the documents section.",
     };

@@ -89,22 +89,11 @@ export enum CompanyStatusType {
   ReviewAtArnifi = "Review at Arnifi",
   RejectedAtArnifi = "Rejected at Arnifi",
   WaitingOnGovernmentAuthority = "Waiting on Government Authority",
-  RejectedByGA = "Rejected by Government Authority",
+  RejectedByGA = "Rejected by GA",
   ResolutionEsignRequired = "Resolution E-sign Required",
   MOAAOAEsignRequired = "MOA/ AOA E-sign required",
   LicenseIssued = "License Issued",
-  Completed = "Completed",
-
-  // // olds
-  OPEN = "Open",
-  SUBMITTED = "Form Submitted",
-  INREVIEWARNIFI = "In review - Arnifi",
-  REJECTEDARNIFI = "Rejected - Arnifi",
-  WAITINGGA = "Waiting on Government Authority",
-  REJECTEDGA = "Rejected - Government Authority",
-  RESOLUTIONSIGNED = "Resolution E-signature required",
-  MOAAOASIGNED = "MOA/AOA E-signature required",
-  COMPLETED = "Completed",
+  Completed = "Complete",
 }
 
 export enum CompanyStepTypes {
@@ -112,45 +101,27 @@ export enum CompanyStepTypes {
   ReviewAtArnifi = "Review at Arnifi",
   RejectedAtArnifi = "Rejected at Arnifi",
   ApplyOnPortal = "Apply on portal",
-  MakePaymentToGA = "Make Payment to Government Authority",
-  WaitingForUpdateFromGA = "Waiting for update from Government Authority",
-  RejectedByGA = "Rejected by Government Authority",
+  MakePaymentToGA = "Make Payment to GA",
+  WaitingForUpdateFromGA = "Waiting for update from GA",
+  RejectedByGA = "Rejected by GA",
   UploadRejectionComments = "Upload Rejection comments",
   ResolutionSigning = "Resolution signing",
   MOAAOASigning = "MOA/ AOA signing",
-  LicenseIssued = "License Issued",
+  LicenseIssued = "License Issue",
   WaitingEstablishmentCard = "Waiting for Establishment Card",
-  Completed = "Completed",
-
-  // // olds
-  OPEN = "Open",
-  FORMSUBMITTED = "Form Submitted",
-  INREVIEWARNIFI = "In review - Arnifi",
-  APPLYGA = "Apply on GA portal",
-  MAKEPAYMENT = "Make Payment",
-  UPLOADPROOF = "Upload Payment Proof",
-  REJECTEDARNIFI = "Rejected - Arnifi",
-  WAITINGPAYMENTVERIFICATION = "Waiting for Payment Verification",
-  REJECTEDGA = "Rejected at GA",
-  UPLOADRESPONSES = "Upload Responses",
-  WAITINGUPDATEREJECTION = "Waiting for update on Rejection",
-  RESOLUTIONSIGNED = "Resolution to be signed",
-  WAITINGLICENSEAPPROVAL = "Waiting for License Approval",
-  MOAAOASIGNED = "MOA/AOA to be signed",
-  WAITINGLICENSE = "Waiting on License",
-  WAITINGFORESTABLISHMENTCARD = "Waiting for Establishment Card",
-  COMPLETED = "Completed",
+  Completed = "Complete",
 }
 
 export interface ICompanyStatus {
-  id: number;
-  currentStatus: CompanyStatusType;
-  currentStep: CompanyStepTypes;
-  message: string;
-  userComment?: string;
-  agentComment?: string;
-  commentsFormGA?: string;
-  updatedAt: Date;
+  Remarks: string;
+  rejectionComments: string;
+  step: CompanyStepTypes;
+  status: CompanyStatusType;
+  location: null;
+  paymentInvoice: null;
+  paymentProof: null;
+  rejectionFiles: IUploadImage[];
+  licenseDocuments: null;
 }
 
 export interface ICompanyApplication {
@@ -165,6 +136,7 @@ export interface ICompanyApplication {
   linkto: number | null;
   username: string;
   jurisdiction: string;
+  applicationStatus: ICompanyStatus;
 }
 
 const initialState = {

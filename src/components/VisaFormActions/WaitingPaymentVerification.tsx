@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 interface IProps {
   isLoading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: Partial<ICompanyStatus> | any) => void;
 }
 const WaitingPaymentVerification: React.FC<IProps> = ({
   statusHandlar,
@@ -27,11 +27,11 @@ const WaitingPaymentVerification: React.FC<IProps> = ({
   const [rejectText, setRejectText] = useState<string>("");
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
-      currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
-      message:
-        "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
+    const data = {
+      // currentStatus: CompanyStatusType.RESOLUTIONSIGNED,
+      // currentStep: CompanyStepTypes.RESOLUTIONSIGNED,
+      // message:
+      //   "Your application is being processed by government Authority. As a part of process, they have shared a Resolution agreement on email on registered shareholders and authorised dignitaries. Please get those signed asap so as to move your application ahead",
     };
 
     statusHandlar(data);
@@ -39,10 +39,10 @@ const WaitingPaymentVerification: React.FC<IProps> = ({
 
   const rejectHandler = () => {
     const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.REJECTEDGA,
-      currentStep: CompanyStepTypes.REJECTEDGA,
-      message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
-      commentsFormGA: rejectText,
+      // currentStatus: CompanyStatusType.REJECTEDGA,
+      // currentStep: CompanyStepTypes.REJECTEDGA,
+      // message: `Your application has been sent back by government Authority due to ${rejectText}. In the comments field, please add the details as per the comments received.`,
+      // commentsFormGA: rejectText,
     };
     statusHandlar(data);
   };

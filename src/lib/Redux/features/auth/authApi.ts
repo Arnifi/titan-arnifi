@@ -1,3 +1,6 @@
+"use client";
+
+import { getAuthToken, setToken } from "../../helpers";
 import { AppDispatch } from "../../store";
 import backendBaseApi from "../backendBaseApi";
 import { setLoginUser } from "./authSlice";
@@ -33,7 +36,7 @@ const authApi = backendBaseApi.injectEndpoints({
       ) {
         const { data: response } = await queryFulfilled;
         const { token, user } = response?.data as ILoginResponse;
-        document.cookie = `token=${token}; path=/`;
+        setToken(token);
         dispatch(setLoginUser(user));
       },
 
@@ -44,6 +47,9 @@ const authApi = backendBaseApi.injectEndpoints({
       query: () => ({
         url: `/admin/users/me`,
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
         providesTags: ["user"],
       }),
       async onQueryStarted(

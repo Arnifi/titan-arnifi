@@ -5,7 +5,10 @@ import AdminDocumentActions from "@/components/AdminDocumentActions";
 import ApplicationHistoryCard from "@/components/ApplicationHistoryCard";
 import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
 import CompanyFormReviewCard from "@/components/CompanyFormReviewCard";
-import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
+import {
+  ICompanyApplication,
+  IUploadImage,
+} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
 import { ArrowBackIosNew } from "@mui/icons-material";
@@ -38,32 +41,13 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
     {
       label: "Current Step",
-      value: selectedApplication?.company_status?.currentStep as string,
+      value: selectedApplication?.applicationStatus?.step as string,
       weight: 6,
     },
     {
       label: "Current Status",
-      value: selectedApplication?.company_status?.currentStatus as string,
+      value: selectedApplication?.applicationStatus?.status as string,
       weight: 6,
-    },
-  ];
-
-  const inputDocumentsData = [
-    {
-      label: "Shareholder - 1 Passport Font",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 1 Passport Back",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 2 Passport Font",
-      data: "link",
-    },
-    {
-      label: "Shareholder - 2 Passport Back",
-      data: "link",
     },
   ];
 
@@ -82,7 +66,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
-  const historData = [
+  const historyData = [
     {
       label: "Step - 1",
       value: "12/04/2024",
@@ -104,6 +88,51 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
       value: "12/04/2024",
     },
   ];
+
+  const applicationDocuments = [] as { label: string; data: string }[];
+
+  selectedApplication?.shareholders?.forEach((shareholder, i) => {
+    const passportFont = shareholder?.passportFont;
+    const passportBack = shareholder?.passportBack;
+    const emiratesID = shareholder?.emiratesID;
+
+    const file1 = {
+      label: `Shareholder - ${i + 1} Passport Font`,
+      data: passportFont?.url,
+    };
+
+    const file2 = {
+      label: `Shareholder - ${i + 1} Passport Back`,
+      data: passportBack?.url,
+    };
+
+    const file3 = {
+      label: `Shareholder - ${i + 1} Emirates ID`,
+      data: emiratesID?.url,
+    };
+
+    if (file1?.data) {
+      applicationDocuments.push(file1);
+    }
+
+    if (file2?.data) {
+      applicationDocuments.push(file2);
+    }
+
+    if (file3?.data) {
+      applicationDocuments.push(file3);
+    }
+  });
+
+  selectedApplication?.applicationStatus?.rejectionFiles?.forEach(
+    (file: IUploadImage, i: number) => {
+      const commentFile = {
+        label: `Rejection File - ${i + 1}`,
+        data: file.url,
+      };
+      applicationDocuments.push(commentFile);
+    }
+  );
 
   return (
     <Box>
@@ -149,6 +178,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
             data={selectedApplication as ICompanyApplication}
           />
         </Grid>
+
         <Grid item xs={4}>
           <CompanyFormAdminActions
             data={selectedApplication as ICompanyApplication}
@@ -158,7 +188,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         <Grid item xs={4}>
           <AdminDocumentActions
             title="Input Documents"
-            data={inputDocumentsData}
+            data={applicationDocuments}
           />
         </Grid>
 
@@ -170,7 +200,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
 
         <Grid item xs={8}>
-          <ApplicationHistoryCard data={historData} />
+          <ApplicationHistoryCard data={historyData} />
         </Grid>
       </Grid>
     </Box>

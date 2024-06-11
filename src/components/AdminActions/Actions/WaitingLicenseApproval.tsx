@@ -1,40 +1,50 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  ICompanyStatus,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
   Box,
   FormControlLabel,
+  IconButton,
+  Paper,
   Radio,
   RadioGroup,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
-import FileUploadContainer from "../FileUploadContainer";
+import LicenseUploadContainer from "../LicenseUploadContainer";
+import { Close } from "@mui/icons-material";
+
+export interface ILicenseFiles {
+  name: string;
+  document: File;
+}
 
 interface IProps {
   loading: boolean;
-  statusHandlar: (updateStatus: Partial<ICompanyStatus>) => void;
+  statusHandlar: (updateStatus: any) => void;
 }
 const WaitingLicenseApproval: React.FC<IProps> = ({
   statusHandlar,
   loading,
 }) => {
   const [isIssued, setIsIssued] = useState<string>("No");
-  const [uploadedFiles, setUploadedFiles] = useState<File | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<ILicenseFiles[]>([]);
 
   const handleStatusChange = () => {
-    const data: Partial<ICompanyStatus> = {
-      currentStatus: CompanyStatusType.WaitingOnGovernmentAuthority,
+    const data = {
+      currentStatus: CompanyStatusType.LicenseIssued,
       currentStep: CompanyStepTypes.WaitingEstablishmentCard,
-      message:
-        "Your application is under processing at goverment Authority. You will be notified once the company is approved. Post that, they will send an email with MOA/ AOA document for Esigning to all the shareholders and Authorised diginitaries.",
+      licenseFiles: uploadedFiles,
     };
 
     statusHandlar(data);
+  };
+
+  const fileRemoveHandler = (name: string) => {
+    setUploadedFiles(uploadedFiles.filter((file) => file.name !== name));
   };
 
   return (
@@ -99,18 +109,46 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
 
         {isIssued === "Yes" && (
           <Box marginTop={"20px"}>
-            <FileUploadContainer
-              setFile={setUploadedFiles}
-              file={uploadedFiles}
-              title={`Upload Document - 1`}
+            <LicenseUploadContainer
+              setFiles={setUploadedFiles}
+              files={uploadedFiles}
             />
           </Box>
         )}
+
+        <Box marginTop="20px">
+          {uploadedFiles?.map((item, i) => {
+            return (
+              <Paper
+                key={i}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "5px",
+                  padding: "5px",
+                  border: "1px solid",
+                }}
+              >
+                <Typography>
+                  {i + 1}. {item.name}
+                </Typography>
+
+                <IconButton
+                  onClick={() => fileRemoveHandler(item?.name)}
+                  color="error"
+                >
+                  <Close />
+                </IconButton>
+              </Paper>
+            );
+          })}
+        </Box>
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <GlobalButton
-          disabled={!uploadedFiles}
+          disabled={!uploadedFiles?.length}
           title="Move to next step"
           loading={loading}
           onClick={handleStatusChange}
