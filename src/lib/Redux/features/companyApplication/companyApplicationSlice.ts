@@ -119,8 +119,8 @@ export interface ICompanyStatus {
   step: CompanyStepTypes;
   status: CompanyStatusType;
   location: null;
-  paymentInvoice: IUploadImage;
-  paymentProof: IUploadImage;
+  paymentInvoice: IUploadImage[];
+  paymentProof: IUploadImage[];
   rejectionFiles: IUploadImage[];
   licenseDocuments: ILicenseFiles[];
 }

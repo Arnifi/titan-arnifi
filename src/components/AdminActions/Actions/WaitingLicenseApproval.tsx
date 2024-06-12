@@ -1,6 +1,7 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
+  IUploadImage,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -19,7 +20,7 @@ import { Close } from "@mui/icons-material";
 
 export interface ILicenseFiles {
   name: string;
-  document: File;
+  document: File | IUploadImage;
 }
 
 interface IProps {

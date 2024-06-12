@@ -96,11 +96,10 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
     }
 
     if (licenseFiles?.length) {
-      console.log("file append");
       licenseFiles?.map((item: ILicenseFiles, i: number) => {
         formData.append(
           `files.applicationStatus.licenseDocuments.${i}`,
-          item?.document
+          item?.document as File
         );
       });
     }
