@@ -86,7 +86,7 @@ const ApplicationsTable: React.FC<IApplicationTableProps> = ({
             },
           }}
           size="small"
-          rowsPerPageOptions={[5, 10, 20, 20]}
+          rowsPerPageOptions={[5, 10, 20]}
           component="div"
           count={(tableData || []).length}
           rowsPerPage={rowsPerPage}

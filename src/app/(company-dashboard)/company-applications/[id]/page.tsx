@@ -133,6 +133,37 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     }
   );
 
+  const outPutDocumentsData = [] as { label: string; data: string }[];
+
+  // if (selectedApplication?.applicationStatus?.paymentInvoice?.id) {
+  //   outPutDocumentsData.push({
+  //     label: "Payment Invoice",
+  //     data: selectedApplication?.applicationStatus?.paymentInvoice?.url,
+  //   });
+  // }
+  selectedApplication?.applicationStatus?.paymentInvoice?.forEach((item) => {
+    outPutDocumentsData?.push({
+      label: "Payment Invoice",
+      data: item.url,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.paymentProof?.forEach((item) => {
+    outPutDocumentsData?.push({
+      label: "Payment Proof",
+      data: item.url,
+    });
+  });
+
+  // selectedApplication?.applicationStatus?.licenseDocuments?.forEach((item) => {
+  //   outPutDocumentsData?.push({
+  //     label: item?.name,
+  //     data: item.document?.url,
+  //   });
+  // });
+
+  console.log(outPutDocumentsData);
+
   return (
     <Box>
       <Box
@@ -185,17 +216,21 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
 
         <Grid item xs={4}>
-          <AdminDocumentActions
-            title="Input Documents"
-            data={applicationDocuments}
-          />
+          {applicationDocuments?.length > 0 && (
+            <AdminDocumentActions
+              title="Input Documents"
+              data={applicationDocuments}
+            />
+          )}
         </Grid>
 
         <Grid item xs={4}>
-          <AdminDocumentActions
-            title="Output Documents"
-            data={outputDocumentsData}
-          />
+          {outPutDocumentsData?.length > 0 && (
+            <AdminDocumentActions
+              title="Output Documents"
+              data={outPutDocumentsData}
+            />
+          )}
         </Grid>
 
         <Grid item xs={8}>

@@ -206,7 +206,7 @@ const CompanyApplications: React.FC = () => {
               }}
               value={`all`}
             >
-              All Applications ({stepWiseApplications?.length})
+              All Applications ({allApplications?.length})
             </MenuItem>
             {stepWiseApplications?.map((item, i) => (
               <MenuItem

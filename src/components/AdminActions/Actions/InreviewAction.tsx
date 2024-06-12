@@ -49,7 +49,7 @@ const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
-            <TableCell sx={{ fontSize: "14px" }}>SL</TableCell>
+            <TableCell sx={{ fontSize: "14px" }}>Shareholder name</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
