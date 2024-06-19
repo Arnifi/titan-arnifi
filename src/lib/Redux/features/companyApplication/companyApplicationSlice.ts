@@ -123,6 +123,9 @@ export interface ICompanyStatus {
   paymentProof: IUploadImage[];
   rejectionFiles: IUploadImage[];
   licenseDocuments: ILicenseFiles[];
+  licenseNumber: string;
+  licenseIssueDate: string;
+  licenseExpiryDate: string;
 }
 
 export interface ICompanyApplication {

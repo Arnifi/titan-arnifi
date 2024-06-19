@@ -1,20 +1,16 @@
 import {
   Box,
   Button,
-  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
   Modal,
-  Radio,
-  RadioGroup,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
 import { AttachFile, Close } from "@mui/icons-material";
 import theme from "@/theme";
-import { ILicenseFiles } from "../Actions/WaitingLicenseApproval";
 import FormProvaider from "@/components/Form";
 import FormInputField from "@/components/Form/AInputField";
 import FormDateField from "@/components/Form/ADateField";
@@ -75,34 +71,29 @@ const FileSuccessLabel: React.FC<{
 };
 
 interface IProps {
-  setFiles: React.Dispatch<React.SetStateAction<ILicenseFiles[]>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
   setOthers: React.Dispatch<React.SetStateAction<any>>;
-  files: ILicenseFiles[];
+  file: File | null;
 }
 
-const LicenseUploadContainer: React.FC<IProps> = ({
-  setFiles,
-  files,
+const EstablishmentCardUploadContainer: React.FC<IProps> = ({
+  setFile,
   setOthers,
+  file,
 }) => {
-  const [isLicense, setIsLicense] = useState<string>("Yes");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleSubmit = (values: FormikValues) => {
-    if (file) {
-      if (isLicense === "Yes") {
-        setFiles([...files, { name: values?.fileName, document: file }]);
-        setOthers({
-          licenseNumber: values?.licenseNumber,
-          licenseIssueDate: values?.licenseIssueDate,
-          licenseExpiryDate: values?.licenseExpiryDate,
-        });
-      } else {
-        setFiles([...files, { name: values?.fileName, document: file }]);
-      }
+    if (uploadedFile) {
+      setOthers({
+        establishmentCardId: values?.establishmentCardId,
+        establishmentCardIssueDate: values?.establishmentCardIssueDate,
+        establishmentCardExpiryDate: values?.establishmentCardExpiryDate,
+      });
+      setFile(uploadedFile);
       setModalOpen(false);
-      setFile(null);
+      setUploadedFile(null);
     }
   };
 
@@ -115,7 +106,7 @@ const LicenseUploadContainer: React.FC<IProps> = ({
         }}
       >
         <GlobalButton
-          title={"Upload Documents"}
+          title={file ? "Upload Again" : "Upload Card"}
           loading={false}
           onClick={() => setModalOpen(true)}
         />
@@ -149,98 +140,43 @@ const LicenseUploadContainer: React.FC<IProps> = ({
                   color: theme.colorConstants.darkGray,
                 }}
               >
-                Upload Files
+                Upload Establishment Card
               </Typography>
 
               <Box>
                 <FormProvaider
                   submitHandlar={handleSubmit}
                   initialValues={{
-                    fileName: "",
-                    licenseNumber: "",
-                    licenseIssueDate: new Date(),
-                    licenseExpiryDate: new Date(),
+                    establishmentCardId: "",
+                    establishmentCardIssueDate: new Date(),
+                    establishmentCardExpiryDate: new Date(),
                   }}
                 >
-                  <Box marginTop={"20px"}>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        color: theme.colorConstants.mediumGray,
-                      }}
-                    >
-                      Is Company License?
-                    </Typography>
-
-                    <RadioGroup
-                      row
-                      value={isLicense}
-                      onChange={(e) => {
-                        setIsLicense(e?.target?.value);
-                      }}
-                    >
-                      {["Yes", "No"].map((item) => (
-                        <FormControlLabel
-                          key={item}
-                          value={item}
-                          control={<Radio size="small" />}
-                          label={
-                            <Typography
-                              sx={{
-                                fontSize: "12px",
-                                fontWeight: 500,
-                                color: theme.colorConstants.darkGray,
-                              }}
-                            >
-                              {item}
-                            </Typography>
-                          }
-                        />
-                      ))}
-                    </RadioGroup>
-                  </Box>
-
                   <Grid paddingY="20px" container spacing={1}>
                     <Grid item xs={12}>
                       <FormInputField
                         required
-                        name="fileName"
-                        label="Document Name"
-                        placeholder="Enter Document Name"
+                        name="establishmentCardId"
+                        label="Establishment Card ID"
+                        placeholder="Enter Card ID"
                       />
                     </Grid>
 
-                    {isLicense === "Yes" && (
-                      <>
-                        <Grid item xs={12}>
-                          <FormInputField
-                            required
-                            name="licenseNumber"
-                            label="License Number"
-                            placeholder="Enter Document Name"
-                          />
-                        </Grid>
+                    <Grid item xs={6}>
+                      <FormDateField
+                        required
+                        name="establishmentCardIssueDate"
+                        label="Issue Date"
+                      />
+                    </Grid>
 
-                        <Grid item xs={6}>
-                          <FormDateField
-                            required
-                            name="licenseIssueDate"
-                            label="Issue Date"
-                          />
-                        </Grid>
-
-                        <Grid item xs={6}>
-                          <FormDateField
-                            required
-                            name="licenseExpiryDate"
-                            label="Expiry Date"
-                          />
-                        </Grid>
-                      </>
-                    )}
-
+                    <Grid item xs={6}>
+                      <FormDateField
+                        required
+                        name="establishmentCardExpiryDate"
+                        label="Expiry Date"
+                      />
+                    </Grid>
                     <Grid item xs={12}>
                       <Box
                         sx={{
@@ -274,13 +210,13 @@ const LicenseUploadContainer: React.FC<IProps> = ({
                                 const file: File | undefined =
                                   event.target.files?.[0];
                                 if (file !== undefined) {
-                                  setFile(file);
+                                  setUploadedFile(file);
                                 }
                               }}
                             />
 
-                            {file ? (
-                              <FileSuccessLabel fileName={file?.name} />
+                            {uploadedFile ? (
+                              <FileSuccessLabel fileName={uploadedFile?.name} />
                             ) : (
                               <InputLabel
                                 htmlFor={`user-comment-files`}
@@ -305,7 +241,7 @@ const LicenseUploadContainer: React.FC<IProps> = ({
                               </InputLabel>
                             )}
 
-                            {!file && (
+                            {!uploadedFile && (
                               <Typography
                                 variant="body1"
                                 sx={{
@@ -331,8 +267,7 @@ const LicenseUploadContainer: React.FC<IProps> = ({
                         }}
                       >
                         <Button
-                          disabled={!file}
-                          // onClick={fileAddHandler}
+                          disabled={!uploadedFile}
                           type="submit"
                           variant="contained"
                           sx={{
@@ -352,92 +287,6 @@ const LicenseUploadContainer: React.FC<IProps> = ({
                   </Grid>
                 </FormProvaider>
               </Box>
-
-              {/* <Box
-                sx={{
-                  paddingY: "30px",
-                }}
-              >
-                <Box
-                  sx={{
-                    border: `1.5px solid ${
-                      theme.colorConstants?.borderColor as string
-                    }`,
-                    borderRadius: "6px",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      padding: "20px",
-                      borderTop: `1.5px solid ${
-                        theme.colorConstants?.borderColor as string
-                      }`,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <input
-                        id={`user-comment-files`}
-                        type="file"
-                        // accept="image/*, application/pdf"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={(event) => {
-                          const file: File | undefined =
-                            event.target.files?.[0];
-                          if (file !== undefined) {
-                            setFile(file);
-                          }
-                        }}
-                      />
-
-                      {file ? (
-                        <FileSuccessLabel fileName={file?.name} />
-                      ) : (
-                        <InputLabel
-                          htmlFor={`user-comment-files`}
-                          sx={{
-                            fontSize: "14px",
-                            fontWeight: 500,
-                            width: "300px",
-                            height: "50px",
-                            bgcolor: theme.colorConstants.primaryBlue,
-                            color: theme.colorConstants.white,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: "6px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <AttachFile
-                            sx={{ rotate: "45deg", marginRight: "10px" }}
-                          />
-                          Attach File
-                        </InputLabel>
-                      )}
-
-                      {!file && (
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontSize: "14px",
-                            marginLeft: "10px",
-                            fontWeight: 400,
-                          }}
-                        >
-                          Your files must be in JPG or PNG format and does not
-                          exceed 10 MB
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
-                </Box>
-              </Box> */}
             </Box>
           </Box>
         </Box>
@@ -446,4 +295,4 @@ const LicenseUploadContainer: React.FC<IProps> = ({
   );
 };
 
-export default LicenseUploadContainer;
+export default EstablishmentCardUploadContainer;

@@ -51,6 +51,12 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       paymentSlip,
       paymentInvoice,
       licenseFiles,
+      licenseNumber,
+      licenseIssueDate,
+      licenseExpiryDate,
+      establishmentCardId,
+      establishmentCardIssueDate,
+      establishmentCardExpiryDate,
       establishmentCard,
     } = updateStatus;
 
@@ -58,6 +64,12 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       Remarks: remarks,
       step: currentStep,
       status: currentStatus,
+      licenseNumber,
+      licenseIssueDate,
+      licenseExpiryDate,
+      establishmentCardId,
+      establishmentCardIssueDate,
+      establishmentCardExpiryDate,
       licenseDocuments: licenseFiles?.map((item: ILicenseFiles) => ({
         name: item.name,
       })),
