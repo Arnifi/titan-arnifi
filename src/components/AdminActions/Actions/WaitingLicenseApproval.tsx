@@ -33,12 +33,14 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
 }) => {
   const [isIssued, setIsIssued] = useState<string>("No");
   const [uploadedFiles, setUploadedFiles] = useState<ILicenseFiles[]>([]);
+  const [othersInfo, setOthersInfo] = useState({});
 
   const handleStatusChange = () => {
     const data = {
       currentStatus: CompanyStatusType.LicenseIssued,
       currentStep: CompanyStepTypes.WaitingEstablishmentCard,
       licenseFiles: uploadedFiles,
+      ...othersInfo,
     };
 
     statusHandlar(data);
@@ -111,6 +113,7 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
         {isIssued === "Yes" && (
           <Box marginTop={"20px"}>
             <LicenseUploadContainer
+              setOthers={setOthersInfo}
               setFiles={setUploadedFiles}
               files={uploadedFiles}
             />
