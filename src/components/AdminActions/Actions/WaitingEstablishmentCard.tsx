@@ -6,7 +6,6 @@ import theme from "@/theme";
 import {
   Box,
   FormControlLabel,
-  Grid,
   Radio,
   RadioGroup,
   Typography,
@@ -14,7 +13,6 @@ import {
 import React, { useState } from "react";
 import GlobalButton from "../Buttons/GlobalButton";
 import FileUploadContainer from "../FileUploadContainer";
-import EstablishmentCardUploadContainer from "../EstablishmentCardUploadContainer";
 
 interface IProps {
   loading: boolean;
@@ -26,18 +24,12 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
 }) => {
   const [isEstablishmentCard, setIsEstablishmentCard] = useState<string>("No");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [othersInfo, setOthersInfo] = useState<{
-    establishmentCardId: string;
-    establishmentCardIssueDate: Date;
-    establishmentCardExpiryDate: Date;
-  }>();
 
   const handleStatusChange = () => {
     const data = {
       currentStatus: CompanyStatusType.Completed,
       currentStep: CompanyStepTypes.Completed,
       establishmentCard: uploadedFile,
-      ...othersInfo,
     };
 
     statusHandlar(data);
@@ -104,109 +96,10 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
 
         {isEstablishmentCard === "Yes" && (
           <Box marginTop={"20px"}>
-            {uploadedFile && (
-              <Grid container spacing={1} sx={{ marginBottom: "20px" }}>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.mediumGray,
-                    }}
-                  >
-                    Establishment card ID
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {othersInfo?.establishmentCardId}
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.mediumGray,
-                    }}
-                  >
-                    Issue Date
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {new Date(
-                      othersInfo?.establishmentCardIssueDate as Date
-                    ).toLocaleDateString("en-GB")}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.mediumGray,
-                    }}
-                  >
-                    Expiry Date
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {new Date(
-                      othersInfo?.establishmentCardExpiryDate as Date
-                    ).toLocaleDateString("en-GB")}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.mediumGray,
-                    }}
-                  >
-                    Establishment card
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      color: theme.colorConstants.darkGray,
-                    }}
-                  >
-                    {uploadedFile?.name}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-
-            <EstablishmentCardUploadContainer
+            <FileUploadContainer
               setFile={setUploadedFile}
               file={uploadedFile}
-              setOthers={setOthersInfo}
+              title="Upload Establishment Card"
             />
           </Box>
         )}

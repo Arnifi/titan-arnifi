@@ -94,7 +94,7 @@ export enum CompanyStatusType {
   ResolutionEsignRequired = "Resolution E-sign Required",
   MOAAOAEsignRequired = "MOA/ AOA E-sign required",
   LicenseIssued = "License Issued",
-  Completed = "Completed",
+  Completed = "Complete",
 }
 
 export enum CompanyStepTypes {
@@ -119,14 +119,10 @@ export interface ICompanyStatus {
   step: CompanyStepTypes;
   status: CompanyStatusType;
   location: null;
-  paymentInvoice: IUploadImage[] | File[];
-  paymentProof: IUploadImage[] | File[];
+  paymentInvoice: IUploadImage;
+  paymentProof: IUploadImage;
   rejectionFiles: IUploadImage[];
   licenseDocuments: ILicenseFiles[];
-  licenseNumber: string;
-  licenseIssueDate: string;
-  licenseExpiryDate: string;
-  establishmentCard: IUploadImage[] | File[];
 }
 
 export interface ICompanyApplication {

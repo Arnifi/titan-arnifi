@@ -61,8 +61,6 @@ const userApi = backendBaseApi.injectEndpoints({
           "populate[user_form][populate][activityDetails][populate]": "*",
           "populate[user_form][populate][uboDecleration][populate]": "*",
           "populate[user_form][populate][applicationStatus][populate]": "*",
-          "populate[user_form][populate][applicationStatus][licenseDocuments]":
-            "*",
           "populate[orders][populate]": "*",
           pageSize: 1000,
         },

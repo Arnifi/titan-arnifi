@@ -2,7 +2,6 @@ import {
   CompanyStatusType,
   CompanyStepTypes,
   ICompanyApplication,
-  IUploadImage,
   setUpdatedCompanyApplicationInfo,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { Paper } from "@mui/material";
@@ -52,12 +51,6 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       paymentSlip,
       paymentInvoice,
       licenseFiles,
-      licenseNumber,
-      licenseIssueDate,
-      licenseExpiryDate,
-      establishmentCardId,
-      establishmentCardIssueDate,
-      establishmentCardExpiryDate,
       establishmentCard,
     } = updateStatus;
 
@@ -65,12 +58,6 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       Remarks: remarks,
       step: currentStep,
       status: currentStatus,
-      licenseNumber,
-      licenseIssueDate,
-      licenseExpiryDate,
-      establishmentCardId,
-      establishmentCardIssueDate,
-      establishmentCardExpiryDate,
       licenseDocuments: licenseFiles?.map((item: ILicenseFiles) => ({
         name: item.name,
       })),
@@ -81,30 +68,6 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
       applicationStatus: {
         ...data?.applicationStatus,
         ...applicationStatus,
-
-        paymentInvoice: paymentInvoice
-          ? [paymentInvoice]
-          : data?.applicationStatus.paymentInvoice?.length
-          ? [...data?.applicationStatus.paymentInvoice]
-          : [],
-        paymentProof: paymentSlip
-          ? [paymentSlip]
-          : data?.applicationStatus.paymentProof?.length
-          ? [...data?.applicationStatus.paymentProof]
-          : [],
-        licenseDocuments: licenseFiles?.length
-          ? licenseFiles?.map((item: ILicenseFiles) => ({
-              name: item.name,
-              document: item.document,
-            }))
-          : data?.applicationStatus?.licenseDocuments?.length
-          ? data?.applicationStatus?.licenseDocuments
-          : [],
-        establishmentCard: establishmentCard
-          ? [establishmentCard]
-          : data?.applicationStatus?.establishmentCard?.length
-          ? [...data?.applicationStatus?.establishmentCard]
-          : [],
       },
     };
 
@@ -133,15 +96,15 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
     }
 
     if (licenseFiles?.length) {
+      console.log("file append");
       licenseFiles?.map((item: ILicenseFiles, i: number) => {
         formData.append(
           `files.applicationStatus.licenseDocuments.${i}`,
-          item?.document as File
+          item?.document
         );
       });
     }
 
-    // dispatch(setUpdatedCompanyApplicationInfo(updatedApplications));
     updateCompanyStatus(formData)
       .then(() => {
         dispatch(setUpdatedCompanyApplicationInfo(updatedApplications));
