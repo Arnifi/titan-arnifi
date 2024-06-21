@@ -1,7 +1,6 @@
 import {
   CompanyStatusType,
   CompanyStepTypes,
-  IUploadImage,
 } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import {
@@ -20,7 +19,7 @@ import { Close } from "@mui/icons-material";
 
 export interface ILicenseFiles {
   name: string;
-  document: File | IUploadImage;
+  document: File;
 }
 
 interface IProps {
@@ -33,14 +32,12 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
 }) => {
   const [isIssued, setIsIssued] = useState<string>("No");
   const [uploadedFiles, setUploadedFiles] = useState<ILicenseFiles[]>([]);
-  const [othersInfo, setOthersInfo] = useState({});
 
   const handleStatusChange = () => {
     const data = {
       currentStatus: CompanyStatusType.LicenseIssued,
       currentStep: CompanyStepTypes.WaitingEstablishmentCard,
       licenseFiles: uploadedFiles,
-      ...othersInfo,
     };
 
     statusHandlar(data);
@@ -113,7 +110,6 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
         {isIssued === "Yes" && (
           <Box marginTop={"20px"}>
             <LicenseUploadContainer
-              setOthers={setOthersInfo}
               setFiles={setUploadedFiles}
               files={uploadedFiles}
             />

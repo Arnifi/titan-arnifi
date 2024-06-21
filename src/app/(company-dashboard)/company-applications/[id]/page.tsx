@@ -51,6 +51,21 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
+  const outputDocumentsData = [
+    {
+      label: "Payment Slip",
+      data: null,
+    },
+    {
+      label: "Company License",
+      data: null,
+    },
+    {
+      label: "Emirates ID",
+      data: null,
+    },
+  ];
+
   const historyData = [
     {
       label: "Step - 1",
@@ -74,11 +89,7 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
   ];
 
-  const applicationDocuments = [] as {
-    label: string;
-    data: IUploadImage | File;
-  }[];
-
+  const applicationDocuments = [] as { label: string; data: string }[];
   selectedApplication?.shareholders?.forEach((shareholder, i) => {
     const passportFont = shareholder?.passportFont;
     const passportBack = shareholder?.passportBack;
@@ -86,17 +97,17 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
 
     const file1 = {
       label: `Shareholder - ${i + 1} Passport Font`,
-      data: passportFont,
+      data: passportFont?.url,
     };
 
     const file2 = {
       label: `Shareholder - ${i + 1} Passport Back`,
-      data: passportBack,
+      data: passportBack?.url,
     };
 
     const file3 = {
       label: `Shareholder - ${i + 1} Emirates ID`,
-      data: emiratesID,
+      data: emiratesID?.url,
     };
 
     if (file1?.data) {
@@ -116,44 +127,11 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
     (file: IUploadImage, i: number) => {
       const commentFile = {
         label: `Rejection File - ${i + 1}`,
-        data: file,
+        data: file.url,
       };
       applicationDocuments.push(commentFile);
     }
   );
-
-  const outPutDocumentsData = [] as {
-    label: string;
-    data: IUploadImage | File;
-  }[];
-
-  selectedApplication?.applicationStatus?.paymentInvoice?.forEach((item) => {
-    outPutDocumentsData?.push({
-      label: "Payment Invoice",
-      data: item,
-    });
-  });
-
-  selectedApplication?.applicationStatus?.paymentProof?.forEach((item) => {
-    outPutDocumentsData?.push({
-      label: "Payment Proof",
-      data: item,
-    });
-  });
-
-  selectedApplication?.applicationStatus?.licenseDocuments?.forEach((item) => {
-    outPutDocumentsData?.push({
-      label: item?.name,
-      data: item?.document as IUploadImage,
-    });
-  });
-
-  selectedApplication?.applicationStatus?.establishmentCard?.forEach((item) => {
-    outPutDocumentsData?.push({
-      label: "Establishment Card",
-      data: item,
-    });
-  });
 
   return (
     <Box>
@@ -207,21 +185,17 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
         </Grid>
 
         <Grid item xs={4}>
-          {applicationDocuments?.length > 0 && (
-            <AdminDocumentActions
-              title="Input Documents"
-              data={applicationDocuments}
-            />
-          )}
+          <AdminDocumentActions
+            title="Input Documents"
+            data={applicationDocuments}
+          />
         </Grid>
 
         <Grid item xs={4}>
-          {outPutDocumentsData?.length > 0 && (
-            <AdminDocumentActions
-              title="Output Documents"
-              data={outPutDocumentsData}
-            />
-          )}
+          <AdminDocumentActions
+            title="Output Documents"
+            data={outputDocumentsData}
+          />
         </Grid>
 
         <Grid item xs={8}>

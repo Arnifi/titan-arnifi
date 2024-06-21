@@ -1,4 +1,3 @@
-import { IUploadImage } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import theme from "@/theme";
 import { Close, FileDownload, Visibility } from "@mui/icons-material";
 import {
@@ -30,53 +29,45 @@ const style = {
 
 interface IProps {
   title: string;
-  data: { label: string; data: File | IUploadImage }[];
+  data: { label: string; data: string | null }[];
 }
 
 const AdminDocumentActions: React.FC<IProps> = ({ title, data }) => {
   const [openViewModal, setOpenViewModal] = React.useState<boolean>(false);
   const [imageSrc, setImageSrc] = React.useState<string>("");
 
-  const fileViewHandler = (viewFile: IUploadImage | File) => {
-    let url = "";
-
-    if (viewFile instanceof File) {
-      url = URL.createObjectURL(viewFile);
-    } else {
-      url = viewFile?.url;
-    }
-
+  const fileViewHandler = (url: string) => {
     setImageSrc(url);
     setOpenViewModal(true);
   };
 
-  const handleDownload = async (downloadedFile: IUploadImage | File) => {
+  const handleDownload = async (url: string) => {
     try {
-      if (downloadedFile instanceof File) {
-        const downloadLink = document.createElement("a");
-        downloadLink.href = window.URL.createObjectURL(downloadedFile);
-        downloadLink.setAttribute("download", "");
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      } else {
-        const response = await fetch(downloadedFile?.url, {
-          mode: "cors",
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const blob = await response.blob();
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.setAttribute("download", "");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const response = await fetch(url, {
+        mode: "cors",
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", "");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading the file", error);
     }
+
+    // const link = document.createElement("a");
+    // link.href = URL.createObjectURL(url);
+    // link.setAttribute("download", "");
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
   };
 
   return (
@@ -115,11 +106,15 @@ const AdminDocumentActions: React.FC<IProps> = ({ title, data }) => {
 
               {item?.data !== null ? (
                 <Stack sx={{ height: "40px" }} direction="row">
-                  <IconButton onClick={() => fileViewHandler(item?.data)}>
+                  <IconButton
+                    onClick={() => fileViewHandler(item?.data as string)}
+                  >
                     <Visibility />
                   </IconButton>
 
-                  <IconButton onClick={() => handleDownload(item?.data)}>
+                  <IconButton
+                    onClick={() => handleDownload(item?.data as string)}
+                  >
                     <FileDownload />
                   </IconButton>
                 </Stack>

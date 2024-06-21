@@ -25,9 +25,6 @@ import envConfig from "@/Configs/envConfig";
 
 interface IAMLResponse {
   message: string;
-  client_details: {
-    name: string;
-  };
   data: {
     summary: {
       action: string;
@@ -52,7 +49,7 @@ const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
-            <TableCell sx={{ fontSize: "14px" }}>Shareholder name</TableCell>
+            <TableCell sx={{ fontSize: "14px" }}>SL</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
@@ -62,7 +59,7 @@ const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
           {data?.map((item, i) => {
             return (
               <TableRow key={i}>
-                <StyledTableCell>{item?.client_details?.name}</StyledTableCell>
+                <StyledTableCell>{i + 1}</StyledTableCell>
                 <StyledTableCell>{item?.data?.summary?.action}</StyledTableCell>
                 <StyledTableCell>{item?.message}</StyledTableCell>
               </TableRow>
@@ -134,6 +131,7 @@ const InreviewAction: React.FC<IProps> = ({
     Promise.all(amlInfoPromises)
       .then((res) => {
         setAmlResponse(res);
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -206,6 +204,8 @@ const InreviewAction: React.FC<IProps> = ({
                 {amlLoading ? <CircularProgress size={20} /> : "Check"}
               </Button>
             </Box>
+
+            {/* {isAMLChecked && <AMLResponseTable />} */}
 
             {amlResponse?.length && <AMLResponseTable data={amlResponse} />}
           </Box>
