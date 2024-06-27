@@ -175,7 +175,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
       formData.append("files.applicationStatus.medicalReports", medicalRepot);
     }
 
-    if (emirateIdForm?.document) {
+    if (emirateIdForm) {
       formData.append(
         "files.applicationStatus.emirateIdAcForm.0",
         emirateIdForm

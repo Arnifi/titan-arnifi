@@ -39,8 +39,8 @@ const ordersApi = backendBaseApi.injectEndpoints({
             if (order?.user_form?.id) {
               companyApplications?.push({
                 ...order?.user_form,
-                linkto: 1,
-                username: "test",
+                linkto: order?.user?.id,
+                username: order?.user?.username,
                 jurisdiction: order?.authority?.AuthorityName || "",
               });
             }
@@ -50,8 +50,8 @@ const ordersApi = backendBaseApi.injectEndpoints({
                 if (visaApplicant?.id) {
                   visaApplications?.push({
                     ...visaApplicant,
-                    linkto: 1,
-                    username: "test",
+                    linkto: order?.user?.id,
+                    username: order?.user?.username,
                     companyName:
                       order?.user_form?.companyDetails?.companyNames?.option1 ||
                       "",
