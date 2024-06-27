@@ -42,24 +42,6 @@ const TableItem: React.FC<IProps> = ({ data, tableHead }) => {
               data["username"] as string
             }`}</StyledTableCell>
           );
-        } else if (item?.value === "status") {
-          return (
-            <TableCell key={i} align="left">
-              <Typography
-                variant="body1"
-                sx={{
-                  textAlign: "center",
-                  padding: "5px",
-                  borderRadius: "5px",
-                  //   width: "150px",
-                  bgcolor: data?.buttonBackground,
-                  color: data?.buttonColor,
-                }}
-              >
-                {data[item?.value] === undefined ? "None" : data[item?.value]}
-              </Typography>
-            </TableCell>
-          );
         } else if (data[item?.value] === undefined) {
           return (
             <StyledTableCell key={i} align="left">

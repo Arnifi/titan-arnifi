@@ -6,7 +6,7 @@ import {
   useGetLoginUserQuery,
 } from "../Redux/features/auth/authApi";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Props {
   // Define any additional props that the HOC might need
@@ -16,16 +16,16 @@ const ProtectedRouteHOC = <P extends object>(
   WrappedComponent: ComponentType<P>
 ): ComponentType<P> => {
   const ProtectedRoute: React.FC<P> = (props) => {
-    const { data, isLoading, isError } = useGetLoginUserQuery({});
+    const { data, isLoading } = useGetLoginUserQuery({});
     const router = useRouter();
 
-    const loginUser = data?.data as ILoginUser;
+    const loginUser = data as ILoginUser;
 
     if (isLoading) {
       return <GlobalLoader height="100vh" />;
     }
 
-    if (!loginUser?.isActive || loginUser?.blocked || !loginUser?.id) {
+    if (!loginUser?.email || loginUser?.blocked || !loginUser?.id) {
       router.replace("/login");
       return null;
     }

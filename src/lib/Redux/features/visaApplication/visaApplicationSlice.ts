@@ -7,16 +7,24 @@ export enum ApplicationStatus {
 }
 
 export interface IDocument {
-  data: {
-    id?: number;
-    attributes: {
-      name: string;
-      url: string;
-    };
-  };
+  id?: number;
+  name: string;
+  url: string;
 }
 
 export enum VisaStatusType {
+  Open = "Open",
+  ReviewAtArnifi = "Review at Arnifi",
+  RejectedAtArnifi = "Rejected at Arnifi",
+  WaitingOnGA = "Waiting on Government Authority",
+  RejectedByGA = "Rejected by Government Authority",
+  EmploymentAgreementEsignRequired = "Employment Agreement E-sign Required",
+  EvisaIssued = "Evisa issued",
+  MedicalAppointment = "Medical Appointment",
+  EmiratesIDAppointment = "Emirates ID Appointment",
+  ResidenceVisaIssued = "Residence Visa issued",
+
+  // olds
   OPEN = "Open",
   SUBMITTED = "Form Submitted",
   REJECTEDARNIFI = "Rejected - Arnifi",
@@ -31,6 +39,26 @@ export enum VisaStatusType {
 }
 
 export enum VisaStepsTypes {
+  Open = "Open",
+  ReviewAtArnifi = "Review at Arnifi",
+  RejectedAtArnifi = "Rejected at Arnifi",
+  ApplyOnPortal = "Apply on portal",
+  MakePaymentGA = "Make Payment to Government Authority",
+  WaitingForUpdateFromGA = "Waiting for update from Government Authority",
+  RejectedByGA = "Rejected by Government Authority",
+  UploadRejectionComments = "Upload Rejection comments",
+  EmploymentAgreementSigning = "Employment Agreement signing",
+  WaitingForEvisa = "Waiting for Evisa",
+  EvisaIssued = "Evisa Issued",
+  MedicalAppointmentBooking = "Medical Appointment booking",
+  WaitingForMedicalReports = "Waiting for Medical Reports",
+  EmiratesIDAppointmentBooking = "Emirates ID Appointment Booking",
+  WaitingForEmiratesIDForm = "Waiting for Emirates ID form",
+  ApplyForVisaStamping = "Apply for Visa Stamping",
+  WaitingForResidenceVisa = "Waiting for Residence Visa",
+  ResidenceVisaIssued = "Residence Visa issued",
+
+  // olds
   OPEN = "Open",
   FORMSUBMITTED = "Form Submitted",
   INREVIEWARNIFI = "In review - Arnifi",
@@ -59,6 +87,28 @@ export enum VisaStepsTypes {
 
 export interface IVisaApplicationStatus {
   id: number;
+  Remarks: string;
+  paymentProof: IDocument[];
+  paymentInvoice: IDocument[];
+  eVisa: IDocument[];
+  medicalReports: IDocument[];
+  rejectionComments: string;
+  rejectionFiles: IDocument[];
+  location: string;
+  step: VisaStepsTypes;
+  status: VisaStatusType;
+  clientMessage: string;
+  residenceVisa: {
+    visaIssueDate: Date;
+    visaExpiryDate: Date;
+    document: IDocument[];
+  };
+  emirateIdAcForm: {
+    uIdNumber: string;
+    fileNumber: string;
+    document: IDocument[];
+  };
+
   currentStatus: VisaStatusType;
   currentStep: VisaStepsTypes;
   message: string;
@@ -144,46 +194,15 @@ export interface IVisaApplication {
   passportFont: IDocument;
   passportBack: IDocument;
 
-  photograph: {
-    data: {
-      id?: number;
-      attributes: {
-        name: string;
-        url: string;
-      };
-    };
-  };
-  oldVisa: {
-    data: {
-      id?: number;
-      attributes: {
-        name: string;
-        url: string;
-      };
-    };
-  };
-  emiratesID: {
-    data: {
-      id?: number;
-      attributes: {
-        name: string;
-        url: string;
-      };
-    };
-  };
-  otherDocuments: {
-    data: {
-      id?: number;
-      attributes: {
-        name: string;
-        url: string;
-      };
-    };
-  };
+  photograph: IDocument;
+  oldVisa: IDocument;
+  emiratesID: IDocument;
+  otherDocuments: IDocument[];
   isCurrentlyResidingCountry: string;
   isLegalResident: string;
   isOtherDocument: string;
   visa_status: IVisaApplicationStatus;
+  applicationStatus: IVisaApplicationStatus;
   linkto: number;
   username: string;
   companyName: string;

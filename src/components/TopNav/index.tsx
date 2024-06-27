@@ -75,7 +75,7 @@ const StyledMenu = styled((props: MenuProps) => (
 const TopNav = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [logoutModal, setLogoutModal] = React.useState(false);
-  const { firstname } = useAppSelector((state) => state.authInfo?.loginUser);
+  const { username } = useAppSelector((state) => state.authInfo?.loginUser);
 
   const router = useRouter();
 
@@ -155,7 +155,7 @@ const TopNav = () => {
 
           <Box display={{ xs: "none", md: "flex" }}>
             <Avatar
-              alt={firstname}
+              alt={username}
               src=""
               sx={{ width: 50, height: 50, mx: "10px" }}
             />
@@ -183,7 +183,7 @@ const TopNav = () => {
                   height: "20px",
                 }}
               >
-                {firstname}
+                {username}
               </Button>
             </Box>
           </Box>

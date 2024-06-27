@@ -25,7 +25,6 @@ const findAll = async (filtersOptions: ILegalsFilters): Promise<ObjectType> => {
     .contains(search || "")
     .exec();
 
-  console.log(response);
   return (await response).sort((a, b) => {
     return a.createdAt > b.createdAt ? -1 : 1;
   });

@@ -31,19 +31,17 @@ const Dashboard = () => {
   ];
 
   const allVisaStatus = [
-    VisaStatusType.OPEN,
-    VisaStatusType.REJECTEDARNIFI,
-    VisaStatusType.INREVIEWARNIFI,
-    VisaStatusType.WAITINGGA,
-    VisaStatusType.REJECTEDGA,
-    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
-    VisaStatusType.REJECTEDEVISA,
-    VisaStatusType.MEDICALAPPOINTMENT,
-    VisaStatusType.EMIRATESIDAPPOINTMENT,
-    VisaStatusType.COMPLETED,
+    VisaStatusType.Open,
+    VisaStatusType.ReviewAtArnifi,
+    VisaStatusType.RejectedAtArnifi,
+    VisaStatusType.WaitingOnGA,
+    VisaStatusType.RejectedByGA,
+    VisaStatusType.EmploymentAgreementEsignRequired,
+    VisaStatusType.EvisaIssued,
+    VisaStatusType.MedicalAppointment,
+    VisaStatusType.EmiratesIDAppointment,
+    VisaStatusType.ResidenceVisaIssued,
   ];
-
-  console.log(allCompanyApplications);
 
   const statusWiseCompanyApplications = allCompanyStatus
     ?.map((status) => {
@@ -60,8 +58,10 @@ const Dashboard = () => {
   const statusWiseVisaApplications = allVisaStatus
     ?.map((status) => {
       const applications = allVisaApplications?.filter(
-        (item) => item.visa_status?.currentStatus === status
+        (item) => item.applicationStatus?.status === status
       );
+
+      console.log(applications);
       return {
         label: status,
         count: applications.length,
@@ -71,11 +71,9 @@ const Dashboard = () => {
 
   return (
     <Box>
-      <Box>
-        <Typography variant="h3" sx={{ color: theme.colorConstants.darkBlue }}>
-          Dashboard Tasks
-        </Typography>
-      </Box>
+      <Typography variant="h3" sx={{ color: theme.colorConstants.darkBlue }}>
+        Dashboard Tasks
+      </Typography>
 
       <Box
         sx={{

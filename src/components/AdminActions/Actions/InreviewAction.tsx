@@ -22,6 +22,13 @@ import GlobalButton from "../Buttons/GlobalButton";
 import { useGetAMLResponseMutation } from "@/lib/Redux/features/AML/AMLApi";
 import { ICompanyApplication } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import envConfig from "@/Configs/envConfig";
+import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
+
+function isCompanyApplication(
+  data: IVisaApplication | ICompanyApplication
+): data is ICompanyApplication {
+  return (data as ICompanyApplication).shareholders !== undefined;
+}
 
 interface IAMLResponse {
   message: string;
@@ -52,7 +59,7 @@ const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
       <Table aria-labelledby="legal-table" size="small">
         <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
           <TableRow>
-            <TableCell sx={{ fontSize: "14px" }}>Shareholder name</TableCell>
+            <TableCell sx={{ fontSize: "14px" }}>Applicant name</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Action</TableCell>
             <TableCell sx={{ fontSize: "14px" }}>Message</TableCell>
           </TableRow>
@@ -75,7 +82,7 @@ const AMLResponseTable = ({ data }: { data: IAMLResponse[] }) => {
 };
 
 interface IProps {
-  data: ICompanyApplication;
+  data: ICompanyApplication | IVisaApplication;
   agentComment: string;
   loading: boolean;
   statusHandlar: (updateStatus: any) => void;
@@ -123,21 +130,38 @@ const InreviewAction: React.FC<IProps> = ({
   };
 
   const amlResponseHandler = () => {
-    const amlInfoPromises = applicationData?.shareholders?.map(async (item) => {
-      return await getAMLResponse({
-        type: "share-holder",
-        id: item.id,
-        custom_api_key: `Bearer ${envConfig.custom_api_key}`,
-      }).unwrap();
-    });
+    if (isCompanyApplication(applicationData)) {
+      const amlInfoPromises = applicationData?.shareholders?.map(
+        async (item) => {
+          return await getAMLResponse({
+            type: "share-holder",
+            id: item.id,
+            custom_api_key: `Bearer ${envConfig.custom_api_key}`,
+          }).unwrap();
+        }
+      );
 
-    Promise.all(amlInfoPromises)
-      .then((res) => {
-        setAmlResponse(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      Promise.all(amlInfoPromises)
+        .then((res) => {
+          setAmlResponse(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      const data = {
+        id: applicationData?.id,
+        type: "visa",
+      };
+      getAMLResponse(data)
+        .unwrap()
+        .then((res: IAMLResponse) => {
+          if (res?.data) {
+            setAmlResponse([res as IAMLResponse]);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -193,7 +217,10 @@ const InreviewAction: React.FC<IProps> = ({
                   mr: "50px",
                 }}
               >
-                1. Check AML for Shareholders
+                1. Check AML for{" "}
+                {isCompanyApplication(applicationData)
+                  ? "Shareholders"
+                  : "Applicant"}
               </Typography>
 
               <Button

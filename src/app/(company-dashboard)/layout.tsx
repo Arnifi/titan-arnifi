@@ -9,10 +9,15 @@ import { BarChart, Business, Description, Logout } from "@mui/icons-material";
 import Link from "next/link";
 import ProtectedRouteHOC from "@/lib/ProtectedRoute";
 import GlobalLoader from "@/components/Loaders/GlobalLoader";
-import { useGetAllUserWithInfoQuery } from "@/lib/Redux/features/users/userApi";
+import { useGetAllOrdersQuery } from "@/lib/Redux/features/orders/ordersApi";
+import { useAppSelector } from "@/lib/Redux/store";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const { isLoading: userWithInfoLoading } = useGetAllUserWithInfoQuery({});
+  const { loginUser } = useAppSelector((state) => state.authInfo);
+
+  const { isLoading: initialLoading } = useGetAllOrdersQuery({
+    username: loginUser?.username,
+  });
 
   const items = [
     {
@@ -71,7 +76,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           px={"5%"}
           sx={{ overflow: "hidden" }}
         >
-          {userWithInfoLoading ? (
+          {initialLoading ? (
             <GlobalLoader height="70vh" />
           ) : (
             <Suspense fallback={<GlobalLoader height="70vh" />}>

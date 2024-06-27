@@ -1,3 +1,4 @@
+import { getAuthToken } from "../../helpers";
 import backendBaseApi from "../backendBaseApi";
 
 const adminCommonUrl = "/content-manager/collection-types";
@@ -13,9 +14,13 @@ const visaStatusApi = backendBaseApi.injectEndpoints({
     }),
 
     updateVisaStatus: build.mutation({
-      query: ({ id, data }: { id: number; data: any }) => ({
-        url: `${adminCommonUrl}/api::visa-status.visa-status/${id}`,
+      query: (data: FormData) => ({
+        url: `/api/update-visa-applicant`,
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+
         body: data,
       }),
     }),
