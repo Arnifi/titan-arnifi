@@ -471,7 +471,7 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
             <Box
               sx={{ marginTop: "10px" }}
               component="img"
-              src={passportFont.url}
+              src={passportFont?.url}
               alt="Passport Font"
               width={{ xs: "100%", md: "350px" }}
             />
