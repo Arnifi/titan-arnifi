@@ -1,19 +1,10 @@
-import {
-  CompanyStatusType,
-  CompanyStepTypes,
-  ICompanyApplication,
-  ICompanyStatus,
-  setUpdatedCompanyApplicationInfo,
-} from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { Paper } from "@mui/material";
 import React from "react";
-import StatusNotFound from "./Actions/StatusNotFound";
 import { useAppDispatch } from "@/lib/Redux/store";
 import { openSnackbar } from "@/lib/Redux/features/snackbar/snackbarSlice";
 import InreviewAction from "./Actions/InreviewAction";
 import {
   IVisaApplication,
-  IVisaApplicationStatus,
   VisaStatusType,
   VisaStepsTypes,
   setUpdatedVisaApplicationInfo,
@@ -21,203 +12,240 @@ import {
 import RejectAction from "./Actions/RejectAction";
 import IsApplyGA from "./Actions/IsApplyGA";
 import IsPaymentSuccess from "./Actions/IsPaymentSuccess";
-import IsPaymentVerified from "./Actions/IsPaymentVerified";
-import IsGAReactAction from "./Actions/IsGAReactAction";
-import WaitGARejection from "./Actions/WaitGARejection";
-import ResolutionEsignature from "./Actions/ResolutionEsignature";
-import WaitingLicenseApproval from "./Actions/WaitingLicenseApproval";
-import MOAEsignature from "./Actions/MOAEsignature";
-import WaitingLicense from "./Actions/WaitingLicense";
-import WaitingEstablishmentCard from "./Actions/WaitingEstablishmentCard";
+import IsGARejectAction from "./Actions/IsGARejectAction";
+import { useUpdateVisaStatusMutation } from "@/lib/Redux/features/visaStatus/visaStatusApi";
+import IsFormOpen from "./Actions/IsFormOpen";
+import IsWaitingForUpdateFormGA from "./Actions/IsWaitingForUpdateFormGA";
+import IsAgreementEsign from "./Actions/IsAgreementEsign";
+import IsEvisaIssued from "./Actions/IsEvisaIssued";
+import IsMedicalAppointBooked from "./Actions/IsMedicalAppointBooked";
+import IsMedicalReportsUpload from "./Actions/IsMedicalReportsUpload";
+import IsEmiratesIdAppointment from "./Actions/IsEmiratesIdAppointment";
+import IsEmiratesIdFormUpload from "./Actions/IsEmiratesIdFormUpload";
+import IsVisaStamping from "./Actions/IsVisaStamping";
+import IsResidenceVisaUpload from "./Actions/ResidenceVisaUpload";
 import CompletedStatus from "./Actions/CompletedStatus";
-import {
-  useCreateVisaStatusMutation,
-  useUpdateVisaStatusMutation,
-} from "@/lib/Redux/features/visaStatus/visaStatusApi";
 
 interface IProps {
   data: IVisaApplication;
 }
 
 const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
-  const [createVisaStatus, { isLoading: createLoading }] =
-    useCreateVisaStatusMutation();
+  const step = data?.applicationStatus?.step ?? "";
+  const status = data?.applicationStatus?.status ?? "";
+
+  const dispatch = useAppDispatch();
+
+  const isFormOpen =
+    status === VisaStatusType.Open && step === VisaStepsTypes.Open;
+
+  const isReviewAction =
+    status === VisaStatusType.ReviewAtArnifi &&
+    step === VisaStepsTypes.ReviewAtArnifi;
+
+  const isRejectAction =
+    status === VisaStatusType.RejectedAtArnifi &&
+    step === VisaStepsTypes.RejectedAtArnifi;
+
+  const isApplyGA =
+    status === VisaStatusType.ReviewAtArnifi &&
+    step === VisaStepsTypes.ApplyOnPortal;
+
+  const isPaymentSuccess =
+    status === VisaStatusType.ReviewAtArnifi &&
+    step === VisaStepsTypes.MakePaymentGA;
+
+  const isWaitingForUpdateGA =
+    status === VisaStatusType.WaitingOnGA &&
+    step === VisaStepsTypes.WaitingForUpdateFromGA;
+
+  const isRejectGA =
+    (status === VisaStatusType.RejectedByGA ||
+      status === VisaStatusType.WaitingOnGA) &&
+    (step === VisaStepsTypes.RejectedByGA ||
+      step === VisaStepsTypes.UploadRejectionComments);
+
+  const isEmploymentAgreementEsign =
+    status === VisaStatusType?.EmploymentAgreementEsignRequired &&
+    VisaStepsTypes?.EmploymentAgreementSigning;
+
+  const isEvisaIssued =
+    status === VisaStatusType?.WaitingOnGA &&
+    step === VisaStepsTypes?.WaitingForEvisa;
+
+  const isMedicalAppointmentBooking =
+    status === VisaStatusType?.EvisaIssued &&
+    step === VisaStepsTypes?.EvisaIssued;
+
+  const isMedicalAppointmentBooked =
+    status === VisaStatusType?.MedicalAppointment &&
+    step === VisaStepsTypes.WaitingForMedicalReports;
+
+  const isEmiratesIdAppointmentBooking =
+    status === VisaStatusType?.WaitingOnGA &&
+    step === VisaStepsTypes.EmiratesIDAppointmentBooking;
+
+  const isEmiratesIdAppointmentBooked =
+    status === VisaStatusType?.EmiratesIDAppointment &&
+    step === VisaStepsTypes.WaitingForEmiratesIDForm;
+
+  const isVisaStamping =
+    status === VisaStatusType?.WaitingOnGA &&
+    step === VisaStepsTypes.ApplyForVisaStamping;
+
+  const isResidenceVisaIssued =
+    status === VisaStatusType?.WaitingOnGA &&
+    step === VisaStepsTypes.WaitingForResidenceVisa;
+
+  const isApplicationComplited =
+    status === VisaStatusType.ResidenceVisaIssued &&
+    step === VisaStepsTypes.ResidenceVisaIssued;
 
   const [updateVisaStatus, { isLoading: updateLoading }] =
     useUpdateVisaStatusMutation();
-  const dispatch = useAppDispatch();
-
-  const statusCreateHandelar = (statusInfo: any) => {
-    createVisaStatus({ visa_applicant: data?.id, ...statusInfo })
-      .unwrap()
-      .then(() => {
-        const updatedVisaInfo = {
-          ...data,
-          visa_status: { ...statusInfo },
-        };
-        dispatch(setUpdatedVisaApplicationInfo(updatedVisaInfo));
-        dispatch(
-          openSnackbar({
-            isOpen: true,
-            message: "Visa Status Created",
-            type: "success",
-          })
-        );
-      });
-  };
-
-  console.log(data);
 
   const handleStatusChange = (updateStatus: any): void => {
-    const formData = new FormData();
-
     const {
-      agentComment,
-      commentsFormGA,
+      remarks,
       currentStatus,
       currentStep,
-      message,
+      paymentSlip,
+      paymentInvoice,
+      eVisa,
+      medicalInstruction,
+      idInstruction,
+      medicalRepot,
+      emirateIdForm,
+      fileNo,
+      uIdNo,
+      visaFiles,
+      issueDate,
+      expiryDate,
     } = updateStatus;
 
+    const applicationStatus = {
+      Remarks: remarks,
+      step: currentStep,
+      status: currentStatus,
+      medicalInstruction,
+      uIdInstruction: idInstruction,
+      emirateIdAcForm: {
+        uIdNumber:
+          uIdNo ?? data?.applicationStatus?.emirateIdAcForm?.uIdNumber ?? "",
+        fileNumber:
+          fileNo ?? data?.applicationStatus?.emirateIdAcForm?.fileNumber ?? "",
+      },
+
+      residenceVisa: {
+        visaIssueDate: issueDate,
+        visaExpiryDate: expiryDate,
+      },
+    };
+
+    const updatedApplications = {
+      ...data,
+      applicationStatus: {
+        ...data?.applicationStatus,
+        ...applicationStatus,
+      },
+    };
+
+    const formData = new FormData();
+    formData.append("id", `${data?.id}`);
     formData.append(
-      "currentStatus",
-      currentStatus ?? data?.visa_status?.currentStatus
-    );
-    formData.append(
-      "currentStep",
-      currentStep ?? data?.visa_status?.currentStep
+      "data",
+      JSON.stringify({
+        applicationStatus,
+      })
     );
 
-    formData.append("message", message ?? data?.visa_status?.message);
+    if (paymentInvoice) {
+      formData.append("files.applicationStatus.paymentInvoice", paymentInvoice);
+    }
 
-    formData.append(
-      "agentComment",
-      agentComment ?? (data?.visa_status?.agentComment as string)
-    );
+    if (paymentSlip) {
+      formData.append("files.applicationStatus.paymentProof", paymentSlip);
+    }
 
-    formData.append(
-      "commentsFormGA",
-      commentsFormGA ?? (data?.visa_status?.commentsFormGA as string)
-    );
+    if (eVisa) {
+      formData.append("files.applicationStatus.eVisa", eVisa);
+    }
 
-    updateVisaStatus({ id: data?.visa_status?.id, data: formData })
-      .then((res) => {
+    if (medicalRepot) {
+      formData.append("files.applicationStatus.medicalReports", medicalRepot);
+    }
+
+    if (emirateIdForm?.document) {
+      formData.append(
+        "files.applicationStatus.emirateIdAcForm.0",
+        emirateIdForm
+      );
+    }
+
+    visaFiles?.length > 0 &&
+      visaFiles?.forEach((file: File, i: number) => {
+        formData.append(`files.applicationStatus.residenceVisa.${i}`, file);
+      });
+
+    updateVisaStatus(formData)
+      .unwrap()
+      .then((res: { data: IVisaApplication } | { error: unknown }) => {
         console.log(res);
-        const updatedVisaInfo = {
-          ...data,
-          visa_status: { ...data?.visa_status, ...updateStatus },
-        };
-        dispatch(
-          setUpdatedVisaApplicationInfo(updatedVisaInfo as IVisaApplication)
-        );
-        dispatch(
-          openSnackbar({
-            isOpen: true,
-            message: "Company Status Updated",
-            type: "success",
-          })
-        );
+        if ("data" in res && res.data.id) {
+          dispatch(setUpdatedVisaApplicationInfo(res.data));
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: "Visa Application Status Updated",
+              type: "success",
+            })
+          );
+        } else if ("error" in res) {
+          dispatch(
+            openSnackbar({
+              isOpen: true,
+              message: "Something went wrong",
+              type: "error",
+            })
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const isStatusNotCreated =
-    (data?.status === "done" || data?.status === "inProgress") &&
-    data?.visa_status === null;
-
-  const isReviewAction =
-    data?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI &&
-    (data?.visa_status?.currentStep === VisaStepsTypes.INREVIEWARNIFI ||
-      data?.visa_status?.currentStep === VisaStepsTypes.FORMSUBMITTED);
-
-  const isRejectAction =
-    data?.visa_status?.currentStatus === VisaStatusType.REJECTEDARNIFI &&
-    data?.visa_status?.currentStep === VisaStepsTypes.REJECTEDARNIFI;
-
-  const isApplyGA =
-    data?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI &&
-    data?.visa_status?.currentStep === VisaStepsTypes.APPLYGA;
-
-  const isPaymentSuccess =
-    data?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI &&
-    data?.visa_status?.currentStep === VisaStepsTypes.MAKEPAYMENTTOGA;
-
-  const isPaymentVerified =
-    data?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI &&
-    data?.visa_status?.currentStep ===
-      VisaStepsTypes.WAITINGPAYMENTVERIFICATION;
-
-  const isRejectGA =
-    data?.visa_status?.currentStatus === VisaStatusType.REJECTEDGA &&
-    (data?.visa_status?.currentStep === VisaStepsTypes.REJECTEDGA ||
-      data?.visa_status?.currentStep === VisaStepsTypes.UPLOADRESPONSES);
-
-  // const isWaitRejectResponse =
-  //   data?.company_status?.currentStatus === CompanyStatusType.REJECTEDGA &&
-  //   data?.company_status?.currentStep ===
-  //     CompanyStepTypes.WAITINGUPDATEREJECTION;
-
-  // const isResolutionSigned =
-  //   data?.company_status?.currentStatus ===
-  //     CompanyStatusType.RESOLUTIONSIGNED &&
-  //   data?.company_status?.currentStep === CompanyStepTypes.RESOLUTIONSIGNED;
-
-  // const isWaitingLicenseApproval =
-  //   data?.company_status?.currentStatus === CompanyStatusType.WAITINGGA &&
-  //   data?.company_status?.currentStep ===
-  //     CompanyStepTypes.WAITINGLICENSEAPPROVAL;
-
-  // const isMOAEsignature =
-  //   data?.company_status?.currentStatus === CompanyStatusType.MOAAOASIGNED &&
-  //   data?.company_status?.currentStep === CompanyStepTypes.MOAAOASIGNED;
-
-  // const isWaitingLicense =
-  //   data?.company_status?.currentStatus === CompanyStatusType.WAITINGGA &&
-  //   data?.company_status?.currentStep === CompanyStepTypes.WAITINGLICENSE;
-
-  // const isWaitingEstablishmentCard =
-  //   data?.company_status?.currentStatus === CompanyStatusType.WAITINGGA &&
-  //   data?.company_status?.currentStep ===
-  //     CompanyStepTypes.WAITINGFORESTABLISHMENTCARD;
-
-  // const isCompanyCreated =
-  //   data?.company_status?.currentStatus === CompanyStatusType.COMPLETED &&
-  //   data?.company_status?.currentStep === CompanyStepTypes.COMPLETED;
-
   return (
-    <Paper variant="outlined" sx={{ padding: "20px", height: "70vh" }}>
-      {/* {isStatusNotCreated ? (
-        <StatusNotFound
-          loading={createLoading}
-          formStatus={data?.status as string}
-          createHandler={statusCreateHandelar}
-        />
+    <Paper
+      variant="outlined"
+      sx={{ padding: "20px", height: "70vh", overflowY: "scroll" }}
+    >
+      {isFormOpen ? (
+        <IsFormOpen />
       ) : isReviewAction ? (
         <InreviewAction
-          data={data as IVisaApplication}
-          agentComment={data?.visa_status?.agentComment as string}
+          data={data}
+          agentComment={data?.applicationStatus?.Remarks}
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
-            step: VisaStepsTypes?.APPLYGA,
-            status: VisaStatusType?.INREVIEWARNIFI,
+            step: VisaStepsTypes.ApplyOnPortal,
+            status: VisaStatusType.ReviewAtArnifi,
           }}
           reject={{
-            step: VisaStepsTypes?.REJECTEDARNIFI,
-            status: VisaStatusType?.REJECTEDARNIFI,
+            step: VisaStepsTypes.RejectedAtArnifi,
+            status: VisaStatusType.RejectedAtArnifi,
           }}
         />
       ) : isRejectAction ? (
-        <RejectAction message={data?.visa_status?.message as string} />
+        <RejectAction message={data?.applicationStatus?.Remarks as string} />
       ) : isApplyGA ? (
         <IsApplyGA
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
-            step: VisaStepsTypes?.MAKEPAYMENTTOGA,
-            status: VisaStatusType?.INREVIEWARNIFI,
+            step: VisaStepsTypes?.MakePaymentGA,
+            status: VisaStatusType?.ReviewAtArnifi,
           }}
         />
       ) : isPaymentSuccess ? (
@@ -225,35 +253,80 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
-            status: VisaStatusType.INREVIEWARNIFI,
-            step: VisaStepsTypes.WAITINGPAYMENTVERIFICATION,
+            status: VisaStatusType.WaitingOnGA,
+            step: VisaStepsTypes.WaitingForUpdateFromGA,
           }}
         />
-      ) : isPaymentVerified ? (
-        <IsPaymentVerified
+      ) : isWaitingForUpdateGA ? (
+        <IsWaitingForUpdateFormGA
           loading={updateLoading}
           statusHandlar={handleStatusChange}
           approve={{
-            step: VisaStepsTypes?.EMPLOYMENTCONTRACTSIGNED,
-            status: VisaStatusType?.REJECTEDEMPLOYEEAGREEMENT,
+            status: VisaStatusType?.EmploymentAgreementEsignRequired,
+            step: VisaStepsTypes?.EmploymentAgreementSigning,
           }}
           reject={{
-            step: VisaStepsTypes?.REJECTEDGA,
-            status: VisaStatusType?.REJECTEDGA,
+            status: VisaStatusType?.RejectedByGA,
+            step: VisaStepsTypes?.RejectedByGA,
           }}
         />
       ) : isRejectGA ? (
-        <IsGAReactAction
-          approve={{
-            step: VisaStepsTypes?.EMPLOYMENTCONTRACTSIGNED,
-            status: VisaStatusType?.REJECTEDEMPLOYEEAGREEMENT,
-          }}
+        <IsGARejectAction
           loading={updateLoading}
-          message={data?.visa_status?.message as string}
-          userComment={data?.visa_status?.userComment as string}
+          message={data?.applicationStatus?.Remarks as string}
+          userComment={data?.applicationStatus?.rejectionComments as string}
           statusHandlar={handleStatusChange}
+          approve={{
+            status: VisaStatusType?.WaitingOnGA,
+            step: VisaStepsTypes?.WaitingForUpdateFromGA,
+          }}
         />
-      ) : null} */}
+      ) : isEmploymentAgreementEsign ? (
+        <IsAgreementEsign
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isEvisaIssued ? (
+        <IsEvisaIssued
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isMedicalAppointmentBooking ? (
+        <IsMedicalAppointBooked
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isMedicalAppointmentBooked ? (
+        <IsMedicalReportsUpload
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isEmiratesIdAppointmentBooking ? (
+        <IsEmiratesIdAppointment
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isEmiratesIdAppointmentBooked ? (
+        <IsEmiratesIdFormUpload
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isVisaStamping ? (
+        <IsVisaStamping
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isResidenceVisaIssued ? (
+        <IsResidenceVisaUpload
+          statusHandlar={handleStatusChange}
+          loading={updateLoading}
+        />
+      ) : isApplicationComplited ? (
+        <CompletedStatus
+          title={"Client Resident Visa is completed"}
+          message="The Client can see the output documents in their client dashboard under My companies"
+        />
+      ) : null}
     </Paper>
   );
 };

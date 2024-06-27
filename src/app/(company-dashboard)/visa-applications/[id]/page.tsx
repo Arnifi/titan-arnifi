@@ -1,40 +1,15 @@
 "use client";
 
 import VisaFormAdminActions from "@/components/AdminActions/VisaFormAdminActions";
+import AdminDocumentActions from "@/components/AdminDocumentActions";
 import ApplicationsDetailsCard from "@/components/ApplicationsDetailsCard";
-import VisaFormActions from "@/components/VisaFormActions";
 import VisaFormReviewCard from "@/components/VisaFormReviewCard";
+import { IUploadImage } from "@/lib/Redux/features/companyApplication/companyApplicationSlice";
 import { IVisaApplication } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
-import { FileDownload, Visibility } from "@mui/icons-material";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  styled,
-  tableCellClasses,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    color: theme.colorConstants.darkBlue,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: "12px",
-    fontWeight: 600,
-  },
-}));
 
 const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
   const selectedApplication = useAppSelector((state) => {
@@ -43,46 +18,110 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
     );
   });
 
-  const inputDocuments = [
-    {
-      name: "Passport Front",
-      file: null,
-      formet: "jpg",
-    },
-    {
-      name: "Passport Back",
-      file: null,
-      formet: "jpg",
-    },
-    {
-      name: "Photograph",
-      file: null,
-      formet: "jpg",
-    },
-    {
-      name: "Emirates ID",
-      file: null,
-      formet: "pdf",
-    },
-  ];
+  const applicationDocuments = [] as {
+    label: string;
+    data: IUploadImage | File;
+  }[];
 
-  const outDocuments = [
-    {
-      name: "Payment Slip",
-      file: null,
-      formet: "jpg",
-    },
-    {
-      name: "License Copy",
-      file: null,
-      formet: "pdf",
-    },
-    {
-      name: "Visa Copy",
-      file: null,
-      formet: "pdf",
-    },
-  ];
+  if (selectedApplication?.passportFont?.url) {
+    applicationDocuments?.push({
+      label: "Passport Front",
+      data: selectedApplication?.passportFont as IUploadImage,
+    });
+  }
+
+  if (selectedApplication?.passportBack?.url) {
+    applicationDocuments?.push({
+      label: "Passport Back",
+      data: selectedApplication?.passportBack as IUploadImage,
+    });
+  }
+
+  if (selectedApplication?.photograph?.url) {
+    applicationDocuments?.push({
+      label: "Photograph",
+      data: selectedApplication?.photograph as IUploadImage,
+    });
+  }
+
+  if (selectedApplication?.oldVisa?.url) {
+    applicationDocuments?.push({
+      label: "Photograph",
+      data: selectedApplication?.photograph as IUploadImage,
+    });
+  }
+
+  if (selectedApplication?.emiratesID) {
+    applicationDocuments?.push({
+      label: "Emirates ID ",
+      data: selectedApplication?.emiratesID as IUploadImage,
+    });
+  }
+
+  selectedApplication?.otherDocuments?.forEach((item) => {
+    applicationDocuments?.push({
+      label: item?.name as string,
+      data: item as IUploadImage,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.rejectionFiles?.forEach((item, i) => {
+    applicationDocuments?.push({
+      label: `Rejection File - ${i + 1}`,
+      data: item as IUploadImage,
+    });
+  });
+
+  const adminDocuments = [] as {
+    label: string;
+    data: IUploadImage | File;
+  }[];
+
+  selectedApplication?.applicationStatus?.paymentInvoice?.forEach((item) => {
+    adminDocuments?.push({
+      label: "Payment Invoice",
+      data: item as IUploadImage,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.paymentProof?.forEach((item) => {
+    adminDocuments?.push({
+      label: "Payment Slip",
+      data: item as IUploadImage,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.eVisa?.forEach((item) => {
+    adminDocuments?.push({
+      label: "e-Visa",
+      data: item as IUploadImage,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.medicalReports?.forEach((item) => {
+    adminDocuments?.push({
+      label: "Medical Report",
+      data: item as IUploadImage,
+    });
+  });
+
+  selectedApplication?.applicationStatus?.emirateIdAcForm?.document?.forEach(
+    (item) => {
+      adminDocuments?.push({
+        label: "Emirates ID Form",
+        data: item as IUploadImage,
+      });
+    }
+  );
+
+  selectedApplication?.applicationStatus?.residenceVisa.document?.forEach(
+    (item, i) => {
+      adminDocuments?.push({
+        label: `Residence Visa - ${i + 1}`,
+        data: item as IUploadImage,
+      });
+    }
+  );
 
   const applicationData = [
     {
@@ -102,12 +141,12 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
     },
     {
       label: "Current Step",
-      value: selectedApplication?.visa_status?.currentStep as string,
+      value: selectedApplication?.applicationStatus?.step as string,
       weight: 4,
     },
     {
       label: "Current Status",
-      value: selectedApplication?.visa_status?.currentStatus as string,
+      value: selectedApplication?.applicationStatus?.status as string,
       weight: 4,
     },
   ];
@@ -132,7 +171,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
           Visa Form
         </Typography>
       </Box>
-      <Grid sx={{ marginTop: "10px" }} container spacing={2}>
+      <Grid sx={{ marginY: "10px" }} container spacing={2}>
         <Grid item xs={12}>
           <ApplicationsDetailsCard
             title="Applications Details"
@@ -151,127 +190,28 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
             <VisaFormAdminActions
               data={selectedApplication as IVisaApplication}
             />
-            {/* <VisaFormActions data={selectedApplication as IVisaApplication} /> */}
           </Box>
         </Grid>
 
-        <Grid
-          item
-          xs={4}
-          sx={{
-            marginBottom: "30px",
-          }}
-        >
-          <Paper sx={{ padding: "20px" }} variant="outlined">
-            <Typography
-              gutterBottom
-              variant="h4"
-              sx={{
-                fontSize: "16px",
-                color: theme.colorConstants.black,
-              }}
-            >
-              Input Documents
-            </Typography>
-
-            <Box>
-              {inputDocuments?.map((item, i) => {
-                return (
-                  <Box
-                    key={i}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {i + 1}. {item?.name}
-                    </Typography>
-
-                    <Box>
-                      <Stack direction="row">
-                        <IconButton>
-                          <Visibility />
-                        </IconButton>
-
-                        <IconButton>
-                          <FileDownload />
-                        </IconButton>
-                      </Stack>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          </Paper>
+        <Grid item xs={4}>
+          {applicationDocuments?.length > 0 && (
+            <AdminDocumentActions
+              title="Input Documents"
+              data={applicationDocuments}
+            />
+          )}
         </Grid>
 
-        <Grid
-          item
-          xs={4}
-          sx={{
-            marginBottom: "30px",
-          }}
-        >
-          <Paper sx={{ padding: "20px" }} variant="outlined">
-            <Typography
-              gutterBottom
-              variant="h4"
-              sx={{
-                fontSize: "16px",
-                color: theme.colorConstants.black,
-              }}
-            >
-              Output Documents
-            </Typography>
-
-            <Box>
-              {outDocuments?.map((item, i) => {
-                return (
-                  <Box
-                    key={i}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: "14px",
-                        color: theme.colorConstants.darkBlue,
-                        fontWeight: 700,
-                      }}
-                    >
-                      {i + 1}. {item?.name}
-                    </Typography>
-
-                    <Box>
-                      <Stack direction="row">
-                        <IconButton>
-                          <Visibility />
-                        </IconButton>
-
-                        <IconButton>
-                          <FileDownload />
-                        </IconButton>
-                      </Stack>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          </Paper>
+        <Grid item xs={4}>
+          {adminDocuments?.length > 0 && (
+            <AdminDocumentActions
+              title="Output Documents"
+              data={adminDocuments}
+            />
+          )}
         </Grid>
 
-        <Grid
+        {/* <Grid
           item
           xs={8}
           sx={{
@@ -307,18 +247,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                         Step Name
                       </TableCell>
 
-                      {/* <TableCell
-                        align={"center"}
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "700",
-                          color: "#333",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        Time
-                      </TableCell> */}
-
                       <TableCell
                         align={"right"}
                         sx={{
@@ -341,10 +269,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
                             Step - {i + 1}
                           </StyledTableCell>
 
-                          {/* <StyledTableCell align="center" scope="row">
-                            12:00:00 AM
-                          </StyledTableCell> */}
-
                           <StyledTableCell align="right" scope="row">
                             12/12/2022
                           </StyledTableCell>
@@ -356,7 +280,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
               </TableContainer>
             </Box>
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

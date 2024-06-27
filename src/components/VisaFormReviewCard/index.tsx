@@ -465,13 +465,13 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
                 color: theme.colorConstants.mediumGray,
               }}
             >
-              Passport Font
+              Passport Front
             </Typography>
 
             <Box
               sx={{ marginTop: "10px" }}
               component="img"
-              src={passportFont?.data?.attributes?.url}
+              src={passportFont.url}
               alt="Passport Font"
               width={{ xs: "100%", md: "350px" }}
             />
@@ -486,13 +486,13 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
                 color: theme.colorConstants.mediumGray,
               }}
             >
-              Passport Font
+              Passport Back
             </Typography>
 
             <Box
               sx={{ marginTop: "10px" }}
               component="img"
-              src={passportBack?.data?.attributes?.url}
+              src={passportBack?.url}
               alt="Passport Back"
               width={{ xs: "100%", md: "350px" }}
             />
@@ -536,7 +536,7 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
             <Box
               sx={{ marginTop: "10px" }}
               component="img"
-              src={photograph?.data?.attributes?.url}
+              src={photograph?.url}
               alt="Photograph"
               width={{ xs: "100%", md: "350px" }}
             />
@@ -557,7 +557,7 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
               <Box
                 sx={{ marginTop: "10px" }}
                 component="img"
-                src={oldVisa?.data?.attributes?.url}
+                src={oldVisa?.url}
                 alt="old visa"
                 width="100%"
               />
@@ -579,7 +579,7 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
               <Box
                 sx={{ marginTop: "10px" }}
                 component="img"
-                src={emiratesID?.data?.attributes?.url}
+                src={emiratesID?.url}
                 alt="old visa"
                 width="100%"
               />
@@ -598,13 +598,17 @@ const VisaFormReviewCard: React.FC<IProps> = ({ data }) => {
               >
                 Supporting document
               </Typography>
-              <Box
-                sx={{ marginTop: "10px" }}
-                component="img"
-                src={otherDocuments?.data?.attributes?.url}
-                alt="Photograph"
-                width="100%"
-              />
+
+              {otherDocuments?.map((item, i) => (
+                <Box
+                  key={i}
+                  sx={{ marginTop: "10px" }}
+                  component="img"
+                  src={item?.url}
+                  alt="item?.name"
+                  width="100%"
+                />
+              ))}
             </Grid>
           )}
         </Grid>

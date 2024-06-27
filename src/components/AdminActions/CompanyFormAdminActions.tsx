@@ -14,7 +14,7 @@ import InreviewAction from "./Actions/InreviewAction";
 import RejectAction from "./Actions/RejectAction";
 import IsApplyGA from "./Actions/IsApplyGA";
 import IsPaymentSuccess from "./Actions/IsPaymentSuccess";
-import IsGAReactAction from "./Actions/IsGAReactAction";
+import IsGARejectAction from "./Actions/IsGARejectAction";
 import ResolutionEsignature from "./Actions/ResolutionEsignature";
 import WaitingLicenseApproval, {
   ILicenseFiles,
@@ -271,7 +271,7 @@ const CompanyFormAdminActions: React.FC<IProps> = ({ data }) => {
           }}
         />
       ) : isRejectGA ? (
-        <IsGAReactAction
+        <IsGARejectAction
           loading={updateLoading}
           message={data?.applicationStatus?.Remarks as string}
           userComment={data?.applicationStatus?.rejectionComments as string}
