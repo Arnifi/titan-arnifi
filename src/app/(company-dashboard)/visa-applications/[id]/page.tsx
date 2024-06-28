@@ -114,7 +114,7 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
     }
   );
 
-  selectedApplication?.applicationStatus?.residenceVisa.document?.forEach(
+  selectedApplication?.applicationStatus?.residenceVisa?.document?.forEach(
     (item, i) => {
       adminDocuments?.push({
         label: `Residence Visa - ${i + 1}`,
@@ -122,6 +122,8 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
       });
     }
   );
+
+  console.log(selectedApplication);
 
   const applicationData = [
     {
@@ -171,7 +173,11 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
           Visa Form
         </Typography>
       </Box>
-      <Grid sx={{ marginY: "10px" }} container spacing={2}>
+      <Grid
+        sx={{ marginBottom: "50px", paddingTop: "20px" }}
+        container
+        spacing={2}
+      >
         <Grid item xs={12}>
           <ApplicationsDetailsCard
             title="Applications Details"
@@ -210,77 +216,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
             />
           )}
         </Grid>
-
-        {/* <Grid
-          item
-          xs={8}
-          sx={{
-            marginBottom: "30px",
-          }}
-        >
-          <Paper sx={{ padding: "20px" }} variant="outlined">
-            <Typography
-              gutterBottom
-              variant="h4"
-              sx={{
-                fontSize: "16px",
-                color: theme.colorConstants.black,
-              }}
-            >
-              Application History
-            </Typography>
-
-            <Box>
-              <TableContainer>
-                <Table size="small">
-                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-                    <TableRow>
-                      <TableCell
-                        align={"left"}
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "700",
-                          color: "#333",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        Step Name
-                      </TableCell>
-
-                      <TableCell
-                        align={"right"}
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "700",
-                          color: "#333",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        Date
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {Array.from({ length: 5 }).map((_, i) => {
-                      return (
-                        <TableRow key={i}>
-                          <StyledTableCell align="left" scope="row">
-                            Step - {i + 1}
-                          </StyledTableCell>
-
-                          <StyledTableCell align="right" scope="row">
-                            12/12/2022
-                          </StyledTableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </Paper>
-        </Grid> */}
       </Grid>
     </Box>
   );

@@ -190,9 +190,8 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
     updateVisaStatus(formData)
       .unwrap()
       .then((res: { data: IVisaApplication } | { error: unknown }) => {
-        console.log(res);
         if ("data" in res && res.data.id) {
-          dispatch(setUpdatedVisaApplicationInfo(res.data));
+          dispatch(setUpdatedVisaApplicationInfo({ ...data, ...res.data }));
           dispatch(
             openSnackbar({
               isOpen: true,

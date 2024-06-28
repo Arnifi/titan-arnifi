@@ -61,8 +61,8 @@ const FileUploadContainer: React.FC<IProps> = ({ title, file, setFile }) => {
         <input
           id={`file-upload-${title}`}
           type="file"
-          accept="image/*"
-          // accept="image/*, application/pdf"
+          // accept="image/*"
+          accept="image/*, application/pdf"
           style={{ display: "none" }}
           onChange={(event) => {
             const file: File | undefined = event.target.files?.[0];
