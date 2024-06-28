@@ -46,7 +46,7 @@ const IsAgreementEsign: React.FC<IProps> = ({ loading, statusHandlar }) => {
             color: theme.colorConstants.mediumGray,
           }}
         >
-          Waiting for all the parties to E-sign the resolution document.
+          Waiting for applicant to E-sign the employee agreement.
         </Typography>
 
         <Typography
@@ -58,7 +58,7 @@ const IsAgreementEsign: React.FC<IProps> = ({ loading, statusHandlar }) => {
             marginTop: "16px",
           }}
         >
-          Have the Resolution document signed?
+          Has the employment agreement signed?
         </Typography>
 
         <RadioGroup

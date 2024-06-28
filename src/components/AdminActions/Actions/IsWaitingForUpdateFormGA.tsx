@@ -69,7 +69,7 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
               color: theme.colorConstants.mediumGray,
             }}
           >
-            Have the application been sent back by the government?
+            Has the application been rejected by the government?
           </Typography>
 
           <RadioGroup
@@ -111,7 +111,7 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
                 color: theme.colorConstants.mediumGray,
               }}
             >
-              Have the company Resolution been sent back the Government for
+              Has the employee agrement been sent back by the Government for
               Esigning?
             </Typography>
 

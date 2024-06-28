@@ -15,8 +15,8 @@ const visaStatusApi = backendBaseApi.injectEndpoints({
 
     updateVisaStatus: build.mutation({
       query: (data: FormData) => ({
-        url: `/api/update-visa-applicant`,
-        method: "PUT",
+        url: `/api/update-visa-status`,
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
         },

@@ -39,10 +39,13 @@ const CompanyApplications: React.FC = () => {
       const nameOption3 =
         item.companyDetails?.companyNames?.option3?.toLocaleLowerCase() || "";
 
+      const userName = item?.username?.toLocaleLowerCase() || "";
+
       return (
         nameOption1.includes(searchInLowerCase) ||
         nameOption2.includes(searchInLowerCase) ||
-        nameOption3.includes(searchInLowerCase)
+        nameOption3.includes(searchInLowerCase) ||
+        userName?.includes(searchInLowerCase)
       );
     });
 
@@ -63,9 +66,12 @@ const CompanyApplications: React.FC = () => {
   ];
 
   const stepWiseApplications = allCompanySteps?.map((step) => {
-    const applications = allApplications?.filter(
-      (item) => item.applicationStatus?.step === step
-    );
+    const applications = allApplications
+      ?.filter((item) => item.applicationStatus?.step === step)
+      .sort(
+        (a, b) =>
+          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+      );
 
     return {
       leble: step,

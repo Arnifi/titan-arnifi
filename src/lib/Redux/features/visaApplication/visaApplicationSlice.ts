@@ -207,6 +207,7 @@ export interface IVisaApplication {
   username: string;
   companyName: string;
   jurisdiction: string;
+  updatedAt: Date;
 }
 
 const initialState = {

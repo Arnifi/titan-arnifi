@@ -142,6 +142,7 @@ export interface ICompanyApplication {
   username: string;
   jurisdiction: string;
   applicationStatus: ICompanyStatus;
+  updatedAt: Date;
 }
 
 const initialState = {
