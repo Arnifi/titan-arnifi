@@ -203,8 +203,8 @@ const EstablishmentCardUploadContainer: React.FC<IProps> = ({
                             <input
                               id={`user-comment-files`}
                               type="file"
-                              // accept="image/*, application/pdf"
-                              accept="image/*"
+                              accept="image/*, application/pdf"
+                              // accept="image/*"
                               style={{ display: "none" }}
                               onChange={(event) => {
                                 const file: File | undefined =

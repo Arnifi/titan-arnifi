@@ -223,10 +223,10 @@ const CompanyApplicationDetails = ({ params }: { params: { id: string } }) => {
             />
           )}
         </Grid>
-
+        {/* 
         <Grid item xs={8}>
           <ApplicationHistoryCard data={historyData} />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );
