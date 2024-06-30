@@ -61,7 +61,6 @@ const Dashboard = () => {
         (item) => item.applicationStatus?.status === status
       );
 
-      console.log(applications);
       return {
         label: status,
         count: applications.length,

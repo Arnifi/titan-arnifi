@@ -25,6 +25,7 @@ import IsEmiratesIdFormUpload from "./Actions/IsEmiratesIdFormUpload";
 import IsVisaStamping from "./Actions/IsVisaStamping";
 import IsResidenceVisaUpload from "./Actions/ResidenceVisaUpload";
 import CompletedStatus from "./Actions/CompletedStatus";
+import { useUpdateVisaApplicationDataMutation } from "@/lib/Redux/features/visaApplication/visaApplicationApi";
 
 interface IProps {
   data: IVisaApplication;
@@ -101,8 +102,13 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
     status === VisaStatusType.ResidenceVisaIssued &&
     step === VisaStepsTypes.ResidenceVisaIssued;
 
-  const [updateVisaStatus, { isLoading: updateLoading }] =
+  const [updateVisaStatus, { isLoading: statusUpdateLoading }] =
     useUpdateVisaStatusMutation();
+
+  const [updateVisaApplication, { isLoading: dataUpdateLoading }] =
+    useUpdateVisaApplicationDataMutation();
+
+  const updateLoading = dataUpdateLoading || statusUpdateLoading;
 
   const handleStatusChange = (updateStatus: any): void => {
     const {
@@ -114,7 +120,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
       eVisa,
       medicalInstruction,
       idInstruction,
-      medicalRepot,
+      medicalReport,
       emirateIdForm,
       fileNo,
       uIdNo,
@@ -142,13 +148,34 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
       },
     };
 
-    const updatedApplications = {
-      ...data,
-      applicationStatus: {
-        ...data?.applicationStatus,
-        ...applicationStatus,
-      },
-    };
+    // const updatedApplications = {
+    //   ...data,
+    //   applicationStatus: {
+    //     ...data?.applicationStatus,
+    //     ...applicationStatus,
+    //     paymentInvoice: paymentInvoice
+    //       ? [paymentInvoice]
+    //       : data?.applicationStatus.paymentInvoice?.length
+    //       ? [...data?.applicationStatus.paymentInvoice]
+    //       : [],
+    //     paymentProof: paymentSlip
+    //       ? [paymentSlip]
+    //       : data?.applicationStatus.paymentProof?.length
+    //       ? [...data?.applicationStatus.paymentProof]
+    //       : [],
+    //   },
+    //   eVisa: eVisa
+    //     ? [eVisa]
+    //     : data?.applicationStatus?.eVisa?.length
+    //     ? [...data.applicationStatus?.eVisa]
+    //     : [],
+
+    //   medicalReports: medicalReport
+    //     ? [medicalReport]
+    //     : data?.applicationStatus?.medicalReports?.length
+    //     ? [...data.applicationStatus?.medicalReports]
+    //     : [],
+    // };
 
     const formData = new FormData();
     formData.append("id", `${data?.id}`);
@@ -171,8 +198,8 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
       formData.append("files.applicationStatus.eVisa", eVisa);
     }
 
-    if (medicalRepot) {
-      formData.append("files.applicationStatus.medicalReports", medicalRepot);
+    if (medicalReport) {
+      formData.append("files.applicationStatus.medicalReports", medicalReport);
     }
 
     if (emirateIdForm) {
@@ -187,19 +214,46 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
         formData.append(`files.applicationStatus.residenceVisa.${i}`, file);
       });
 
-    updateVisaStatus(formData)
+    updateVisaApplication(formData)
       .unwrap()
-      .then((res: { data: IVisaApplication } | { error: unknown }) => {
-        if ("data" in res && res.data.id) {
-          dispatch(setUpdatedVisaApplicationInfo({ ...data, ...res.data }));
-          dispatch(
-            openSnackbar({
-              isOpen: true,
-              message: "Visa Application Status Updated",
-              type: "success",
+      .then((updatedData: { data: IVisaApplication } | { error: unknown }) => {
+        if ("data" in updatedData && updatedData.data.id) {
+          const nextFormData = new FormData();
+
+          nextFormData.append("id", `${updatedData?.data?.id}`);
+          nextFormData.append(
+            "data",
+            JSON.stringify({
+              applicationStatus: {
+                status: applicationStatus?.status,
+                step: applicationStatus?.step,
+              },
             })
           );
-        } else if ("error" in res) {
+
+          updateVisaStatus(nextFormData)
+            .unwrap()
+            .then((res: { data: IVisaApplication }) => {
+              if (res?.data?.id) {
+                dispatch(setUpdatedVisaApplicationInfo(updatedData?.data));
+                dispatch(
+                  openSnackbar({
+                    isOpen: true,
+                    message: "Visa Application Status Updated",
+                    type: "success",
+                  })
+                );
+              } else {
+                dispatch(
+                  openSnackbar({
+                    isOpen: true,
+                    message: "Something went wrong",
+                    type: "error",
+                  })
+                );
+              }
+            });
+        } else if ("error" in updatedData) {
           dispatch(
             openSnackbar({
               isOpen: true,

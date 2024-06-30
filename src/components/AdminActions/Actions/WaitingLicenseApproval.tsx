@@ -79,7 +79,7 @@ const WaitingLicenseApproval: React.FC<IProps> = ({
               marginTop: "16px",
             }}
           >
-            Have the License document received?
+            Has the License document received?
           </Typography>
 
           <RadioGroup

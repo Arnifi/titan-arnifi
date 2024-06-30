@@ -58,7 +58,7 @@ const IsEmiratesIdFormUpload: React.FC<IProps> = ({
             marginTop: "16px",
           }}
         >
-          Has the Emitates id form Received?
+          Has the Emirates id form received?
         </Typography>
 
         <RadioGroup

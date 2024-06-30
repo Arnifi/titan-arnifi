@@ -71,7 +71,7 @@ const WaitingEstablishmentCard: React.FC<IProps> = ({
               color: theme.colorConstants.mediumGray,
             }}
           >
-            Have the Establishment card received?
+            Has the Establishment card received?
           </Typography>
 
           <RadioGroup

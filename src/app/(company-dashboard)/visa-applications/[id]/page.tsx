@@ -123,8 +123,6 @@ const VisaApplicationDetails = ({ params }: { params: { id: string } }) => {
     }
   );
 
-  console.log(selectedApplication);
-
   const applicationData = [
     {
       label: "Company Name",

@@ -254,7 +254,9 @@ const IsResidenceVisaUpload: React.FC<IProps> = ({
         )}
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "flex-end", paddingY: "10px" }}
+      >
         <GlobalButton
           disabled={!visaFiles.length}
           loading={loading}

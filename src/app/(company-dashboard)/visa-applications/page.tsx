@@ -50,9 +50,12 @@ const VisaApplications: React.FC = () => {
   ];
 
   const stepsWiseVisaApplications = allVisaSteps?.map((step) => {
-    const applications = allVisaApplications?.filter(
-      (item) => item.applicationStatus?.step === step
-    );
+    const applications = allVisaApplications
+      ?.filter((item) => item.applicationStatus?.step === step)
+      .sort(
+        (a, b) =>
+          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+      );
     return {
       leble: step,
       applications,
@@ -109,8 +112,8 @@ const VisaApplications: React.FC = () => {
       align: "left",
     },
     {
-      label: "Status",
-      value: "status",
+      label: "Current Step",
+      value: "step",
       align: "left",
     },
   ];
@@ -124,7 +127,7 @@ const VisaApplications: React.FC = () => {
       linkedTo: item?.linkto,
       username: item?.username,
       jurisdiction: item?.jurisdiction,
-      status: item?.applicationStatus?.status,
+      step: item?.applicationStatus?.step,
     };
   });
 

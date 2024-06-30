@@ -32,7 +32,7 @@ const IsMedicalReportsUpload: React.FC<IProps> = ({
     const data = {
       currentStatus: VisaStatusType.WaitingOnGA,
       currentStep: VisaStepsTypes.EmiratesIDAppointmentBooking,
-      medicalRepot: report,
+      medicalReport: report,
     };
 
     statusHandlar(data);
