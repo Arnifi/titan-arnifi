@@ -5,6 +5,7 @@ export interface IUploadImage {
   id: number;
   name: string;
   url: string;
+  ext?: string;
 }
 
 export interface ICompanyDetails {
@@ -157,7 +158,10 @@ const companyApplicationSlice = createSlice({
       state,
       { payload }: { payload: ICompanyApplication[] }
     ) => {
-      state.applications = payload;
+      state.applications = payload?.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
     },
 
     setUpdatedCompanyApplicationInfo: (

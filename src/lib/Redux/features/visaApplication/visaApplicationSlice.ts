@@ -222,7 +222,10 @@ const visaApplicationSlice = createSlice({
       state,
       { payload }: { payload: IVisaApplication[] }
     ) => {
-      state.applications = payload;
+      state.applications = payload?.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
     },
     setUpdatedVisaApplicationInfo: (
       state,

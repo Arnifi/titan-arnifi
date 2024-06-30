@@ -25,6 +25,12 @@ const CompanyApplications: React.FC = () => {
     (state) => state.companyApplications?.applications
   );
 
+  // allApplications?.length &&
+  //   allApplications?.sort(
+  //     (a, b) =>
+  //       new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+  //   );
+
   const [companyApplications, setCompanyApplications] =
     useState<ICompanyApplication[]>(allApplications);
 
@@ -66,12 +72,9 @@ const CompanyApplications: React.FC = () => {
   ];
 
   const stepWiseApplications = allCompanySteps?.map((step) => {
-    const applications = allApplications
-      ?.filter((item) => item.applicationStatus?.step === step)
-      .sort(
-        (a, b) =>
-          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
-      );
+    const applications = allApplications?.filter(
+      (item) => item.applicationStatus?.step === step
+    );
 
     return {
       leble: step,
