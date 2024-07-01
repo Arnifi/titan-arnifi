@@ -243,7 +243,7 @@ const CompanyApplications: React.FC = () => {
               ),
             }}
             sx={{
-              width: "300px",
+              width: "350px",
               fontSize: "14px",
               fontWeight: 500,
               "& .MuiOutlinedInput-root": {
@@ -251,7 +251,7 @@ const CompanyApplications: React.FC = () => {
               },
             }}
             variant="outlined"
-            placeholder={"Search by Company Name"}
+            placeholder={"Search by Company Name or Linked User"}
           />
         </Box>
       </Box>
