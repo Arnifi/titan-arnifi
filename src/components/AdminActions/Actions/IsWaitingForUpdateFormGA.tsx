@@ -111,8 +111,10 @@ const IsWaitingForUpdateFormGA: React.FC<IProps> = ({
                 color: theme.colorConstants.mediumGray,
               }}
             >
-              Has the company resolution document been sent by the government
-              for esigning?
+              {/* Has the company resolution document been sent by the government
+              for esigning? */}
+              Has the Employee agreement been sent by the government for
+              esigning?
             </Typography>
 
             <RadioGroup

@@ -236,12 +236,13 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
           updateVisaStatus(nextFormData)
             .unwrap()
             .then((res: { data: IVisaApplication }) => {
-              console.log(res);
               if (res?.data?.id) {
                 dispatch(
                   setUpdatedVisaApplicationInfo({
                     ...updatedData?.data,
                     jurisdiction: data?.jurisdiction,
+                    companyName: data?.companyName,
+                    linkto: data?.linkto,
                   })
                 );
                 dispatch(
