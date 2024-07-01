@@ -140,6 +140,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
           uIdNo ?? data?.applicationStatus?.emirateIdAcForm?.uIdNumber ?? "",
         fileNumber:
           fileNo ?? data?.applicationStatus?.emirateIdAcForm?.fileNumber ?? "",
+        document: data?.applicationStatus?.emirateIdAcForm?.document,
       },
 
       residenceVisa: {
@@ -225,6 +226,7 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
             "data",
             JSON.stringify({
               applicationStatus: {
+                ...updatedData?.data?.applicationStatus,
                 status: applicationStatus?.status,
                 step: applicationStatus?.step,
               },
@@ -234,8 +236,14 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
           updateVisaStatus(nextFormData)
             .unwrap()
             .then((res: { data: IVisaApplication }) => {
+              console.log(res);
               if (res?.data?.id) {
-                dispatch(setUpdatedVisaApplicationInfo(updatedData?.data));
+                dispatch(
+                  setUpdatedVisaApplicationInfo({
+                    ...updatedData?.data,
+                    jurisdiction: data?.jurisdiction,
+                  })
+                );
                 dispatch(
                   openSnackbar({
                     isOpen: true,
@@ -252,6 +260,16 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
                   })
                 );
               }
+            })
+            .catch((err) => {
+              console.error(err);
+              dispatch(
+                openSnackbar({
+                  isOpen: true,
+                  message: "Something went wrong",
+                  type: "error",
+                })
+              );
             });
         } else if ("error" in updatedData) {
           dispatch(
@@ -264,14 +282,14 @@ const VisaFormAdminActions: React.FC<IProps> = ({ data }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
   return (
     <Paper
       variant="outlined"
-      sx={{ padding: "20px", height: "70vh", overflowY: "scroll" }}
+      sx={{ padding: "20px", height: "70vh", overflowY: "auto" }}
     >
       {isFormOpen ? (
         <IsFormOpen />
