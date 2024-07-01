@@ -25,7 +25,7 @@ const ArnifiLogo =
   "https://frontend-arnifi-images.s3.me-south-1.amazonaws.com/images/ArnifiLogo.png";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
+  identifier: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string().required("Password is required"),
@@ -33,7 +33,7 @@ const validationSchema = Yup.object().shape({
 
 export default function LoginSide(): JSX.Element {
   const [loginInfo] = useState({
-    email: "",
+    identifier: "",
     password: "",
   });
   const [login, { isLoading }] = useLoginMutation();
@@ -43,8 +43,9 @@ export default function LoginSide(): JSX.Element {
 
   const handleLogin = async (values: FormikValues): Promise<void> => {
     try {
-      const response: { data: ILoginResponse } = await login(values).unwrap();
-      if (!response?.data?.token) {
+      const response: ILoginResponse = await login(values).unwrap();
+
+      if (!response?.jwt) {
         console.error(response);
         dispatch(
           openSnackbar({
@@ -155,7 +156,7 @@ export default function LoginSide(): JSX.Element {
                   }}
                 >
                   <FormInputField
-                    name="email"
+                    name="identifier"
                     label="Email"
                     type={IInputType.EMAIL}
                     placeholder="Please provide with your email"

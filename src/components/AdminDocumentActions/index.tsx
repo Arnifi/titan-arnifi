@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import { pdfUrlToImgBlob } from "../AdminActions/helpers";
+import GlobalLoader from "../Loaders/GlobalLoader";
 
 const style = {
   position: "absolute",
@@ -18,11 +20,12 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "600px",
-  height: "100vh",
+  height: "90vh",
   bgcolor: "background.paper",
   boxShadow: 24,
   border: "none",
   borderRadius: "5px",
+  overflow: "auto",
   // "@media (min-width: 600px)": {
   //   width: "400px",
   // },
@@ -36,18 +39,30 @@ interface IProps {
 const AdminDocumentActions: React.FC<IProps> = ({ title, data }) => {
   const [openViewModal, setOpenViewModal] = React.useState<boolean>(false);
   const [imageSrc, setImageSrc] = React.useState<string>("");
+  const [fileLoading, setFileLoading] = React.useState<boolean>(false);
 
   const fileViewHandler = (viewFile: IUploadImage | File) => {
     let url = "";
 
     if (viewFile instanceof File) {
       url = URL.createObjectURL(viewFile);
+      setImageSrc(url);
+      setOpenViewModal(true);
+    } else if (viewFile?.ext === ".pdf") {
+      setFileLoading(true);
+      setOpenViewModal(true);
+      pdfUrlToImgBlob(viewFile).then((blob) => {
+        if (blob !== undefined || blob !== null) {
+          url = blob;
+          setImageSrc(blob);
+        }
+        setFileLoading(false);
+      });
     } else {
       url = viewFile?.url;
+      setImageSrc(url);
+      setOpenViewModal(true);
     }
-
-    setImageSrc(url);
-    setOpenViewModal(true);
   };
 
   const handleDownload = async (downloadedFile: IUploadImage | File) => {
@@ -147,37 +162,41 @@ const AdminDocumentActions: React.FC<IProps> = ({ title, data }) => {
         onClose={() => setOpenViewModal(false)}
       >
         <Box sx={{ ...style }}>
-          <Box sx={{ position: "relative" }}>
-            <IconButton
-              onClick={() => setOpenViewModal(false)}
-              sx={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-              }}
-            >
-              <Close />
-            </IconButton>
+          {fileLoading ? (
+            <GlobalLoader height="80vh" />
+          ) : (
+            <Box sx={{ position: "relative" }}>
+              <IconButton
+                onClick={() => setOpenViewModal(false)}
+                sx={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                }}
+              >
+                <Close />
+              </IconButton>
 
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                padding: "20px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                src={imageSrc}
-                alt={"files"}
-                width={100}
-                height={100}
-                layout="responsive"
-              />
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  padding: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  src={imageSrc}
+                  alt={"files"}
+                  width={100}
+                  height={100}
+                  layout="responsive"
+                />
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
       </Modal>
     </Paper>

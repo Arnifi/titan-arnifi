@@ -15,7 +15,7 @@ export interface ILoginUser {
 }
 
 export interface ILoginResponse {
-  token: string;
+  jwt: string;
   user: ILoginUser;
 }
 
@@ -23,7 +23,7 @@ const authApi = backendBaseApi.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation({
       query: (data) => ({
-        url: `/admin/login`,
+        url: `/api/auth/local`,
         method: "POST",
         body: data,
       }),
@@ -35,8 +35,8 @@ const authApi = backendBaseApi.injectEndpoints({
         }: { queryFulfilled: any; dispatch: AppDispatch }
       ) {
         const { data: response } = await queryFulfilled;
-        const { token, user } = response?.data as ILoginResponse;
-        setToken(token);
+        const { jwt, user } = response as ILoginResponse;
+        setToken(jwt);
         dispatch(setLoginUser(user));
       },
 
@@ -45,7 +45,7 @@ const authApi = backendBaseApi.injectEndpoints({
 
     getLoginUser: build.query({
       query: () => ({
-        url: `/admin/users/me`,
+        url: `/api/users/me?role=*`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
@@ -60,7 +60,7 @@ const authApi = backendBaseApi.injectEndpoints({
         }: { queryFulfilled: any; dispatch: AppDispatch }
       ) {
         const { data: response } = await queryFulfilled;
-        const loginUser = response?.data as ILoginUser;
+        const loginUser = response as ILoginUser;
         dispatch(setLoginUser(loginUser));
       },
 

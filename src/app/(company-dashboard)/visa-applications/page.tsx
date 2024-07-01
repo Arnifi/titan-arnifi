@@ -3,7 +3,7 @@
 import ApplicationsTable from "@/components/Tables/ApplicationsTable";
 import {
   IVisaApplication,
-  VisaStatusType,
+  VisaStepsTypes,
 } from "@/lib/Redux/features/visaApplication/visaApplicationSlice";
 import { useAppSelector } from "@/lib/Redux/store";
 import theme from "@/theme";
@@ -28,30 +28,51 @@ const VisaApplications: React.FC = () => {
   const [visaApplications, setVisaApplications] =
     useState<IVisaApplication[]>(allVisaApplications);
 
-  const allVisaStatus = [
-    VisaStatusType.OPEN,
-    VisaStatusType.SUBMITTED,
-    VisaStatusType.REJECTEDARNIFI,
-    VisaStatusType.INREVIEWARNIFI,
-    VisaStatusType.WAITINGGA,
-    VisaStatusType.REJECTEDGA,
-    VisaStatusType.REJECTEDEMPLOYEEAGREEMENT,
-    VisaStatusType.REJECTEDEVISA,
-    VisaStatusType.MEDICALAPPOINTMENT,
-    VisaStatusType.EMIRATESIDAPPOINTMENT,
-    VisaStatusType.COMPLETED,
+  const allVisaSteps = [
+    VisaStepsTypes.Open,
+    VisaStepsTypes.ReviewAtArnifi,
+    VisaStepsTypes.RejectedAtArnifi,
+    VisaStepsTypes.ApplyOnPortal,
+    VisaStepsTypes.MakePaymentGA,
+    VisaStepsTypes.WaitingForUpdateFromGA,
+    VisaStepsTypes.RejectedByGA,
+    VisaStepsTypes.UploadRejectionComments,
+    VisaStepsTypes.EmploymentAgreementSigning,
+    VisaStepsTypes.WaitingForEvisa,
+    VisaStepsTypes.EvisaIssued,
+    VisaStepsTypes.MedicalAppointmentBooking,
+    VisaStepsTypes.WaitingForMedicalReports,
+    VisaStepsTypes.EmiratesIDAppointmentBooking,
+    VisaStepsTypes.WaitingForEmiratesIDForm,
+    VisaStepsTypes.ApplyForVisaStamping,
+    VisaStepsTypes.WaitingForResidenceVisa,
+    VisaStepsTypes.ResidenceVisaIssued,
   ];
+
+  const stepsWiseVisaApplications = allVisaSteps?.map((step) => {
+    const applications = allVisaApplications
+      ?.filter((item) => item.applicationStatus?.step === step)
+      .sort(
+        (a, b) =>
+          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+      );
+    return {
+      leble: step,
+      applications,
+      count: applications.length,
+    };
+  });
 
   const searchAbleApplications: IVisaApplication[] = visaApplications?.filter(
     (item) => {
-      const searchInLowerCase = search.toLocaleLowerCase();
+      const searchInLowerCase = search?.toLocaleLowerCase();
       const companyName = item?.companyName?.toLocaleLowerCase() || "";
       const firstName =
-        item?.personalDetails?.firstName.toLocaleLowerCase() || "";
+        item?.personalDetails?.firstName?.toLocaleLowerCase() || "";
       const middleName =
-        item?.personalDetails?.middleName.toLocaleLowerCase() || "";
+        item?.personalDetails?.middleName?.toLocaleLowerCase() || "";
       const lastName =
-        item?.personalDetails?.lastName.toLocaleLowerCase() || "";
+        item?.personalDetails?.lastName?.toLocaleLowerCase() || "";
       const userName = item?.username?.toLocaleLowerCase() || "";
 
       return (
@@ -63,17 +84,6 @@ const VisaApplications: React.FC = () => {
       );
     }
   );
-
-  const statusWiseVisaApplications = allVisaStatus?.map((status) => {
-    const applications = allVisaApplications?.filter(
-      (item) => item.visa_status?.currentStatus === status
-    );
-    return {
-      leble: status,
-      applications,
-      count: applications.length,
-    };
-  });
 
   const tableHead = [
     {
@@ -103,12 +113,7 @@ const VisaApplications: React.FC = () => {
     },
     {
       label: "Current Step",
-      value: "currentStep",
-      align: "left",
-    },
-    {
-      label: "Status",
-      value: "status",
+      value: "step",
       align: "left",
     },
   ];
@@ -121,48 +126,8 @@ const VisaApplications: React.FC = () => {
       type: item?.visaType,
       linkedTo: item?.linkto,
       username: item?.username,
-      currentStep: item?.visa_status?.currentStatus,
-      status: item?.visa_status?.currentStatus,
-      buttonBackground:
-        item?.visa_status?.currentStatus === VisaStatusType.OPEN ||
-        item?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI ||
-        item?.visa_status?.currentStatus === VisaStatusType.SUBMITTED
-          ? "#EBEEFB"
-          : item?.visa_status?.currentStatus ===
-              VisaStatusType.REJECTEDARNIFI ||
-            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDGA ||
-            item?.visa_status?.currentStatus ===
-              VisaStatusType.REJECTEDEMPLOYEEAGREEMENT ||
-            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDEVISA
-          ? "#FBD2D2"
-          : item?.visa_status?.currentStatus === VisaStatusType.COMPLETED
-          ? "#D7ECE1"
-          : item?.visa_status?.currentStatus ===
-              VisaStatusType.MEDICALAPPOINTMENT ||
-            item?.visa_status?.currentStatus ===
-              VisaStatusType.EMIRATESIDAPPOINTMENT
-          ? "#FDEBD8"
-          : "#FDEBD8",
-      buttonColor:
-        item?.visa_status?.currentStatus === VisaStatusType.OPEN ||
-        item?.visa_status?.currentStatus === VisaStatusType.INREVIEWARNIFI ||
-        item?.visa_status?.currentStatus === VisaStatusType.SUBMITTED
-          ? "#3955D9"
-          : item?.visa_status?.currentStatus ===
-              VisaStatusType.REJECTEDARNIFI ||
-            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDGA ||
-            item?.visa_status?.currentStatus ===
-              VisaStatusType.REJECTEDEMPLOYEEAGREEMENT ||
-            item?.visa_status?.currentStatus === VisaStatusType.REJECTEDEVISA
-          ? "#F15656"
-          : item?.visa_status?.currentStatus === VisaStatusType.COMPLETED
-          ? "#36A067"
-          : item?.visa_status?.currentStatus ===
-              VisaStatusType.MEDICALAPPOINTMENT ||
-            item?.visa_status?.currentStatus ===
-              VisaStatusType.EMIRATESIDAPPOINTMENT
-          ? "#F7993B"
-          : "#F7993B",
+      jurisdiction: item?.jurisdiction,
+      step: item?.applicationStatus?.step,
     };
   });
 
@@ -226,7 +191,7 @@ const VisaApplications: React.FC = () => {
               if (value === "all") {
                 setVisaApplications(allVisaApplications);
               } else {
-                const selectedStatus = statusWiseVisaApplications?.find(
+                const selectedStatus = stepsWiseVisaApplications?.find(
                   (item) => item?.leble === e.target.value
                 );
                 setVisaApplications(
@@ -239,7 +204,7 @@ const VisaApplications: React.FC = () => {
               if (value === "all" || value === "") {
                 setVisaApplications(allVisaApplications);
               } else {
-                const selectedStatus = statusWiseVisaApplications?.find(
+                const selectedStatus = stepsWiseVisaApplications?.find(
                   (item) => item?.leble === e.target.value
                 );
                 setVisaApplications(
@@ -260,7 +225,7 @@ const VisaApplications: React.FC = () => {
             >
               All Applications ({allVisaApplications?.length})
             </MenuItem>
-            {statusWiseVisaApplications?.map((item, i) => (
+            {stepsWiseVisaApplications?.map((item, i) => (
               <MenuItem
                 sx={{
                   color: theme.colorConstants.darkGray,

@@ -21,7 +21,7 @@ interface IProps {
   };
 }
 
-const IsGAReactAction: React.FC<IProps> = ({
+const IsGARejectAction: React.FC<IProps> = ({
   message,
   userComment,
   loading,
@@ -181,4 +181,4 @@ const IsGAReactAction: React.FC<IProps> = ({
   );
 };
 
-export default IsGAReactAction;
+export default IsGARejectAction;

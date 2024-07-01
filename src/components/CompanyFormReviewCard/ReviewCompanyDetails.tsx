@@ -26,7 +26,7 @@ const ReviewCompanyDetails: React.FC<IProps> = ({ data, activityDetails }) => {
   return (
     <Box>
       <Box paddingTop={"16px"}>
-        <CustomeTypography gutterBottom>Compony Name options</CustomeTypography>
+        <CustomeTypography gutterBottom>Company Name options</CustomeTypography>
         <Grid paddingBottom={"16px"} container spacing={{ xs: 1, md: 2 }}>
           <Grid item xs={12} md={4}>
             <Typography

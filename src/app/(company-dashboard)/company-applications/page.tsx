@@ -25,6 +25,12 @@ const CompanyApplications: React.FC = () => {
     (state) => state.companyApplications?.applications
   );
 
+  // allApplications?.length &&
+  //   allApplications?.sort(
+  //     (a, b) =>
+  //       new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+  //   );
+
   const [companyApplications, setCompanyApplications] =
     useState<ICompanyApplication[]>(allApplications);
 
@@ -39,10 +45,13 @@ const CompanyApplications: React.FC = () => {
       const nameOption3 =
         item.companyDetails?.companyNames?.option3?.toLocaleLowerCase() || "";
 
+      const userName = item?.username?.toLocaleLowerCase() || "";
+
       return (
         nameOption1.includes(searchInLowerCase) ||
         nameOption2.includes(searchInLowerCase) ||
-        nameOption3.includes(searchInLowerCase)
+        nameOption3.includes(searchInLowerCase) ||
+        userName?.includes(searchInLowerCase)
       );
     });
 
@@ -234,7 +243,7 @@ const CompanyApplications: React.FC = () => {
               ),
             }}
             sx={{
-              width: "300px",
+              width: "350px",
               fontSize: "14px",
               fontWeight: 500,
               "& .MuiOutlinedInput-root": {
@@ -242,7 +251,7 @@ const CompanyApplications: React.FC = () => {
               },
             }}
             variant="outlined"
-            placeholder={"Search by Company Name"}
+            placeholder={"Search by Company Name or Linked User"}
           />
         </Box>
       </Box>

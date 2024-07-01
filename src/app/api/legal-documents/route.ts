@@ -17,7 +17,7 @@ export const GET = catchAsync(
       req.url,
       legalsFilterableFields
     );
-    console.log("route call");
+
     const response = await LegalDocumentService.findAll(filtersOptions);
 
     return sendResponse({

@@ -10,7 +10,7 @@ const backendBaseApi = createApi({
     //   const token = getAuthToken();
 
     //   if (token) {
-    //     headers.set("authorization", `Bearer ${token}`);
+    //     headers.set("Authorization", `Bearer ${token}`);
     //   }
     //   return headers;
     // },

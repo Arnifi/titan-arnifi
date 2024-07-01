@@ -5,6 +5,7 @@ export interface IUploadImage {
   id: number;
   name: string;
   url: string;
+  ext?: string;
 }
 
 export interface ICompanyDetails {
@@ -90,7 +91,7 @@ export enum CompanyStatusType {
   ReviewAtArnifi = "Review at Arnifi",
   RejectedAtArnifi = "Rejected at Arnifi",
   WaitingOnGovernmentAuthority = "Waiting on Government Authority",
-  RejectedByGA = "Rejected by GA",
+  RejectedByGA = "Rejected by Government Authority",
   ResolutionEsignRequired = "Resolution E-sign Required",
   MOAAOAEsignRequired = "MOA/ AOA E-sign required",
   LicenseIssued = "License Issued",
@@ -102,9 +103,9 @@ export enum CompanyStepTypes {
   ReviewAtArnifi = "Review at Arnifi",
   RejectedAtArnifi = "Rejected at Arnifi",
   ApplyOnPortal = "Apply on portal",
-  MakePaymentToGA = "Make Payment to GA",
-  WaitingForUpdateFromGA = "Waiting for update from GA",
-  RejectedByGA = "Rejected by GA",
+  MakePaymentToGA = "Make Payment to Government Authority",
+  WaitingForUpdateFromGA = "Waiting for update from Government Authority",
+  RejectedByGA = "Rejected by Government Authority",
   UploadRejectionComments = "Upload Rejection comments",
   ResolutionSigning = "Resolution signing",
   MOAAOASigning = "MOA/ AOA signing",
@@ -142,6 +143,7 @@ export interface ICompanyApplication {
   username: string;
   jurisdiction: string;
   applicationStatus: ICompanyStatus;
+  updatedAt: Date;
 }
 
 const initialState = {
@@ -156,7 +158,10 @@ const companyApplicationSlice = createSlice({
       state,
       { payload }: { payload: ICompanyApplication[] }
     ) => {
-      state.applications = payload;
+      state.applications = payload?.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
     },
 
     setUpdatedCompanyApplicationInfo: (
