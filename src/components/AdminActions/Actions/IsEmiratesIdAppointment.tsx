@@ -106,7 +106,7 @@ const IsEmiratesIdAppointment: React.FC<IProps> = ({
                 color: theme.colorConstants.mediumGray,
               }}
             >
-              (Any perquisite of instruction for client)
+              (Any prerequisite / instruction / location for client)
             </Typography>
             <Box sx={{ width: "100%" }}>
               <textarea

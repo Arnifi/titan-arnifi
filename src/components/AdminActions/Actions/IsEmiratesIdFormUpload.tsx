@@ -93,7 +93,7 @@ const IsEmiratesIdFormUpload: React.FC<IProps> = ({
             <FileUploadContainer
               file={idForm}
               setFile={setIdForm}
-              title="Upload Emitates id form"
+              title="Upload Emirates id form"
             />
 
             <Box
